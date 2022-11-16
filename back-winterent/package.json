@@ -19,6 +19,8 @@
   "homepage": "https://github.com/WildCodeSchool/2209-wns-hamilton-winterent-back#readme",
   "dependencies": {
     "@apollo/server": "^4.1.1",
+    "@graphql-tools/load-files": "^6.6.1",
+    "@graphql-tools/merge": "^8.3.12",
     "apollo-server": "^3.11.1",
     "apollo-server-express": "^3.11.1",
     "dotenv": "^16.0.3",
