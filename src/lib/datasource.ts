@@ -12,6 +12,6 @@ export default new DataSource({
   database: 'winterent',
   synchronize: true,
   entities: [User],
-  logging: ['query', 'error'],
+  // logging: ['query', 'error'],
 });
   
