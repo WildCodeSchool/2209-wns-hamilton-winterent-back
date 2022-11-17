@@ -1,33 +1,38 @@
-import User from '../entity/User'
-import { GraphQLObjectType } from "graphql";
+import User from '../entity/User';
+import { GraphQLObjectType } from 'graphql';
+import UserService from '../services/user.service';
+import datasource from '../lib/datasource';
 
-const user = new User()
-export const userResolver = {
-    Query: {
-        users: () => User,
+export default {
+  Query: {
+    users: async () => await new UserService().findAll(),
+    user: async (_: GraphQLObjectType, args: any) => {
+      const { id } = args;
+      return await new UserService().findUser(id);
     },
-    Mutation: {
-        addUser: async (_:GraphQLObjectType, args: any) => {
-            const { firstname, lastname, email, password} = args;
-            try {
-                await user.create({
-                    firstname,
-                    lastname,
-                    email,
-                    password
-                });
+  },
+  Mutation: {
+    addUser: async (_: GraphQLObjectType, args: any) => {
+      const { firstname, lastname, email, password } = args;
+      console.log(args);
+      try {
+        let user = await new UserService().createUser({
+          firstname,
+          lastname,
+          email,
+          password,
+        });
+        console.log(user);
+        // return user;
+      } catch (error) {
+        console.log(error);
+        // return false;
+      }
 
-                await user.save();
-
-                return true;
-            } catch (error) {
-                return false;
-            }
-        }
-
-    }
-}
-
+      return {firstname: "toto", lastname: "tata", email: "sdqsd@gmail.com", password: "coucou"}
+    },
+  },
+};
 
 // Mutation: {
 //    login: async (_, { email }, { dataSources }) => {
