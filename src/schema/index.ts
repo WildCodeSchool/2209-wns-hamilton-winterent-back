@@ -6,4 +6,4 @@ const typeDefs = loadFilesSync('.', {
   recursive: true,
 });
 
-export default mergeTypeDefs([...typeDefs]);
+export default mergeTypeDefs([typeDefs]);

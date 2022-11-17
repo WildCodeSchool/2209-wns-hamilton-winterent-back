@@ -3,6 +3,7 @@ type User {
   email: String!
   firstname: String!
   lastname: String
+  password: String!
 }
 
 type Query {
@@ -11,5 +12,10 @@ type Query {
 }
 
 type Mutation {
-  registerUser(email: String!, firstname: String!, lastname: String): User!
+  addUser(
+    email: String!, 
+    firstname: String!, 
+    lastname: String,
+    password: String!,
+  ): User!
 }

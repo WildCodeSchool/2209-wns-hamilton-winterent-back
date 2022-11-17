@@ -9,6 +9,7 @@ import http from 'http';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import typeDefs from './src/schema';
 import { users } from './src/datasource';
+import datasource from './src/lib/datasource';
 
 const resolvers = {
   Query: {
@@ -21,6 +22,7 @@ const start = async () => {
   const httpServer = http.createServer(app);
   const port = process.env.PORT || 8000;
   //const schema = await buildSchema({ resolvers: [] });
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -32,12 +34,22 @@ const start = async () => {
     ],
   });
   await server.start();
-  await new Promise((resolve) =>
-    httpServer.listen({ port }, () => resolve(null))
-  );
+  server.applyMiddleware({app})
+  await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
   console.log(
     `Serveur lancé sur http://localhost:${port}${server.graphqlPath}`
   );
+  await datasource.initialize();
+
+  // await new Promise(() =>
+  //   httpServer.listen({ port }, async () => {
+  //     await datasource.initialize();
+  //     console.log(
+  //       `Serveur lancé sur http://localhost:${port}${server.graphqlPath}`
+  //     );
+  //   })
+  // );
+
   // .then(() => {
   //   console.log(`Serveur lancé sur ${port}`);
   // });

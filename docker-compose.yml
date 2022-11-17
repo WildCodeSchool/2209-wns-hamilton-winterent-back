@@ -5,18 +5,33 @@ services:
       - ./src:/app/src
     ports:
       - 8000:8000
+    networks:
+      postgres:
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: postgres
     restart: always
+    user: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 15s
+      timeout: 300s
+      retries: 25
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: winterent
     ports:
-      - 5433:5432
+      - 5432:5432
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - database:/var/lib/postgresql/data
+    networks:
+      postgres:
+    expose:
+      - "5432"
 
   pgadmin:
     container_name: pgadmin4_container
@@ -26,3 +41,10 @@ services:
       PGADMIN_DEFAULT_PASSWORD: password
     ports:
       - "5050:80"
+    networks:
+      postgres:
+
+networks:
+  postgres:
+volumes:
+  database:
