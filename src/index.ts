@@ -1,21 +1,16 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
-import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
-import express from 'express';
-import http from 'http';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import typeDefs from './src/schema';
-import { users } from './src/datasource';
-import datasource from './src/lib/datasource';
-
-const resolvers = {
-  Query: {
-    users: () => users,
-  },
-};
+import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import express from "express";
+import http from "http";
+import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
+import typeDefs from "./schema";
+import resolvers from "./resolver";
+import { users } from "./datasource";
+import datasource from "./lib/datasource";
 
 const start = async () => {
   const app = express();
@@ -27,14 +22,14 @@ const start = async () => {
     typeDefs,
     resolvers,
     csrfPrevention: true,
-    cache: 'bounded',
+    cache: "bounded",
     plugins: [
       ApolloServerPluginLandingPageLocalDefault({ embed: true }),
       ApolloServerPluginDrainHttpServer({ httpServer }),
     ],
   });
   await server.start();
-  server.applyMiddleware({app})
+  server.applyMiddleware({ app });
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
   console.log(
     `Serveur lancé sur http://localhost:${port}${server.graphqlPath}`

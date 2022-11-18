@@ -33,12 +33,11 @@ class UserService {
     newUser.lastname = lastname;
     newUser.email = email;
     newUser.password = hash;
-
+    
     // Token à générer
+    
+   return await this.repository.save(newUser);
 
-    await this.repository.save(newUser);
-
-    return newUser;
   }
 
 

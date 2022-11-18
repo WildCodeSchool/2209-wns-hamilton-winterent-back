@@ -2,7 +2,7 @@ FROM node:lts
 
 RUN mkdir app
 WORKDIR /app
-COPY index.ts ./
+# COPY ./src/index.ts ./
 COPY *.json ./
 
 RUN npm i
