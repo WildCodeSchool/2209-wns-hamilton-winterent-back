@@ -17,21 +17,22 @@ export default {
     addUser: async (_: GraphQLObjectType, args: any) => {
       const { firstname, lastname, email, password } = args;
       console.log(args);
-      // try {
-      //   let user = await new UserService().createUser({
-      //     firstname,
-      //     lastname,
-      //     email,
-      //     password,
-      //   });
-      //   console.log(user);
-      //   // return user;
-      // } catch (error) {
-      //   console.log(error);
-      //   // return false;
-      // }
-
-      return {firstname: "toto", lastname: "tata", email: "sdqsd@gmail.com", password: "coucou"}
+      let user;
+      try {
+        user = await new UserService().createUser({
+          firstname,
+          lastname,
+          email,
+          password,
+        });
+        return user;
+         
+      } catch (error) {
+        console.log(error);
+        throw new Error("erreur")
+        // return false;
+      }
+    
     },
   },
 };
