@@ -10,16 +10,16 @@ import http from "http";
 import typeDefs from "./schema";
 import resolvers from "./resolver";
 import datasource from "./lib/datasource";
-
+import {getUserFromToken} from "./lib/utilities";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 
+// import cookieParser from "cookie-parser";
 
 
 const start = async () => {
   const app = express();
   app.use(cors())
-  app.use(cookieParser())
+  // app.use(cookieParser())
   const httpServer = http.createServer(app);
   const port = process.env.PORT || 8000;
 
@@ -32,6 +32,15 @@ const start = async () => {
       ApolloServerPluginLandingPageLocalDefault({ embed: true }),
       ApolloServerPluginDrainHttpServer({ httpServer }),
     ],
+    context: async ({req, res}) => {
+      const {authorization} = req.headers;
+      console.log(req.headers.authorization);
+      let userLogged = await getUserFromToken(authorization);
+        console.log("TEST", userLogged);
+      return {
+        userLogged
+      }
+    }
   });
   await server.start();
   server.applyMiddleware({ app /*, cors: false */});

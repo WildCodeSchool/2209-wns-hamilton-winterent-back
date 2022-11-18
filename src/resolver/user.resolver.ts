@@ -2,6 +2,7 @@ import User from '../entity/User';
 import { GraphQLObjectType } from 'graphql';
 import UserService from '../services/user.service';
 import datasource from '../lib/datasource';
+import {checkRights} from '../lib/utilities';
 import { ICreateUser } from './user.resolver.spec';
 import { ExpressContext } from "apollo-server-express";
 //import { } from './user.resolver.spec';
@@ -9,26 +10,38 @@ import { ExpressContext } from "apollo-server-express";
 
 export default {
   Query: {
-    users: async () => await new UserService().findAll(),
+    users: async (_: GraphQLObjectType, args: any, {userLogged}: any) => {
+      checkRights(userLogged);
+      // checkAuthorization(context.userLogged, ["ADMIN"]);
+      // if (!userLogged){
+      //   throw new Error("Vous devez être connecté");
+      // }
+      // if (userLogged.id != 21){
+      //   throw new Error("Il n'a pas le droit de faire  ça");
+      // }
+      return await new UserService().findAll()
+    
+    },
     user: async (_: GraphQLObjectType, args: any) => {
       const { id } = args;
       return await new UserService().findUser(id);
     },
+    login: async(_:GraphQLObjectType, args: any) => {
+      //check email et password et retourner le token 
+    }
   },
   Mutation: {
-    addUser: async (_: GraphQLObjectType, args: ICreateUser)) => {
+    addUser: async (_: GraphQLObjectType, args: ICreateUser) => {
       const { firstname, lastname, email, password } = args;
-      console.log(args);
-      let user;
+      let data; //créer interface
       try {
-        user = await new UserService().createUser({
+        data = await new UserService().createUser({
           firstname,
           lastname,
           email,
           password,
         });
-        console.log("USER", user);
-        return user;
+        return data;
          
       } catch (error) {
         console.log(error);
@@ -36,6 +49,6 @@ export default {
         // return false;
       }
     },
-    getToken: async (() => {})
+
   },
 };

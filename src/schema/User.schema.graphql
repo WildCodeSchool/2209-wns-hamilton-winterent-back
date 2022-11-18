@@ -5,10 +5,14 @@ type User {
   lastname: String
   password: String!
 }
-
+type UserMinimal {
+  id: ID!
+  email: String!
+}
 type Query {
   users: [User!]!
   user(id: ID!): User
+  login(email: String, password: String): UserInfos!
 }
 
 type Mutation {
@@ -17,5 +21,10 @@ type Mutation {
     firstname: String!, 
     lastname: String,
     password: String!,
-  ): User!
+  ): UserInfos!
+}
+
+type UserInfos {
+  user: UserMinimal!
+  token: String
 }
