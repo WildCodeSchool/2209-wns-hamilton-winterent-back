@@ -5,14 +5,26 @@ type User {
   lastname: String
   password: String!
 }
+
 type UserMinimal {
   id: ID!
   email: String!
 }
+
+type UserInfos {
+  user: UserMinimal
+  token: String
+}
+
 type Query {
   users: [User!]!
   user(id: ID!): User
   login(email: String, password: String): UserInfos!
+  logout: Logout #ajout d'une fonction query qui renverra la clé success à true si tout s'est bien passé
+}
+
+type Logout {
+  success: Boolean
 }
 
 type Mutation {
@@ -22,9 +34,4 @@ type Mutation {
     lastname: String,
     password: String!,
   ): UserInfos!
-}
-
-type UserInfos {
-  user: UserMinimal!
-  token: String
 }

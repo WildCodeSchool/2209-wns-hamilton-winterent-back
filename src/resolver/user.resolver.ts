@@ -2,15 +2,16 @@ import User from '../entity/User';
 import { GraphQLObjectType } from 'graphql';
 import UserService from '../services/user.service';
 import datasource from '../lib/datasource';
-import {checkRights} from '../lib/utilities';
-import { ICreateUser } from './user.resolver.spec';
-import { ExpressContext } from "apollo-server-express";
+import bcrypt from 'bcrypt';
+import { checkRights, generateToken } from '../lib/utilities';
+import { ICreateUser, ILoginUserInput } from './user.resolver.spec';
+import { ApolloError, ExpressContext } from 'apollo-server-express';
 //import { } from './user.resolver.spec';
 //const users: array<IUser> = [];
 
 export default {
   Query: {
-    users: async (_: GraphQLObjectType, args: any, {userLogged}: any) => {
+    users: async (_: GraphQLObjectType, args: any, { userLogged }: any) => {
       checkRights(userLogged);
       // checkAuthorization(context.userLogged, ["ADMIN"]);
       // if (!userLogged){
@@ -19,16 +20,41 @@ export default {
       // if (userLogged.id != 21){
       //   throw new Error("Il n'a pas le droit de faire  ça");
       // }
-      return await new UserService().findAll()
-    
+      return await new UserService().findAll();
     },
     user: async (_: GraphQLObjectType, args: any) => {
       const { id } = args;
       return await new UserService().findUser(id);
     },
-    login: async(_:GraphQLObjectType, args: any) => {
-      //check email et password et retourner le token 
-    }
+    login: async (
+      _: GraphQLObjectType,
+      args: ILoginUserInput,
+      res: ExpressContext
+    ) => {
+      //check email et password et retourner le token
+
+      const { email, password } = args;
+      let user = await new UserService().findUserByEmail(email);
+      console.log(user);
+
+      if (!user) {
+        throw new ApolloError("Cet utilisateur n'existe pas");
+      }
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        throw new ApolloError('Vérifiez vos informations');
+      }
+      console.log(match);
+
+      //const {email: string} = user
+      let token = generateToken({ email });
+      //console.log(user)
+      return { user, token /*, success: math */ };
+    },
+    logout: async (_: GraphQLObjectType, {}, { res }: ExpressContext) => {
+      res.clearCookie('token');
+      return { success: true };
+    },
   },
   Mutation: {
     addUser: async (_: GraphQLObjectType, args: ICreateUser) => {
@@ -42,13 +68,11 @@ export default {
           password,
         });
         return data;
-         
       } catch (error) {
         console.log(error);
-        throw new Error("erreur")
+        throw new Error('erreur');
         // return false;
       }
     },
-
   },
 };

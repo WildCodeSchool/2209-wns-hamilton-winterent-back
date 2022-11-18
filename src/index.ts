@@ -15,7 +15,6 @@ import cors from "cors";
 
 // import cookieParser from "cookie-parser";
 
-
 const start = async () => {
   const app = express();
   app.use(cors())
@@ -34,9 +33,9 @@ const start = async () => {
     ],
     context: async ({req, res}) => {
       const {authorization} = req.headers;
-      console.log(req.headers.authorization);
+      //console.log(req.headers.authorization);
       let userLogged = await getUserFromToken(authorization);
-        console.log("TEST", userLogged);
+        //console.log("TEST", userLogged);
       return {
         userLogged
       }
