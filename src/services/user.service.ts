@@ -6,8 +6,7 @@ import {
   ILoginUserInput,
   IUser,
 } from '../resolver/user.resolver.spec';
-
-const myPlaintextPassword = 's0//P4$$w0rD';
+import { generateToken } from '../lib/utilities';
 
 const SALT_ROUND = 10;
 
@@ -18,29 +17,35 @@ class UserService {
   }
 
   async findUser(id: number) {
-    return await this.repository.findOneBy( {id}) ;
+    return await this.repository.findOneBy({ id });
   }
 
   async findAll(): Promise<User[]> {
-   return await this.repository.find()
+    return await this.repository.find();
   }
 
   async createUser({ firstname, lastname, email, password }: ICreateUser) {
     let hash = await bcrypt.hash(password, SALT_ROUND);
 
-    const newUser = new User();
-    newUser.firstname = firstname;
-    newUser.lastname = lastname;
-    newUser.email = email;
-    newUser.password = hash;
-    
-    // Token à générer
-    
-   return await this.repository.save(newUser);
+    // let newUser = new User();
+    // newUser.firstname = firstname;
+    // newUser.lastname = lastname;
+    // newUser.email = email;
+    // newUser.password = hash;
 
+   
+    let token = generateToken({ email });
+
+    console.log(token)
+    // res.cookie("token", token, {
+    //   secure: process.env.NODE_ENV === "production",
+    //   httpOnly: true, //le httpOnly n'est pas accessible via du code JS, ça limite un peu les injection XSS (mais ce n'est pas infaillible comme précisé plus haut)
+    //   maxAge: 1000 * 60 * 60 * 2, //2 heures
+    // });
+ 
+
+  return await this.repository.save({ firstname, lastname, email, password });
   }
-
-
 }
 
 export default UserService;

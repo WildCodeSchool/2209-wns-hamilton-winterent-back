@@ -4,19 +4,24 @@ dotenv.config();
 
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 import express from "express";
 import http from "http";
-import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 import typeDefs from "./schema";
 import resolvers from "./resolver";
-import { users } from "./datasource";
 import datasource from "./lib/datasource";
+
+import cors from "cors";
+import cookieParser from "cookie-parser";
+
+
 
 const start = async () => {
   const app = express();
+  app.use(cors())
+  app.use(cookieParser())
   const httpServer = http.createServer(app);
   const port = process.env.PORT || 8000;
-  //const schema = await buildSchema({ resolvers: [] });
 
   const server = new ApolloServer({
     typeDefs,
@@ -29,25 +34,13 @@ const start = async () => {
     ],
   });
   await server.start();
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app /*, cors: false */});
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
   console.log(
     `Serveur lancé sur http://localhost:${port}${server.graphqlPath}`
   );
   await datasource.initialize();
 
-  // await new Promise(() =>
-  //   httpServer.listen({ port }, async () => {
-  //     await datasource.initialize();
-  //     console.log(
-  //       `Serveur lancé sur http://localhost:${port}${server.graphqlPath}`
-  //     );
-  //   })
-  // );
-
-  // .then(() => {
-  //   console.log(`Serveur lancé sur ${port}`);
-  // });
 };
 
 start();
