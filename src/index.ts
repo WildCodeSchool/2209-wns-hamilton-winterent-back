@@ -7,16 +7,16 @@ import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import express from 'express';
 import http from 'http';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import typeDefs from './src/schema';
-import { users } from './src/datasource';
-import datasource from './src/lib/datasource';
+import typeDefs from './schema';
+import { users } from './datasource';
+import datasource from './lib/datasource';
 
 const resolvers = {
   Query: {
     users: () => users,
   },
 };
-
+console.log("cou")
 const start = async () => {
   const app = express();
   const httpServer = http.createServer(app);
