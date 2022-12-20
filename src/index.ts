@@ -7,18 +7,25 @@ import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 import express from "express";
 import http from "http";
+
 import typeDefs from "./schema";
 import resolvers from "./resolver";
 import datasource from "./lib/datasource";
 import {getUserFromToken} from "./lib/utilities";
+
 import cors from "cors";
 
 // import cookieParser from "cookie-parser";
+const corsConfig = {
+    origin: ["http://localhost:3000"],
+    credentials: true,
+  }
 
 const start = async () => {
   const app = express();
-  app.use(cors())
+  app.use(cors(corsConfig))
   // app.use(cookieParser())
+
   const httpServer = http.createServer(app);
   const port = process.env.PORT || 8000;
 
@@ -26,6 +33,7 @@ const start = async () => {
     typeDefs,
     resolvers,
     csrfPrevention: true,
+    introspection: true,
     cache: "bounded",
     plugins: [
       ApolloServerPluginLandingPageLocalDefault({ embed: true }),
@@ -35,15 +43,18 @@ const start = async () => {
       const {authorization} = req.headers;
       //console.log(req.headers.authorization);
       let userLogged = await getUserFromToken(authorization);
-        //console.log("TEST", userLogged);
+      console.log("TEST", userLogged);
       return {
         userLogged
       }
     }
   });
+
   await server.start();
-  server.applyMiddleware({ app /*, cors: false */});
-  await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
+  server.applyMiddleware({ app , cors: false});
+  await new Promise<void>((resolve) => 
+    httpServer.listen({ port }, resolve)
+  );
   console.log(
     `Serveur lancé sur http://localhost:${port}${server.graphqlPath}`
   );

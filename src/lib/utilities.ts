@@ -13,9 +13,10 @@ export function getUserFromToken(authorization: any){
   return new Promise((resolve, reject) => {
     if (authorization){
       let token = authorization.split(" ")[1];
+      console.log(token)
       try {
         jwt.verify(token, SECRET_KEY, async (err: any, payload : any) => {
-          let userLogged = await new UserService().findUserByEmail(payload.email)
+          let userLogged = await new UserService().findUserByEmail(payload?.email)
           resolve(userLogged);
         });
       }catch(err){
