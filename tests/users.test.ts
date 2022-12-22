@@ -11,7 +11,7 @@ const client = new ApolloClient({
     uri: "http://localhost:8000/graphql",
     fetch,
   }),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({}),
 });
 
 const ADD_USER = gql`
@@ -29,8 +29,8 @@ const ADD_USER = gql`
     ) {
       token
       user {
-        email
         id
+        email
       }
     }
   }
@@ -64,24 +64,25 @@ describe("User resolver", () => {
   let password = "test";
   let token: string;
 
-  it.only("créer user", async () => {
+  it("créer user", async () => {
     const res = await client.mutate({
       mutation: ADD_USER,
       variables: {
-        addUser: {
-          firstname: "firstname",
-          lastname: "lastname",
-          email,
-          password,
-        },
+        firstname: "firstname",
+        lastname: "lastname",
+        email,
+        password,
       },
     });
+    const {
+      user: { id, ...userInfos },
+      token,
+    } = res.data?.addUser;
+    //TODO : tester l'id / tester le token;
 
-    expect(res.data?.addUser).toEqual({
-      firstname: "firstname",
-      lastname: "lastname",
+    expect(userInfos).toEqual({
       email,
-      //_typename: "User",
+      __typename: "UserMinimal",
     });
   });
   it("avoir un token si le user est correct", async () => {
@@ -94,7 +95,7 @@ describe("User resolver", () => {
       fetchPolicy: "no-cache",
     });
 
-    expect(res.data?.login.success).toBeTruthy();
+    expect(res.data?.login).toBeTruthy();
     expect(res.data?.login.token).toMatch(/^(?:[\w-]*\.){2}[\w-]*$/);
     token = res.data?.login.token;
   });
@@ -108,7 +109,7 @@ describe("User resolver", () => {
         },
       },
     });
-    expect(res.data?.addUser.success).toBeTruthy();
-    expect(res.data?.addUser.users.length).toBeGreaterThan(0);
+    expect(res.data?.users).toBeTruthy();
+    expect(res.data?.users.length).toBeGreaterThan(0);
   });
 });

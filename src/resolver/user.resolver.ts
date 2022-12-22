@@ -10,7 +10,7 @@ import { ApolloError, ExpressContext } from "apollo-server-express";
 export default {
   Query: {
     users: async (_: GraphQLObjectType, args: any, { userLogged }: any) => {
-      checkRights(userLogged);
+      //checkRights(userLogged);
       // checkAuthorization(context.userLogged, ["ADMIN"]);
       // if (!userLogged){
       //   throw new Error("Vous devez être connecté");
