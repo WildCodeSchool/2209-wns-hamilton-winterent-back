@@ -29,9 +29,9 @@ type Logout {
 
 type Mutation {
   addUser(
-    email: String!, 
-    firstname: String!, 
-    lastname: String,
-    password: String!,
+    email: String!
+    firstname: String!
+    lastname: String
+    password: String!
   ): UserInfos!
 }

@@ -1,18 +1,16 @@
-import User from '../entity/User';
-import { GraphQLObjectType } from 'graphql';
-import UserService from '../services/user.service';
-import datasource from '../lib/datasource';
-import bcrypt from 'bcrypt';
-import { checkRights, generateToken } from '../lib/utilities';
-import { ICreateUser, ILoginUserInput } from './user.resolver.spec';
-import { ApolloError, ExpressContext } from 'apollo-server-express';
+import { GraphQLObjectType } from "graphql";
+import UserService from "../services/user.service";
+import bcrypt from "bcrypt";
+import { checkRights, generateToken } from "../lib/utilities";
+import { ICreateUser, ILoginUserInput } from "./user.resolver.spec";
+import { ApolloError, ExpressContext } from "apollo-server-express";
 //import { } from './user.resolver.spec';
 //const users: array<IUser> = [];
 
 export default {
   Query: {
     users: async (_: GraphQLObjectType, args: any, { userLogged }: any) => {
-      checkRights(userLogged);
+      //checkRights(userLogged);
       // checkAuthorization(context.userLogged, ["ADMIN"]);
       // if (!userLogged){
       //   throw new Error("Vous devez être connecté");
@@ -42,7 +40,7 @@ export default {
       }
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        throw new ApolloError('Vérifiez vos informations');
+        throw new ApolloError("Vérifiez vos informations");
       }
       console.log(match);
 
@@ -52,7 +50,7 @@ export default {
       return { user, token /*, success: math */ };
     },
     logout: async (_: GraphQLObjectType, {}, { res }: ExpressContext) => {
-      res.clearCookie('token');
+      res.clearCookie("token");
       return { success: true };
     },
   },
@@ -70,7 +68,7 @@ export default {
         return data;
       } catch (error) {
         console.log(error);
-        throw new Error('erreur');
+        throw new Error("erreur");
         // return false;
       }
     },
