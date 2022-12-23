@@ -9,6 +9,8 @@ import { ApolloError, ExpressContext } from "apollo-server-express";
 
 export default {
   Query: {
+    /**La query users permet de récupérer tous les users
+    Le GraphQLObjectType nous permet de créer nos propres types**/
     users: async (_: GraphQLObjectType, args: any, { userLogged }: any) => {
       //checkRights(userLogged);
       // checkAuthorization(context.userLogged, ["ADMIN"]);

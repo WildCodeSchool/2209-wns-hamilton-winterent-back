@@ -16,19 +16,24 @@ import { getUserFromToken } from "./lib/utilities";
 import cors from "cors";
 
 // import cookieParser from "cookie-parser";
+
+// permet à la partie front de pouvoir communiquer avec le front sur le port 3000
 const corsConfig = {
   origin: ["http://localhost:3000"],
   credentials: true,
 };
+
 
 const start = async () => {
   const app = express();
   app.use(cors(corsConfig));
   // app.use(cookieParser())
 
+  // Création du serveur http sur le port 8000
   const httpServer = http.createServer(app);
   const port = process.env.PORT || 8000;
 
+  // Instanciation et définition du serveur Apollo
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -50,12 +55,15 @@ const start = async () => {
     },
   });
 
+  // Lancement du serveur
   await server.start();
   server.applyMiddleware({ app, cors: false });
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
   console.log(
     `Serveur lancé sur http://localhost:${port}${server.graphqlPath}`
   );
+
+  // Initialisation de la db
   await datasource.initialize();
 };
 
