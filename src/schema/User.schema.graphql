@@ -8,6 +8,7 @@ type User {
 
 type UserMinimal {
   id: ID!
+  firstname: String!
   email: String!
 }
 
