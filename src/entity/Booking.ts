@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  Unique,
+  ManyToOne,
+} from "typeorm";
+import Order from "./Order";
+import Product from "./Product";
 
 @Entity()
 export default class Booking {
@@ -11,10 +19,9 @@ export default class Booking {
   @Column()
   endDate: Date;
 
-//   @Column()
-//   product_id: Number;
+  @ManyToOne(() => Order, (order) => order.bookings)
+  order: Order;
 
-//   @Column()
-//   order_id: Number
-
+  @ManyToOne(() => Product, (product) => product.bookings)
+  product: Product;
 }

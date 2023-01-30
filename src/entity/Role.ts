@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import User from "./User";
 
 @Entity()
 export default class Role {
@@ -6,5 +7,14 @@ export default class Role {
   id: number;
 
   @Column()
-  role: Enumerator;
+  role: RoleType;
+
+  @OneToMany(() => User, (user) => user.role)
+  users: User[];
+}
+
+export enum RoleType {
+  SUPERADMIN = "Admin",
+  ADMIN = "Gerant",
+  USER = "User",
 }

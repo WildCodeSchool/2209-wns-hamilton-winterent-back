@@ -1,21 +1,37 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+} from "typeorm";
+import Booking from "./Booking";
+import Category from "./Category";
+import ProductToShop from "./Product_shop";
 
-Entity()
+@Entity()
 export default class Product {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  name: string;
 
-    @Column()
-    name: string;
+  @Column()
+  description: string;
 
-    @Column()
-    description: string;
+  @Column()
+  range: string; //todo enum
 
-    @Column()
-    range : string;
+  @Column()
+  image: string;
 
-    @Column()
-    image: string
+  @OneToMany(() => Booking, (booking) => booking.product)
+  bookings: Booking[];
 
+  @ManyToOne(() => Category, (category) => category.products)
+  category: Category;
+
+  @OneToMany(() => ProductToShop, (productToShop) => productToShop.product)
+  productToShops: ProductToShop[];
 }

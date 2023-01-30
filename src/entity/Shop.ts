@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import Address from "./Address";
+import ProductToShop from "./Product_shop";
 
 @Entity()
 export default class Shop {
@@ -7,4 +16,11 @@ export default class Shop {
 
   @Column()
   name: string;
+
+  @OneToOne(() => Address)
+  @JoinColumn()
+  address: Address;
+
+  @OneToMany(() => ProductToShop, (productToShop) => productToShop.shop)
+  productToShops: ProductToShop[];
 }

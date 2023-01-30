@@ -1,4 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from "typeorm";
+import Address from "./Address";
+import Order from "./Order";
+import Role from "./Role";
 
 @Entity()
 export default class User {
@@ -8,7 +20,7 @@ export default class User {
   @Column()
   firstname: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   lastname: string;
 
   @Column()
@@ -18,5 +30,29 @@ export default class User {
   @Column()
   password: string;
 
+  @Column({
+    nullable: true,
+  })
+  birthday: Date;
 
+  @Column({
+    nullable: true,
+  })
+  gender: GenderType;
+
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
+
+  @OneToOne(() => Address)
+  @JoinColumn()
+  address: Address;
+}
+
+export enum GenderType {
+  MAN = "Homme",
+  WOMAN = "Femme",
+  CHILD = "Enfant",
 }
