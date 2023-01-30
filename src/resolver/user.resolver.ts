@@ -1,4 +1,3 @@
-import { GraphQLObjectType } from "graphql";
 import UserService from "../services/user.service";
 import bcrypt from "bcrypt";
 import { checkRights, generateToken } from "../lib/utilities";
@@ -9,9 +8,8 @@ import { ApolloError, ExpressContext } from "apollo-server-express";
 
 export default {
   Query: {
-    /**La query users permet de récupérer tous les users
-    Le GraphQLObjectType nous permet de créer nos propres types**/
-    users: async (_: GraphQLObjectType, args: any, { userLogged }: any) => {
+    /**La query users permet de récupérer tous les users**/
+    users: async (_: any, args: any, { userLogged }: any) => {
       //checkRights(userLogged);
       // checkAuthorization(context.userLogged, ["ADMIN"]);
       // if (!userLogged){
@@ -22,12 +20,12 @@ export default {
       // }
       return await new UserService().findAll();
     },
-    user: async (_: GraphQLObjectType, args: any) => {
+    user: async (_: any, args: any) => {
       const { id } = args;
       return await new UserService().findUser(id);
     },
     login: async (
-      _: GraphQLObjectType,
+      _: any,
       args: ILoginUserInput,
       res: ExpressContext
     ) => {
@@ -51,13 +49,13 @@ export default {
       //console.log(user)
       return { user, token /*, success: math */ };
     },
-    logout: async (_: GraphQLObjectType, {}, { res }: ExpressContext) => {
+    /*logout: async (_: any, {}, { res }: ExpressContext) => {
       res.clearCookie("token");
       return { success: true };
-    },
+    },*/
   },
   Mutation: {
-    addUser: async (_: GraphQLObjectType, args: ICreateUser) => {
+    addUser: async (_: any, args: ICreateUser) => {
       const { firstname, lastname, email, password } = args;
       let data; //créer interface
       try {

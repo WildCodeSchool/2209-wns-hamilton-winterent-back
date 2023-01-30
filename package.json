@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node-dev --debug --poll --transpile-only --respawn --project tsconfig.json src/index.ts",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "codegen": "graphql-codegen --watch --config codegen.yml"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,11 @@
     "typescript": "^4.9.3"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typescript": "^2.4.11",
+    "@graphql-codegen/typescript-operations": "2.4.0",
+    "@graphql-codegen/typescript-resolvers": "^2.6.4",
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.2.4",
     "@types/jsonwebtoken": "^8.5.9",
