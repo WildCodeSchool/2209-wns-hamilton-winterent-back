@@ -4,11 +4,12 @@ type Product{
     name: String!
     description: String!
     range: String!
-    image: String!
+    image: String
 }
 
 type Query {
-    getAll: [Product]!
+    products: [Product]!
+    product(id: ID!): Product
 }
 
 type Mutation {
@@ -16,6 +17,18 @@ type Mutation {
         name: String!
         description: String!
         range: String!
-        image: String!
+        image: String
+    ): Product
+    
+    updateProduct(
+        id: ID!
+        name: String
+        description: String
+        range: String
+        image: String
+    ): Product
+
+    deleteProduct(
+        id: ID! 
     ): String
 }
