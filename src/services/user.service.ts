@@ -7,6 +7,7 @@ import {
   IUser,
 } from '../resolver/user.resolver.spec';
 import { generateToken } from '../lib/utilities';
+import { MutationAddUserArgs, UserInfos } from '../generated/graphql';
 
 const SALT_ROUND = 10;
 
@@ -27,11 +28,17 @@ class UserService {
     return await this.repository.find();
   }
 
-  async createUser({ firstname, lastname, email, password }: ICreateUser) {
+  async createUser({ firstname, lastname, email, password, gender, birthdate, phoneNumber, role }: MutationAddUserArgs) : Promise<UserInfos>{
     let hash = await bcrypt.hash(password, SALT_ROUND);
     let token = generateToken({ email });
-    let user = await this.repository.save({ firstname, lastname, email, password: hash });
-    return {user, token};
+    let user = await this.repository.save({ firstname, lastname, email, password: hash, gender, birthdate, phoneNumber, role });
+
+    let result : UserInfos = {
+      user : {id : user.id.toString(), email: user.email, firstname: user.firstname},
+      token: token
+    }
+
+    return result;
   }
 }
 

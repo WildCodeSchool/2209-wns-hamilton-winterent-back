@@ -2,8 +2,12 @@ type User {
   id: ID!
   email: String!
   firstname: String!
-  lastname: String
+  lastname: String!
   password: String!
+  gender: String
+  birthdate: String
+  phoneNumber: String
+  role: String
 }
 
 type UserMinimal {
@@ -32,7 +36,11 @@ type Mutation {
   addUser(
     email: String!
     firstname: String!
-    lastname: String
+    lastname: String!
     password: String!
+    gender: String
+    role: String
+    phoneNumber: String
+    birthdate: String
   ): UserInfos!
 }

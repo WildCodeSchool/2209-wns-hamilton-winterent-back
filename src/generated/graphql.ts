@@ -26,10 +26,14 @@ export type Mutation = {
 
 
 export type MutationAddUserArgs = {
+  birthdate?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
   firstname: Scalars['String'];
-  lastname?: InputMaybe<Scalars['String']>;
+  gender?: InputMaybe<Scalars['String']>;
+  lastname: Scalars['String'];
   password: Scalars['String'];
+  phoneNumber?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -53,11 +57,15 @@ export type QueryUserArgs = {
 
 export type User = {
   __typename?: 'User';
+  birthdate?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   firstname: Scalars['String'];
+  gender?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   lastname?: Maybe<Scalars['String']>;
   password: Scalars['String'];
+  phoneNumber?: Maybe<Scalars['String']>;
+  role?: Maybe<Scalars['String']>;
 };
 
 export type UserInfos = {
@@ -172,7 +180,7 @@ export type LogoutResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'email' | 'firstname' | 'password'>>;
+  addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'email' | 'firstname' | 'lastname' | 'password'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -183,11 +191,15 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  birthdate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

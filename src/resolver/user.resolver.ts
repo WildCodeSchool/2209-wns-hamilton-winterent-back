@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { checkRights, generateToken } from "../lib/utilities";
 import { ICreateUser, ILoginUserInput } from "./user.resolver.spec";
 import { ApolloError, ExpressContext } from "apollo-server-express";
+import { MutationAddUserArgs, UserInfos } from "../generated/graphql";
 //import { } from './user.resolver.spec';
 //const users: array<IUser> = [];
 
@@ -55,15 +56,19 @@ export default {
     },*/
   },
   Mutation: {
-    addUser: async (_: any, args: ICreateUser) => {
-      const { firstname, lastname, email, password } = args;
-      let data; //créer interface
+    addUser: async (_: any, args: MutationAddUserArgs) => {
+      const { firstname, lastname, email, password, gender, role, birthdate, phoneNumber } = args;
+      let data : UserInfos; //créer interface
       try {
         data = await new UserService().createUser({
           firstname,
           lastname,
           email,
           password,
+          gender,
+          role,
+          phoneNumber,
+          birthdate
         });
         return data;
       } catch (error) {

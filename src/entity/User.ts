@@ -20,7 +20,7 @@ export default class User {
   @Column()
   firstname: string;
 
-  @Column({ nullable: true })
+  @Column()
   lastname: string;
 
   @Column()
@@ -30,15 +30,14 @@ export default class User {
   @Column()
   password: string;
 
-  @Column({
-    nullable: true,
-  })
-  birthday: Date;
+  @Column({ nullable: true })
+  birthdate: Date;
 
-  @Column({
-    nullable: true,
-  })
+  @Column({ nullable: true })
   gender: GenderType;
+
+  @Column({ nullable: true })
+  phoneNumber : string;
 
   @ManyToOne(() => Role, (role) => role.users)
   role: Role;
