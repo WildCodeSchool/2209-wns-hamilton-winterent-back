@@ -35,3 +35,11 @@ http://localhost:8000/graphql
 
 ### Tests
 Lancement de tests avec Jest : **npm test**
+
+### Installation type graphQL Codegenerator
+npm i --save-dev @graphql-codegen/cli (ou npm i -D @graphql-codegen/cli)
+npm i --save-dev @graphql-codegen/typescript-resolvers
+npm i --save-dev @graphql-codegen/typescript
+npm i --save-dev @graphql-codegen/typescript-operations
+
+npx graphql-code-generator init (=> initialisation du projet)
