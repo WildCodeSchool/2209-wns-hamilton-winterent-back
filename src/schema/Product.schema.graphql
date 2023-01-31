@@ -1,0 +1,21 @@
+
+type Product{
+    id: ID!
+    name: String!
+    description: String!
+    range: String!
+    image: String!
+}
+
+type Query {
+    getAll: [Product]!
+}
+
+type Mutation {
+    addProduct(
+        name: String!
+        description: String!
+        range: String!
+        image: String!
+    ): String
+}
