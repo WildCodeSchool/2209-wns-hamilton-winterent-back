@@ -23,7 +23,6 @@ const corsConfig = {
   credentials: true,
 };
 
-
 const start = async () => {
   const app = express();
   app.use(cors(corsConfig));

@@ -1,11 +1,11 @@
 type User {
   id: ID!
-  email: String!
+  email: EmailAddress
   firstname: String!
   lastname: String!
   password: String!
   gender: String
-  birthdate: String
+  birthdate: DateTime
   phoneNumber: String
   role: String
 }
@@ -21,15 +21,21 @@ type UserInfos {
   token: String
 }
 
+type Logout {
+  success: Boolean
+}
+
+# enum GenderType{
+#    MAN = "Homme",
+#   WOMAN = "Femme",
+#   CHILD = "Enfant",
+# }
+
 type Query {
   users: [User!]!
   user(id: ID!): User
   login(email: String, password: String): UserInfos!
   logout: Logout #ajout d'une fonction query qui renverra la clé success à true si tout s'est bien passé
-}
-
-type Logout {
-  success: Boolean
 }
 
 type Mutation {

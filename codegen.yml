@@ -6,5 +6,9 @@ generates:
       - "typescript"
       - "typescript-resolvers"
       - "typescript-operations"
-    config: 
+    config:
       inputMaybeValue: undefined | T
+      scalars:
+        JSON: string
+        UUID: string
+        Date: string
