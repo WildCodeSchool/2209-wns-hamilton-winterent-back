@@ -1,0 +1,14 @@
+type Address {
+  id: ID!
+  roadNumber: Int
+  streetName: String
+  city: String
+  country: String
+}
+
+input CreateAddress {
+  roadNumber: Int!
+  streetName: String!
+  city: String!
+  country: String!
+}

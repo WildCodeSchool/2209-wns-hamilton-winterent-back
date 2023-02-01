@@ -14,6 +14,22 @@ export type Scalars = {
   Float: number;
 };
 
+export type Address = {
+  __typename?: 'Address';
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  roadNumber?: Maybe<Scalars['Int']>;
+  streetName?: Maybe<Scalars['String']>;
+};
+
+export type CreateAddress = {
+  city: Scalars['String'];
+  country: Scalars['String'];
+  roadNumber: Scalars['Int'];
+  streetName: Scalars['String'];
+};
+
 export type Logout = {
   __typename?: 'Logout';
   success?: Maybe<Scalars['Boolean']>;
@@ -23,6 +39,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   addProduct?: Maybe<Product>;
   addUser: UserInfos;
+  addUserAddress?: Maybe<Address>;
+  deleteProduct?: Maybe<Scalars['String']>;
   updateProduct?: Maybe<Product>;
 };
 
@@ -36,10 +54,25 @@ export type MutationAddProductArgs = {
 
 
 export type MutationAddUserArgs = {
+  birthdate?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
   firstname: Scalars['String'];
-  lastname?: InputMaybe<Scalars['String']>;
+  gender?: InputMaybe<Scalars['String']>;
+  lastname: Scalars['String'];
   password: Scalars['String'];
+  phoneNumber?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationAddUserAddressArgs = {
+  address: CreateAddress;
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteProductArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -88,11 +121,15 @@ export type QueryUserArgs = {
 
 export type User = {
   __typename?: 'User';
+  birthdate?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   firstname: Scalars['String'];
+  gender?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  lastname?: Maybe<Scalars['String']>;
+  lastname: Scalars['String'];
   password: Scalars['String'];
+  phoneNumber?: Maybe<Scalars['String']>;
+  role?: Maybe<Scalars['String']>;
 };
 
 export type UserInfos = {
@@ -177,8 +214,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Address: ResolverTypeWrapper<Address>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  CreateAddress: CreateAddress;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Logout: ResolverTypeWrapper<Logout>;
   Mutation: ResolverTypeWrapper<{}>;
   Product: ResolverTypeWrapper<Product>;
@@ -191,8 +231,11 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Address: Address;
   Boolean: Scalars['Boolean'];
+  CreateAddress: CreateAddress;
   ID: Scalars['ID'];
+  Int: Scalars['Int'];
   Logout: Logout;
   Mutation: {};
   Product: Product;
@@ -203,6 +246,15 @@ export type ResolversParentTypes = {
   UserMinimal: UserMinimal;
 };
 
+export type AddressResolvers<ContextType = any, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
+  city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  roadNumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  streetName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type LogoutResolvers<ContextType = any, ParentType extends ResolversParentTypes['Logout'] = ResolversParentTypes['Logout']> = {
   success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -210,7 +262,9 @@ export type LogoutResolvers<ContextType = any, ParentType extends ResolversParen
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationAddProductArgs, 'description' | 'name' | 'range'>>;
-  addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'email' | 'firstname' | 'password'>>;
+  addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'email' | 'firstname' | 'lastname' | 'password'>>;
+  addUserAddress?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType, RequireFields<MutationAddUserAddressArgs, 'address' | 'id'>>;
+  deleteProduct?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
   updateProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id'>>;
 };
 
@@ -233,11 +287,15 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  birthdate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  lastname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lastname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -255,6 +313,7 @@ export type UserMinimalResolvers<ContextType = any, ParentType extends Resolvers
 };
 
 export type Resolvers<ContextType = any> = {
+  Address?: AddressResolvers<ContextType>;
   Logout?: LogoutResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;

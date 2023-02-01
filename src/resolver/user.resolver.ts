@@ -3,6 +3,11 @@ import bcrypt from "bcrypt";
 import { checkRights, generateToken } from "../lib/utilities";
 import { ICreateUser, ILoginUserInput } from "./user.resolver.spec";
 import { ApolloError, ExpressContext } from "apollo-server-express";
+import {
+  MutationAddUserAddressArgs,
+  MutationAddUserArgs,
+  UserInfos,
+} from "../generated/graphql";
 //import { } from './user.resolver.spec';
 //const users: array<IUser> = [];
 
@@ -24,11 +29,7 @@ export default {
       const { id } = args;
       return await new UserService().findUser(id);
     },
-    login: async (
-      _: any,
-      args: ILoginUserInput,
-      res: ExpressContext
-    ) => {
+    login: async (_: any, args: ILoginUserInput, res: ExpressContext) => {
       //check email et password et retourner le token
 
       const { email, password } = args;
@@ -55,21 +56,43 @@ export default {
     },*/
   },
   Mutation: {
-    addUser: async (_: any, args: ICreateUser) => {
-      const { firstname, lastname, email, password } = args;
-      let data; //créer interface
+    addUser: async (_: any, args: MutationAddUserArgs) => {
+      const {
+        firstname,
+        lastname,
+        email,
+        password,
+        gender,
+        role,
+        birthdate,
+        phoneNumber,
+      } = args;
+      let data: UserInfos; //créer interface
       try {
         data = await new UserService().createUser({
           firstname,
           lastname,
           email,
           password,
+          gender,
+          role,
+          phoneNumber,
+          birthdate,
         });
         return data;
       } catch (error) {
         console.log(error);
         throw new Error("erreur");
         // return false;
+      }
+    },
+
+    addUserAddress: async (_: any, args: MutationAddUserAddressArgs) => {
+      try {
+        let data = await new UserService().createUserAddress(args);
+      } catch (error) {
+        console.log(error);
+        throw new Error("erreur");
       }
     },
   },
