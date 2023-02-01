@@ -37,7 +37,7 @@ export default class User {
   gender: GenderType;
 
   @Column({ nullable: true })
-  phoneNumber : string;
+  phoneNumber: string;
 
   @ManyToOne(() => Role, (role) => role.users)
   role: Role;
