@@ -21,7 +21,17 @@ export type Logout = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addProduct?: Maybe<Product>;
   addUser: UserInfos;
+  updateProduct?: Maybe<Product>;
+};
+
+
+export type MutationAddProductArgs = {
+  description: Scalars['String'];
+  image?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  range: Scalars['String'];
 };
 
 
@@ -32,10 +42,30 @@ export type MutationAddUserArgs = {
   password: Scalars['String'];
 };
 
+
+export type MutationUpdateProductArgs = {
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  image?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  range?: InputMaybe<Scalars['String']>;
+};
+
+export type Product = {
+  __typename?: 'Product';
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  image?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  range: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   login: UserInfos;
   logout?: Maybe<Logout>;
+  product?: Maybe<Product>;
+  products: Array<Maybe<Product>>;
   user?: Maybe<User>;
   users: Array<User>;
 };
@@ -44,6 +74,11 @@ export type Query = {
 export type QueryLoginArgs = {
   email?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryProductArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -146,6 +181,7 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Logout: ResolverTypeWrapper<Logout>;
   Mutation: ResolverTypeWrapper<{}>;
+  Product: ResolverTypeWrapper<Product>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
@@ -159,6 +195,7 @@ export type ResolversParentTypes = {
   ID: Scalars['ID'];
   Logout: Logout;
   Mutation: {};
+  Product: Product;
   Query: {};
   String: Scalars['String'];
   User: User;
@@ -172,12 +209,25 @@ export type LogoutResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationAddProductArgs, 'description' | 'name' | 'range'>>;
   addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'email' | 'firstname' | 'password'>>;
+  updateProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id'>>;
+};
+
+export type ProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  range?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   login?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, Partial<QueryLoginArgs>>;
   logout?: Resolver<Maybe<ResolversTypes['Logout']>, ParentType, ContextType>;
+  product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
+  products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
 };
@@ -207,6 +257,7 @@ export type UserMinimalResolvers<ContextType = any, ParentType extends Resolvers
 export type Resolvers<ContextType = any> = {
   Logout?: LogoutResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Product?: ProductResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserInfos?: UserInfosResolvers<ContextType>;

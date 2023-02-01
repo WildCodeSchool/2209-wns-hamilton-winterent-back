@@ -43,3 +43,6 @@ npm i --save-dev @graphql-codegen/typescript
 npm i --save-dev @graphql-codegen/typescript-operations
 
 npx graphql-code-generator init (=> initialisation du projet)
+
+### Commande codegen
+npm run codegen

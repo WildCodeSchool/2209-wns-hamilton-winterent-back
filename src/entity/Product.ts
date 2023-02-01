@@ -23,7 +23,7 @@ export default class Product {
   @Column()
   range: string; //todo enum
 
-  @Column()
+  @Column({nullable: true,})
   image: string;
 
   @OneToMany(() => Booking, (booking) => booking.product)
