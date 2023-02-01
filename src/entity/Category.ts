@@ -4,8 +4,8 @@ import Product from "./Product";
 
 @Entity()
 export default class Category {
-  @PrimaryColumn()
-  id: number;
+  @PrimaryColumn("uuid")
+  id: string;
 
   @Column()
   category: string;

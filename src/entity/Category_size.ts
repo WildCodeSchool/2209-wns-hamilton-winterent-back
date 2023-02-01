@@ -4,8 +4,8 @@ import QuantityToSize from "./quantity_size";
 
 @Entity()
 export default class CategorySize {
-  @PrimaryColumn()
-  id: number;
+  @PrimaryColumn("uuid")
+  id: string;
 
   @Column()
   size: string;

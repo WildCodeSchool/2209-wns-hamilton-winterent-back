@@ -1,14 +1,20 @@
+# TYPES
+
 type Address {
-  id: ID!
+  id: UUID!
   roadNumber: Int
   streetName: String
   city: String
+  postalcode: PostalCode
   country: String
 }
+
+# INPUTS
 
 input CreateAddress {
   roadNumber: Int!
   streetName: String!
   city: String!
+  postalcode: PostalCode
   country: String!
 }

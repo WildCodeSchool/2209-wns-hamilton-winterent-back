@@ -4,8 +4,8 @@ import ProductToShop from "./Product_shop";
 
 @Entity()
 export default class QuantityToSize {
-  @PrimaryColumn()
-  id: number;
+  @PrimaryColumn("uuid")
+  id: string;
 
   @Column()
   quantity: number;

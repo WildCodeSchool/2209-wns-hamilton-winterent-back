@@ -8,14 +8,15 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from "typeorm";
+import { GenderType } from "../generated/graphql";
 import Address from "./Address";
 import Order from "./Order";
 import Role from "./Role";
 
 @Entity()
 export default class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column()
   firstname: string;
@@ -33,14 +34,22 @@ export default class User {
   @Column({ nullable: true })
   birthdate: Date;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    type: "enum",
+    enum: GenderType,
+    //default: GenderType.Other,
+  })
   gender: GenderType;
 
   @Column({ nullable: true })
   phoneNumber: string;
 
+  // @Column()
+  // roleId: string;
+
   @ManyToOne(() => Role, (role) => role.users)
-  role: Role;
+  role!: Role;
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
@@ -48,10 +57,4 @@ export default class User {
   @OneToOne(() => Address)
   @JoinColumn()
   address: Address;
-}
-
-export enum GenderType {
-  MAN = "Homme",
-  WOMAN = "Femme",
-  CHILD = "Enfant",
 }

@@ -1,6 +1,5 @@
 import { loadFilesSync } from "@graphql-tools/load-files";
 import { typeDefs as scalarTypeDefs } from "graphql-scalars";
-
 import { mergeTypeDefs } from "@graphql-tools/merge";
 
 const typeDefs = loadFilesSync(".", {
