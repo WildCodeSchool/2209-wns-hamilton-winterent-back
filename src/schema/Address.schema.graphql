@@ -1,3 +1,5 @@
+# TYPES : valeurs attentues en retour des query et mutations
+
 type Address {
   id: ID!
   roadNumber: Int
@@ -5,6 +7,8 @@ type Address {
   city: String
   country: String
 }
+
+# INPUTS : Valeurs utilisées en arguments des mutations ou query
 
 input CreateAddress {
   roadNumber: Int!

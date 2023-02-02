@@ -99,10 +99,14 @@ export type Logout = {
 export type Mutation = {
   __typename?: 'Mutation';
   addProduct?: Maybe<Product>;
+  addShop?: Maybe<Shop>;
   addUser: UserInfos;
   addUserAddress?: Maybe<Address>;
+  ajoutShop?: Maybe<ShopAdress>;
   deleteProduct?: Maybe<Scalars['String']>;
+  deleteShop?: Maybe<Scalars['String']>;
   updateProduct?: Maybe<Product>;
+  updateShop?: Maybe<Shop>;
 };
 
 
@@ -111,6 +115,11 @@ export type MutationAddProductArgs = {
   image?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   range: Scalars['String'];
+};
+
+
+export type MutationAddShopArgs = {
+  shop: ShopInput;
 };
 
 
@@ -132,7 +141,19 @@ export type MutationAddUserAddressArgs = {
 };
 
 
+export type MutationAjoutShopArgs = {
+  address: CreateAddress;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
 export type MutationDeleteProductArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteShopArgs = {
   id: Scalars['ID'];
 };
 
@@ -143,6 +164,12 @@ export type MutationUpdateProductArgs = {
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   range?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUpdateShopArgs = {
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type Product = {
@@ -160,6 +187,8 @@ export type Query = {
   logout?: Maybe<Logout>;
   product?: Maybe<Product>;
   products: Array<Maybe<Product>>;
+  shop?: Maybe<Shop>;
+  shops: Array<Maybe<Shop>>;
   user?: Maybe<User>;
   users: Array<User>;
 };
@@ -176,8 +205,31 @@ export type QueryProductArgs = {
 };
 
 
+export type QueryShopArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type QueryUserArgs = {
   id: Scalars['ID'];
+};
+
+export type Shop = {
+  __typename?: 'Shop';
+  address?: Maybe<Address>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type ShopAdress = {
+  __typename?: 'ShopAdress';
+  address?: Maybe<Address>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type ShopInput = {
+  address: CreateAddress;
+  name: Scalars['String'];
 };
 
 export type User = {
@@ -335,6 +387,9 @@ export type ResolversTypes = {
   RoutingNumber: ResolverTypeWrapper<Scalars['RoutingNumber']>;
   SafeInt: ResolverTypeWrapper<Scalars['SafeInt']>;
   SemVer: ResolverTypeWrapper<Scalars['SemVer']>;
+  Shop: ResolverTypeWrapper<Shop>;
+  ShopAdress: ResolverTypeWrapper<ShopAdress>;
+  ShopInput: ShopInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Time: ResolverTypeWrapper<Scalars['Time']>;
   TimeZone: ResolverTypeWrapper<Scalars['TimeZone']>;
@@ -413,6 +468,9 @@ export type ResolversParentTypes = {
   RoutingNumber: Scalars['RoutingNumber'];
   SafeInt: Scalars['SafeInt'];
   SemVer: Scalars['SemVer'];
+  Shop: Shop;
+  ShopAdress: ShopAdress;
+  ShopInput: ShopInput;
   String: Scalars['String'];
   Time: Scalars['Time'];
   TimeZone: Scalars['TimeZone'];
@@ -577,10 +635,14 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationAddProductArgs, 'description' | 'name' | 'range'>>;
+  addShop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<MutationAddShopArgs, 'shop'>>;
   addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'email' | 'firstname' | 'lastname' | 'password'>>;
   addUserAddress?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType, RequireFields<MutationAddUserAddressArgs, 'address' | 'id'>>;
+  ajoutShop?: Resolver<Maybe<ResolversTypes['ShopAdress']>, ParentType, ContextType, RequireFields<MutationAjoutShopArgs, 'address' | 'id' | 'name'>>;
   deleteProduct?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
+  deleteShop?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationDeleteShopArgs, 'id'>>;
   updateProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id'>>;
+  updateShop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'id'>>;
 };
 
 export interface NegativeFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NegativeFloat'], any> {
@@ -649,6 +711,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   logout?: Resolver<Maybe<ResolversTypes['Logout']>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
+  shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'id'>>;
+  shops?: Resolver<Array<Maybe<ResolversTypes['Shop']>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
 };
@@ -672,6 +736,19 @@ export interface SafeIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTy
 export interface SemVerScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['SemVer'], any> {
   name: 'SemVer';
 }
+
+export type ShopResolvers<ContextType = any, ParentType extends ResolversParentTypes['Shop'] = ResolversParentTypes['Shop']> = {
+  address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ShopAdressResolvers<ContextType = any, ParentType extends ResolversParentTypes['ShopAdress'] = ResolversParentTypes['ShopAdress']> = {
+  address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export interface TimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Time'], any> {
   name: 'Time';
@@ -796,6 +873,8 @@ export type Resolvers<ContextType = any> = {
   RoutingNumber?: GraphQLScalarType;
   SafeInt?: GraphQLScalarType;
   SemVer?: GraphQLScalarType;
+  Shop?: ShopResolvers<ContextType>;
+  ShopAdress?: ShopAdressResolvers<ContextType>;
   Time?: GraphQLScalarType;
   TimeZone?: GraphQLScalarType;
   Timestamp?: GraphQLScalarType;

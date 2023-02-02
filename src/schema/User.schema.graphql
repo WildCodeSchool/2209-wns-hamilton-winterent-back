@@ -49,5 +49,6 @@ type Mutation {
     phoneNumber: String
     birthdate: String
   ): UserInfos!
+  
   addUserAddress(id: ID!, address: CreateAddress!): Address
 }

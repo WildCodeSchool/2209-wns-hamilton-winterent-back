@@ -1,0 +1,47 @@
+# TYPES : valeurs attentues en retour des query et mutations
+
+type Shop{
+    id: ID!
+    name: String!
+    address: Address
+}
+
+
+# INPUTS : Valeurs utilisées en arguments des mutations ou query
+
+input ShopInput {
+    name: String!
+    address: CreateAddress!
+}
+
+type ShopAdress {
+    name: String
+    address: Address
+}
+
+# QUERY 
+
+type Query {
+    shops: [Shop]!
+    shop(id: ID!): Shop
+}
+
+# MUTATIONS 
+
+type Mutation {
+    addShop(shop:ShopInput!): Shop
+
+
+
+    ajoutShop(name: String!, id: ID!, address: CreateAddress!): ShopAdress
+
+
+
+    updateShop(
+        id: ID!
+        name: String): Shop
+
+    deleteShop(
+        id: ID! 
+    ): String
+}
