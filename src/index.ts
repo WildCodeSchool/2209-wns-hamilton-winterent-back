@@ -19,6 +19,7 @@ import cors from "cors";
 
 // permet à la partie front de pouvoir communiquer avec le front sur le port 3000
 const corsConfig = {
+  //origin: "*",
   origin: ["http://localhost:3000"],
   credentials: true,
 };
