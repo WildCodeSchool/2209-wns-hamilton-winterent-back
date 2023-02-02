@@ -1,0 +1,23 @@
+#Type : valeurs retour
+type Order {
+    id: UUID!
+    date: Date
+    status: StatusType
+    user: User
+    bookings: [Booking]
+}
+
+enum StatusType {
+  INPROGRESS 
+  CANCEL 
+  DONE
+}
+
+#Input : arguments 
+
+type Query{
+  #Récupérer un order et ses bookings 
+  orders: [Order]
+  orders: [Booking]
+
+}

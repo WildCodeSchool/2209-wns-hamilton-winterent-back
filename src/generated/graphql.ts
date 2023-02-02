@@ -84,6 +84,13 @@ export type Address = {
   streetName?: Maybe<Scalars['String']>;
 };
 
+export type Booking = {
+  __typename?: 'Booking';
+  endDate: Scalars['Date'];
+  id: Scalars['UUID'];
+  startDate: Scalars['Date'];
+};
+
 export type CreateAddress = {
   city: Scalars['String'];
   country: Scalars['String'];
@@ -145,6 +152,15 @@ export type MutationUpdateProductArgs = {
   range?: InputMaybe<Scalars['String']>;
 };
 
+export type Order = {
+  __typename?: 'Order';
+  bookings?: Maybe<Array<Maybe<Booking>>>;
+  date?: Maybe<Scalars['Date']>;
+  id: Scalars['UUID'];
+  status?: Maybe<StatusType>;
+  user?: Maybe<User>;
+};
+
 export type Product = {
   __typename?: 'Product';
   description: Scalars['String'];
@@ -179,6 +195,12 @@ export type QueryProductArgs = {
 export type QueryUserArgs = {
   id: Scalars['ID'];
 };
+
+export enum StatusType {
+  Cancel = 'CANCEL',
+  Done = 'DONE',
+  Inprogress = 'INPROGRESS'
+}
 
 export type User = {
   __typename?: 'User';
@@ -278,6 +300,7 @@ export type ResolversTypes = {
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']>;
   Address: ResolverTypeWrapper<Address>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
+  Booking: ResolverTypeWrapper<Booking>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']>;
@@ -323,6 +346,7 @@ export type ResolversTypes = {
   NonPositiveFloat: ResolverTypeWrapper<Scalars['NonPositiveFloat']>;
   NonPositiveInt: ResolverTypeWrapper<Scalars['NonPositiveInt']>;
   ObjectID: ResolverTypeWrapper<Scalars['ObjectID']>;
+  Order: ResolverTypeWrapper<Order>;
   PhoneNumber: ResolverTypeWrapper<Scalars['PhoneNumber']>;
   Port: ResolverTypeWrapper<Scalars['Port']>;
   PositiveFloat: ResolverTypeWrapper<Scalars['PositiveFloat']>;
@@ -335,6 +359,7 @@ export type ResolversTypes = {
   RoutingNumber: ResolverTypeWrapper<Scalars['RoutingNumber']>;
   SafeInt: ResolverTypeWrapper<Scalars['SafeInt']>;
   SemVer: ResolverTypeWrapper<Scalars['SemVer']>;
+  StatusType: StatusType;
   String: ResolverTypeWrapper<Scalars['String']>;
   Time: ResolverTypeWrapper<Scalars['Time']>;
   TimeZone: ResolverTypeWrapper<Scalars['TimeZone']>;
@@ -356,6 +381,7 @@ export type ResolversParentTypes = {
   AccountNumber: Scalars['AccountNumber'];
   Address: Address;
   BigInt: Scalars['BigInt'];
+  Booking: Booking;
   Boolean: Scalars['Boolean'];
   Byte: Scalars['Byte'];
   CountryCode: Scalars['CountryCode'];
@@ -401,6 +427,7 @@ export type ResolversParentTypes = {
   NonPositiveFloat: Scalars['NonPositiveFloat'];
   NonPositiveInt: Scalars['NonPositiveInt'];
   ObjectID: Scalars['ObjectID'];
+  Order: Order;
   PhoneNumber: Scalars['PhoneNumber'];
   Port: Scalars['Port'];
   PositiveFloat: Scalars['PositiveFloat'];
@@ -445,6 +472,13 @@ export type AddressResolvers<ContextType = any, ParentType extends ResolversPare
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
   name: 'BigInt';
 }
+
+export type BookingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']> = {
+  endDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Byte'], any> {
   name: 'Byte';
@@ -615,6 +649,15 @@ export interface ObjectIdScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'ObjectID';
 }
 
+export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
+  bookings?: Resolver<Maybe<Array<Maybe<ResolversTypes['Booking']>>>, ParentType, ContextType>;
+  date?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['StatusType']>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PhoneNumber'], any> {
   name: 'PhoneNumber';
 }
@@ -743,6 +786,7 @@ export type Resolvers<ContextType = any> = {
   AccountNumber?: GraphQLScalarType;
   Address?: AddressResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
+  Booking?: BookingResolvers<ContextType>;
   Byte?: GraphQLScalarType;
   CountryCode?: GraphQLScalarType;
   Cuid?: GraphQLScalarType;
@@ -784,6 +828,7 @@ export type Resolvers<ContextType = any> = {
   NonPositiveFloat?: GraphQLScalarType;
   NonPositiveInt?: GraphQLScalarType;
   ObjectID?: GraphQLScalarType;
+  Order?: OrderResolvers<ContextType>;
   PhoneNumber?: GraphQLScalarType;
   Port?: GraphQLScalarType;
   PositiveFloat?: GraphQLScalarType;

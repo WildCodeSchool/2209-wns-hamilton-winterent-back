@@ -1,0 +1,17 @@
+type Booking{
+    id: UUID!
+    startDate: Date!
+    endDate: Date!
+}
+
+
+#type Mutation {
+    #addBooking { 
+        #startDate: Date!
+        #endDate: Date!
+        #product : Product
+ 
+    #}
+   
+#}
+
