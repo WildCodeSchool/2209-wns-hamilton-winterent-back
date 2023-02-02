@@ -1,7 +1,7 @@
 import UserService from "../services/user.service";
 import bcrypt from "bcrypt";
-import { checkRights, generateToken } from "../lib/utilities";
-import { ICreateUser, ILoginUserInput } from "./user.resolver.spec";
+import { generateToken } from "../lib/utilities";
+import { ILoginUserInput } from "./user.resolver.spec";
 import { ApolloError, ExpressContext } from "apollo-server-express";
 // import {
 //   MutationAddUserAddressArgs,
@@ -56,29 +56,20 @@ export default {
     },*/
   },
   Mutation: {
-    addUser: async (_: any, args: any) => {
-      const {
-        firstname,
-        lastname,
-        email,
-        password,
-        gender,
-        role,
-        birthdate,
-        phoneNumber,
-      } = args;
-      let data: any; //créer interface
+    addUser: async (_: any, args: MutationAddUserArgs) => {
+      // const {
+      //   firstname,
+      //   lastname,
+      //   email,
+      //   password,
+      //   gender,
+      //   role,
+      //   birthdate,
+      //   phoneNumber,
+      // } = args;
+      let data: UserInfos; //créer interface
       try {
-        data = await new UserService().createUser({
-          firstname,
-          lastname,
-          email,
-          password,
-          gender,
-          role,
-          phoneNumber,
-          birthdate,
-        });
+        data = await new UserService().createUser(args);
         return data;
       } catch (error) {
         console.log(error);

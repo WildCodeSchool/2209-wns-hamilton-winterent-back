@@ -1,5 +1,6 @@
 import datasource from "../lib/datasource";
 import User from "../entity/User";
+import Role from "../entity/Role";
 import bcrypt from "bcrypt";
 import {
   ICreateUser,
@@ -20,12 +21,14 @@ const SALT_ROUND = 10;
 class UserService {
   userRepository: Repository<User>;
   addressRepository: Repository<Address>;
+  roleRepository: Repository<Role>;
   constructor() {
     this.userRepository = datasource.getRepository(User);
     this.addressRepository = datasource.getRepository(Address);
+    this.roleRepository = datasource.getRepository(Role);
   }
 
-  async findUser(id: number) {
+  async findUser(id: string) {
     return await this.userRepository.findOneBy({ id });
   }
   async findUserByEmail(email: string) {
@@ -33,37 +36,45 @@ class UserService {
   }
 
   async findAll(): Promise<User[]> {
-    console.log("test");
     return await this.userRepository.find();
   }
 
-  async createUser({
-    firstname,
-    lastname,
-    email,
-    password,
-    gender,
-    birthdate,
-    phoneNumber,
-    role,
-  }: MutationAddUserArgs): Promise<UserInfos> {
+  async createUser(args: MutationAddUserArgs): Promise<UserInfos> {
+    let {
+      firstname,
+      lastname,
+      email,
+      password,
+      gender,
+      role,
+      birthdate,
+      phoneNumber,
+    } = args.user;
     let hash = await bcrypt.hash(password, SALT_ROUND);
     let token = generateToken({ email });
+    let roleEntity = await this.roleRepository.findOne({
+      where: { role },
+    });
+    if (!roleEntity) {
+      throw new Error("Le role n'existe pas");
+    }
+    console.log("ROLE ", role);
+
+    console.log("ROLE ENTITY", roleEntity);
     let user = await this.userRepository.save({
       firstname,
       lastname,
       email,
       password: hash,
-      //Ajouter les types dans le schéma graphql => import des types squalar...
-      // gender,
-      // birthdate,
-      // phoneNumber,
-      // role,
+      gender,
+      birthdate,
+      phoneNumber,
+      role: roleEntity,
     });
 
     let result: UserInfos = {
       user: {
-        id: user.id.toString(),
+        id: user.id,
         email: user.email,
         firstname: user.firstname,
       },
@@ -75,7 +86,7 @@ class UserService {
 
   async createUserAddress({ id, address }: MutationAddUserAddressArgs) {
     // Verifier le user ID, faire un getUserById ou GetShopById
-    let user = await this.findUser(+id);
+    let user = await this.findUser(id);
 
     if (!user) {
       throw new Error("user not found");

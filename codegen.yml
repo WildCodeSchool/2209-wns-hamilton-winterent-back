@@ -6,6 +6,12 @@ verbose: true
 generates:
   src/generated/graphql.ts:
     plugins:
-    - typescript
-    - typescript-operations
-    - typescript-resolvers
+      - "typescript"
+      - "typescript-resolvers"
+      - "typescript-operations"
+    config:
+      inputMaybeValue: undefined | T
+      scalars:
+        JSON: string
+        UUID: string
+        Date: string
