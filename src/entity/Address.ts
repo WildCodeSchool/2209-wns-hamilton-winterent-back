@@ -2,14 +2,17 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export default class Address {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column()
   roadNumber: number;
 
   @Column()
   streetName: string;
+
+  @Column()
+  postalCode: string;
 
   @Column()
   city: string;

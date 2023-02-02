@@ -1,10 +1,13 @@
 services:
   api:
     build: ./
+    command: sh -c "concurrently \"npm run start\" \"npm run codegen\""
     volumes:
       - ./src:/app/src
     ports:
       - 8000:8000
+    expose: 
+      - 8000
     networks:
       postgres:
     depends_on:

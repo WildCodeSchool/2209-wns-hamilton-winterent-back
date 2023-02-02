@@ -11,8 +11,8 @@ import ProductToShop from "./Product_shop";
 
 @Entity()
 export default class Product {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column()
   name: string;
@@ -23,7 +23,7 @@ export default class Product {
   @Column()
   range: string; //todo enum
 
-  @Column({nullable: true,})
+  @Column({ nullable: true })
   image: string;
 
   @OneToMany(() => Booking, (booking) => booking.product)

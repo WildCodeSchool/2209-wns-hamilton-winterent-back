@@ -5,8 +5,8 @@ import Shop from "./Shop";
 
 @Entity()
 export default class ProductToShop {
-  @PrimaryColumn()
-  id: number;
+  @PrimaryColumn("uuid")
+  id: string;
 
   @Column()
   quantity: number;
