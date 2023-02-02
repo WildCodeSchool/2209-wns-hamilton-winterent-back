@@ -7,3 +7,5 @@ node_modules
 # Ignorer les fichiers liés aux clés d'API
 .env
 
+# Ignorer les dependences du packages_lock
+package-lock.json
