@@ -1,0 +1,22 @@
+type Category {
+  id: ID!
+  category: String!
+}
+
+type Category_size {
+  id: ID!
+  size: String!
+  label: String!
+  category_id: Int!
+}
+
+type Quantity_size {
+  id: ID!
+  quantity: Int!
+}
+
+type Query {
+  category(id: ID!): Category
+  cat(category: String!): Category
+  catProducts(id: ID!): [Product]
+}

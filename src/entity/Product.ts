@@ -27,6 +27,7 @@ export default class Product {
   image: string;
 
   @OneToMany(() => Booking, (booking) => booking.product)
+  // @OneToMany(() => Booking, (booking) => booking.product, {eager: true})
   bookings: Booking[];
 
   @ManyToOne(() => Category, (category) => category.products)

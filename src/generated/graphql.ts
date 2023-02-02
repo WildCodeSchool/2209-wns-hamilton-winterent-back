@@ -84,6 +84,20 @@ export type Address = {
   streetName?: Maybe<Scalars['String']>;
 };
 
+export type Category = {
+  __typename?: 'Category';
+  category: Scalars['String'];
+  id: Scalars['ID'];
+};
+
+export type Category_Size = {
+  __typename?: 'Category_size';
+  category_id: Scalars['Int'];
+  id: Scalars['ID'];
+  label: Scalars['String'];
+  size: Scalars['String'];
+};
+
 export type CreateAddress = {
   city: Scalars['String'];
   country: Scalars['String'];
@@ -154,14 +168,26 @@ export type Product = {
   range: Scalars['String'];
 };
 
+export type Quantity_Size = {
+  __typename?: 'Quantity_size';
+  id: Scalars['ID'];
+  quantity: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  category?: Maybe<Product>;
   login: UserInfos;
   logout?: Maybe<Logout>;
   product?: Maybe<Product>;
   products: Array<Maybe<Product>>;
   user?: Maybe<User>;
   users: Array<User>;
+};
+
+
+export type QueryCategoryArgs = {
+  category: Scalars['String'];
 };
 
 
@@ -280,6 +306,8 @@ export type ResolversTypes = {
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
+  Category: ResolverTypeWrapper<Category>;
+  Category_size: ResolverTypeWrapper<Category_Size>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']>;
   CreateAddress: CreateAddress;
   Cuid: ResolverTypeWrapper<Scalars['Cuid']>;
@@ -329,6 +357,7 @@ export type ResolversTypes = {
   PositiveInt: ResolverTypeWrapper<Scalars['PositiveInt']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']>;
   Product: ResolverTypeWrapper<Product>;
+  Quantity_size: ResolverTypeWrapper<Quantity_Size>;
   Query: ResolverTypeWrapper<{}>;
   RGB: ResolverTypeWrapper<Scalars['RGB']>;
   RGBA: ResolverTypeWrapper<Scalars['RGBA']>;
@@ -358,6 +387,8 @@ export type ResolversParentTypes = {
   BigInt: Scalars['BigInt'];
   Boolean: Scalars['Boolean'];
   Byte: Scalars['Byte'];
+  Category: Category;
+  Category_size: Category_Size;
   CountryCode: Scalars['CountryCode'];
   CreateAddress: CreateAddress;
   Cuid: Scalars['Cuid'];
@@ -407,6 +438,7 @@ export type ResolversParentTypes = {
   PositiveInt: Scalars['PositiveInt'];
   PostalCode: Scalars['PostalCode'];
   Product: Product;
+  Quantity_size: Quantity_Size;
   Query: {};
   RGB: Scalars['RGB'];
   RGBA: Scalars['RGBA'];
@@ -449,6 +481,20 @@ export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Byte'], any> {
   name: 'Byte';
 }
+
+export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = {
+  category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type Category_SizeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category_size'] = ResolversParentTypes['Category_size']> = {
+  category_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  label?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  size?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export interface CountryCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['CountryCode'], any> {
   name: 'CountryCode';
@@ -644,7 +690,14 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type Quantity_SizeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Quantity_size'] = ResolversParentTypes['Quantity_size']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  category?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'category'>>;
   login?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, Partial<QueryLoginArgs>>;
   logout?: Resolver<Maybe<ResolversTypes['Logout']>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
@@ -744,6 +797,8 @@ export type Resolvers<ContextType = any> = {
   Address?: AddressResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;
+  Category?: CategoryResolvers<ContextType>;
+  Category_size?: Category_SizeResolvers<ContextType>;
   CountryCode?: GraphQLScalarType;
   Cuid?: GraphQLScalarType;
   Currency?: GraphQLScalarType;
@@ -790,6 +845,7 @@ export type Resolvers<ContextType = any> = {
   PositiveInt?: GraphQLScalarType;
   PostalCode?: GraphQLScalarType;
   Product?: ProductResolvers<ContextType>;
+  Quantity_size?: Quantity_SizeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RGB?: GraphQLScalarType;
   RGBA?: GraphQLScalarType;

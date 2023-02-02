@@ -5,6 +5,7 @@ type Product{
     description: String!
     range: String!
     image: String
+    # bookings: [Booking]
 }
 
 type Query {
