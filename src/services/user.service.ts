@@ -36,7 +36,6 @@ class UserService {
   }
 
   async findAll(): Promise<User[]> {
-    console.log("test");
     return await this.userRepository.find();
   }
 
@@ -59,6 +58,9 @@ class UserService {
     if (!roleEntity) {
       throw new Error("Le role n'existe pas");
     }
+    console.log("ROLE ", role);
+
+    console.log("ROLE ENTITY", roleEntity);
     let user = await this.userRepository.save({
       firstname,
       lastname,

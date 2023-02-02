@@ -48,7 +48,7 @@ export default class User {
   // @Column()
   // roleId: string;
 
-  @ManyToOne(() => Role, (role) => role.users)
+  @ManyToOne(() => Role, (role) => role.users, { eager: true })
   role!: Role;
 
   @OneToMany(() => Order, (order) => order.user)

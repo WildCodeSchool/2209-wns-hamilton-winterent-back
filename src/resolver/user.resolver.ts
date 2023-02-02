@@ -70,7 +70,6 @@ export default {
       let data: UserInfos; //créer interface
       try {
         data = await new UserService().createUser(args);
-        console.log(data);
         return data;
       } catch (error) {
         console.log(error);
