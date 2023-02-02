@@ -2,11 +2,6 @@ import datasource from "../lib/datasource";
 import User from "../entity/User";
 import Role from "../entity/Role";
 import bcrypt from "bcrypt";
-import {
-  ICreateUser,
-  ILoginUserInput,
-  IUser,
-} from "../resolver/user.resolver.spec";
 import { generateToken } from "../lib/utilities";
 import {
   MutationAddUserAddressArgs,
@@ -58,9 +53,7 @@ class UserService {
     if (!roleEntity) {
       throw new Error("Le role n'existe pas");
     }
-    console.log("ROLE ", role);
 
-    console.log("ROLE ENTITY", roleEntity);
     let user = await this.userRepository.save({
       firstname,
       lastname,
@@ -85,13 +78,12 @@ class UserService {
   }
 
   async createUserAddress({ id, address }: MutationAddUserAddressArgs) {
-    // Verifier le user ID, faire un getUserById ou GetShopById
     let user = await this.findUser(id);
 
     if (!user) {
-      throw new Error("user not found");
+      throw new Error("utilisateur non trouvé");
     }
-    // Si id n'est pas null alors ajout address
+
     const newAddress = await this.addressRepository.save({
       roadNumber: address.roadNumber,
       streetName: address.streetName,

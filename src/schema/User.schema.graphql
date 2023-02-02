@@ -58,12 +58,18 @@ input CreateUser {
   phoneNumber: PhoneNumber
   birthdate: Date
 }
+
+input LoginUser {
+  email: EmailAddress!
+  password: String!
+}
+
 # QUERY
 
 type Query {
   users: [User!]!
   user(id: UUID!): User
-  login(email: EmailAddress, password: String): UserInfos!
+  login(user: LoginUser): UserInfos!
   logout: Logout #ajout d'une fonction query qui renverra la clé success à true si tout s'est bien passé
 }
 
