@@ -3,7 +3,7 @@ import { typeDefs as scalarTypeDefs } from "graphql-scalars";
 import { mergeTypeDefs } from "@graphql-tools/merge";
 
 const typeDefs = loadFilesSync(".", {
-  extensions: ["graphql"],
+  extensions: ["schema.graphql"],
   recursive: true,
 });
 
