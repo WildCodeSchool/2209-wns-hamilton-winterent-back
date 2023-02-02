@@ -1,1 +1,9 @@
+# Ignorer le répertoire node_modules
 node_modules
+
+# Ignorer le dossier généré par Codegen et son contenu (fichier graphql.ts)
+/generated
+
+# Ignorer les fichiers liés aux clés d'API
+.env
+
