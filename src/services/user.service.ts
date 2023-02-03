@@ -27,6 +27,7 @@ class UserService {
     return await this.userRepository.findOneBy({ id });
   }
   async findUserByEmail(email: string) {
+    console.log("test");
     return await this.userRepository.findOneBy({ email });
   }
 
