@@ -6,6 +6,7 @@ import {
   LoginUser,
   MutationAddUserAddressArgs,
   MutationAddUserArgs,
+  QueryLoginArgs,
   UserInfos,
 } from "../generated/graphql";
 
@@ -27,11 +28,14 @@ export default {
       const { id } = args;
       return await new UserService().findUser(id);
     },
-    login: async (_: any, args: LoginUser, res: ExpressContext) => {
+    login: async (_: any, args: QueryLoginArgs, res: ExpressContext) => {
       //check email et password et retourner le token
-      const { email, password } = args;
-      let user = await new UserService().findUserByEmail(email);
 
+      const {
+        user: { email, password },
+      } = args;
+
+      let user = await new UserService().findUserByEmail(email);
       if (!user) {
         throw new ApolloError("Cet utilisateur n'existe pas");
       }

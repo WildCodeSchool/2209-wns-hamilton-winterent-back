@@ -69,7 +69,7 @@ input LoginUser {
 type Query {
   users: [User!]!
   user(id: UUID!): User
-  login(user: LoginUser): UserInfos!
+  login(user: LoginUser!): UserInfos!
   logout: Logout #ajout d'une fonction query qui renverra la clé success à true si tout s'est bien passé
 }
 
