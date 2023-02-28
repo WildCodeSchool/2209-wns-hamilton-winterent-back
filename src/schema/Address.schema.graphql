@@ -5,7 +5,7 @@ type Address {
   roadNumber: Int
   streetName: String
   city: String
-  postalcode: PostalCode
+  postalCode: PostalCode!
   country: String
 }
 
@@ -15,6 +15,6 @@ input CreateAddress {
   roadNumber: Int!
   streetName: String!
   city: String!
-  postalcode: PostalCode
+  postalCode: PostalCode!
   country: String!
 }

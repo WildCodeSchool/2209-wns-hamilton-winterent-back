@@ -16,6 +16,7 @@ export default {
     },
     Mutation: {
         addShop: async (_: any, { shop }: MutationAddShopArgs) => {
+            console.log("toto");
             try {
                 let data = await new ShopService().createShop(shop);
                 return data;
