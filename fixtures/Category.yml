@@ -1,0 +1,10 @@
+entity: Category
+items:
+  category0:
+    id: '{{datatype.uuid}}'
+    category: ski
+
+  category1:
+    id: '{{datatype.uuid}}'
+    category: chaussure
+

@@ -1,0 +1,37 @@
+entity: User
+items:
+  user0:
+    id: '{{datatype.uuid}}'
+    firstname: '{{name.firstName}}'
+    lastname: '{{name.fullName}}'
+    email: '{{internet.email}}'
+    password: '{{internet.password}}'
+    role: '@role0'
+    address: '@address1'
+
+  user1:
+    id: '{{datatype.uuid}}'
+    firstname: '{{name.firstName}}'
+    lastname: '{{name.fullName}}'
+    email: '{{internet.email}}'
+    password: '{{internet.password}}'
+    role: '@role0'
+    address: '@address2'
+
+  user2:
+    id: '{{datatype.uuid}}'
+    firstname: '{{name.firstName}}'
+    lastname: '{{name.fullName}}'
+    email: '{{internet.email}}'
+    password: '{{internet.password}}'
+    role: '@role0'
+    address: '@address3'
+
+  user3:
+    id: '{{datatype.uuid}}'
+    firstname: '{{name.firstName}}'
+    lastname: '{{name.fullName}}'
+    email: '{{internet.email}}'
+    password: '{{internet.password}}'
+    role: '@role0'
+    address: '@address4'

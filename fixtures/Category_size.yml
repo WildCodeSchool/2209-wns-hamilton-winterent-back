@@ -1,0 +1,19 @@
+entity: CategorySize
+items:
+  category_size0:
+    id: '{{datatype.uuid}}'
+    size: '160'
+    label: cm
+    category: '@category0'
+
+  category_size1:
+    id: '{{datatype.uuid}}'
+    size: '170'
+    label: cm
+    category: '@category0'
+
+  category_size2:
+    id: '{{datatype.uuid}}'
+    size: '42'
+    label: pointure
+    category: '@category1'

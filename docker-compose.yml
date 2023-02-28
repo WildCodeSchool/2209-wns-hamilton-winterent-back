@@ -1,7 +1,7 @@
 services:
   api:
     build: ./
-    command: sh -c "concurrently \"npm run start\" \"npm run codegen\""
+    command: sh -c "concurrently \"npm run start\" \"npm run codegen\" \"npm run fixtures\""
     volumes:
       - ./src:/app/src
     ports:

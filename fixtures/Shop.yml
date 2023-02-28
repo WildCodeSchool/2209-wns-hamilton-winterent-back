@@ -1,0 +1,16 @@
+entity: Shop
+items:
+  shop0:
+    id: '{{datatype.uuid}}'
+    name: 'isola 2000'
+    address: '@address1'
+
+  shop1:
+    id: '{{datatype.uuid}}'
+    name: 'tout sur tout'
+    address: '@address2'
+
+  shop2:
+    id: '{{datatype.uuid}}'
+    name: 'grand froid'
+    address: '@address3'

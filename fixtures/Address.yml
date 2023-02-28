@@ -1,0 +1,11 @@
+entity: Address
+items:
+  address{1..6}:
+    id: '{{datatype.uuid}}'
+    roadNumber: '{{address.buildingNumber}}'
+    streetName: '{{address.city}}'
+    postalCode: '{{address.buildingNumber}}'
+    city: '{{address.cityName}}'
+    country: '{{address.country}}'
+
+
