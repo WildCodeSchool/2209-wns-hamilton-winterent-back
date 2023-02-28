@@ -4,9 +4,10 @@ RUN mkdir app
 WORKDIR /app
 COPY *.json ./
 COPY codegen.yml ./
-
+COPY ./.env ./.env
 RUN npm i
+RUN npm i -g concurrently
 
 COPY src src
 
-CMD npm start
+# CMD npm start

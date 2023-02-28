@@ -1,10 +1,11 @@
 # TYPES : valeurs attentues en retour des query et mutations
 
 type Address {
-  id: ID!
+  id: UUID!
   roadNumber: Int
   streetName: String
   city: String
+  postalcode: PostalCode
   country: String
 }
 
@@ -14,5 +15,6 @@ input CreateAddress {
   roadNumber: Int!
   streetName: String!
   city: String!
+  postalcode: PostalCode
   country: String!
 }

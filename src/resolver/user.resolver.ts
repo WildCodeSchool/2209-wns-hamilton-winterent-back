@@ -1,15 +1,14 @@
 import UserService from "../services/user.service";
 import bcrypt from "bcrypt";
-import { checkRights, generateToken } from "../lib/utilities";
-import { ICreateUser, ILoginUserInput } from "./user.resolver.spec";
+import { generateToken } from "../lib/utilities";
 import { ApolloError, ExpressContext } from "apollo-server-express";
 import {
+  LoginUser,
   MutationAddUserAddressArgs,
   MutationAddUserArgs,
+  QueryLoginArgs,
   UserInfos,
 } from "../generated/graphql";
-//import { } from './user.resolver.spec';
-//const users: array<IUser> = [];
 
 export default {
   Query: {
@@ -29,13 +28,14 @@ export default {
       const { id } = args;
       return await new UserService().findUser(id);
     },
-    login: async (_: any, args: ILoginUserInput, res: ExpressContext) => {
+    login: async (_: any, args: QueryLoginArgs, res: ExpressContext) => {
       //check email et password et retourner le token
 
-      const { email, password } = args;
-      let user = await new UserService().findUserByEmail(email);
-      console.log(user);
+      const {
+        user: { email, password },
+      } = args;
 
+      let user = await new UserService().findUserByEmail(email);
       if (!user) {
         throw new ApolloError("Cet utilisateur n'existe pas");
       }
@@ -45,9 +45,8 @@ export default {
       }
       console.log(match);
 
-      //const {email: string} = user
       let token = generateToken({ email });
-      //console.log(user)
+
       return { user, token /*, success: math */ };
     },
     /*logout: async (_: any, {}, { res }: ExpressContext) => {
@@ -57,39 +56,19 @@ export default {
   },
   Mutation: {
     addUser: async (_: any, args: MutationAddUserArgs) => {
-      const {
-        firstname,
-        lastname,
-        email,
-        password,
-        gender,
-        role,
-        birthdate,
-        phoneNumber,
-      } = args;
-      let data: UserInfos; //créer interface
+      let data: UserInfos;
       try {
-        data = await new UserService().createUser({
-          firstname,
-          lastname,
-          email,
-          password,
-          gender,
-          role,
-          phoneNumber,
-          birthdate,
-        });
+        data = await new UserService().createUser(args);
         return data;
       } catch (error) {
         console.log(error);
         throw new Error("erreur");
-        // return false;
       }
     },
 
     addUserAddress: async (_: any, args: MutationAddUserAddressArgs) => {
       try {
-        let data = await new UserService().createUserAddress(args);
+        return await new UserService().createUserAddress(args);
       } catch (error) {
         console.log(error);
         throw new Error("erreur");
