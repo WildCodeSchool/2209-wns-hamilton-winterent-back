@@ -31,12 +31,6 @@ type Query {
 type Mutation {
     addShop(shop:ShopInput!): Shop
 
-
-
-    ajoutShop(name: String!, id: ID!, address: CreateAddress!): ShopAdress
-
-
-
     updateShop(
         id: ID!
         name: String): Shop

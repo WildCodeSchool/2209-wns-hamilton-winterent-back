@@ -102,7 +102,6 @@ export type Mutation = {
   addShop?: Maybe<Shop>;
   addUser: UserInfos;
   addUserAddress?: Maybe<Address>;
-  ajoutShop?: Maybe<ShopAdress>;
   deleteProduct?: Maybe<Scalars['String']>;
   deleteShop?: Maybe<Scalars['String']>;
   updateProduct?: Maybe<Product>;
@@ -138,13 +137,6 @@ export type MutationAddUserArgs = {
 export type MutationAddUserAddressArgs = {
   address: CreateAddress;
   id: Scalars['ID'];
-};
-
-
-export type MutationAjoutShopArgs = {
-  address: CreateAddress;
-  id: Scalars['ID'];
-  name: Scalars['String'];
 };
 
 
@@ -638,7 +630,6 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addShop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<MutationAddShopArgs, 'shop'>>;
   addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'email' | 'firstname' | 'lastname' | 'password'>>;
   addUserAddress?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType, RequireFields<MutationAddUserAddressArgs, 'address' | 'id'>>;
-  ajoutShop?: Resolver<Maybe<ResolversTypes['ShopAdress']>, ParentType, ContextType, RequireFields<MutationAjoutShopArgs, 'address' | 'id' | 'name'>>;
   deleteProduct?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
   deleteShop?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationDeleteShopArgs, 'id'>>;
   updateProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id'>>;
