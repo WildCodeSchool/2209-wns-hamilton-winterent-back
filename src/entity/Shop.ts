@@ -17,7 +17,7 @@ export default class Shop {
   @Column()
   name: string;
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address,{ eager: true } )
   @JoinColumn()
   address: Address;
 
