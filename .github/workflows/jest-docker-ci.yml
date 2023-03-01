@@ -31,4 +31,4 @@ jobs:
         with:
           push: true
           context: "{{defaultContext}}:client"
-          tags: winterent/winterentBack:latest
+          tags: winterent/winterentback:latest
