@@ -30,5 +30,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: "{{defaultContext}}:client"
           tags: winterent/winterentback:latest
