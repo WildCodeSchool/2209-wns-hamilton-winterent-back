@@ -14,11 +14,11 @@ class CategoryService {
     return await this.repository.find();
   }
 
-  async findIdByCategory(id: number) {
+  async findIdByCategory(id: string) {
     return await this.repository.findOneBy({ id });
   }
 
-  async findProductsByCategory(id: number) {
+  async findProductsByCategory(id: string) {
     return await this.repositoryProduct.findBy({ category: { id } });
     // let products = await this.repositoryProduct.findBy({ category: { id } });
     // return { products };
