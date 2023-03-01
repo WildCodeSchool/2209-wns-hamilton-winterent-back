@@ -7,11 +7,12 @@ on:
 jobs:
   test-back:
     runs-on: ubuntu-latest
-        steps:
-          - name: Check out code
-            uses: actions/checkout@v2
-          - name: run tests
-          run: npm i #&& npm test
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: run tests
+        run: npm i #&& npm test
+    
     docker:
       needs: test-back
       if: github.ref == 'refs/heads/main'
