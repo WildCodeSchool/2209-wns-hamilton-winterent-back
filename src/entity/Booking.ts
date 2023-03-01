@@ -25,3 +25,5 @@ export default class Booking {
   @ManyToOne(() => Product, (product) => product.bookings)
   product: Product;
 }
+
+

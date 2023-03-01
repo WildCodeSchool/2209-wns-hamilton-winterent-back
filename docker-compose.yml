@@ -9,10 +9,19 @@ services:
     expose: 
       - 8000
     networks:
-      postgres:
+      postgres: 
     depends_on:
       db:
         condition: service_healthy
+
+  client:
+    build: ../2209-wns-hamilton-winterent-front
+    volumes:
+      - ../2209-wns-hamilton-winterent-front:/app
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
 
   db:
     image: postgres
