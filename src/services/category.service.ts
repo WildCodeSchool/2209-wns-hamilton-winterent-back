@@ -10,6 +10,10 @@ class CategoryService {
     this.repositoryProduct = datasource.getRepository(Product);
   }
 
+  async findAllCategory() {
+    return await this.repository.find();
+  }
+
   async findIdByCategory(id: number) {
     return await this.repository.findOneBy({ id });
   }

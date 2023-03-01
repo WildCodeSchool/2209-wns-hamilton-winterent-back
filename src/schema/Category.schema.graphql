@@ -1,22 +1,23 @@
 type Category {
-  id: ID!
+  id: UUID!
   category: String!
 }
 
 type Category_size {
-  id: ID!
+  id: UUID!
   size: String!
   label: String!
   category_id: Int!
 }
 
 type Quantity_size {
-  id: ID!
+  id: UUID!
   quantity: Int!
 }
 
 type Query {
-  category(id: ID!): Category
+  listCategory: [Category]
+  category(id: UUID!): Category
   cat(category: String!): Category
-  catProducts(id: ID!): [Product]
+  catProducts(id: UUID!): [Product]
 }
