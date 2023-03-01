@@ -4,8 +4,6 @@ items:
     id: '{{datatype.uuid}}'
     roadNumber: '{{address.buildingNumber}}'
     streetName: '{{address.city}}'
-    postalCode: '{{address.buildingNumber}}'
+    postalCode: 33300
     city: '{{address.cityName}}'
     country: '{{address.country}}'
-
-
