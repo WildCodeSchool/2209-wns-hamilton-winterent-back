@@ -1,5 +1,10 @@
 overwrite: true
-schema: "http://localhost:8000/graphql"
+# schema: "http://localhost:8000/graphql"
+schema: 
+  - ./src/schema/*.scalars.graphql
+  - ./src/schema/*.schema.graphql
+debug: true
+verbose: true
 generates:
   src/generated/graphql.ts:
     plugins:
@@ -8,7 +13,3 @@ generates:
       - "typescript-operations"
     config:
       inputMaybeValue: undefined | T
-      scalars:
-        JSON: string
-        UUID: string
-        Date: string

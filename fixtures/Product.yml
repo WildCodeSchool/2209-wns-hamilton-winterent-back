@@ -1,0 +1,29 @@
+entity: Product
+items:
+  product0:
+    id: '{{datatype.uuid}}'
+    name: 'cross X12'
+    description: 'ski toute montagne'
+    range: salomon
+    category: '@category0'
+
+  product1:
+    id: '{{datatype.uuid}}'
+    name: 'fond X12'
+    description: 'ski de fond'
+    range: decathlon
+    category: '@category0'
+
+  product2:
+    id: '{{datatype.uuid}}'
+    name: 'cross X13'
+    description: 'ski toute montagne'
+    range: salomon
+    category: '@category0'
+
+  product3:
+    id: '{{datatype.uuid}}'
+    name: 'botteR12'
+    description: 'chaussure toute montagne'
+    range: decathlon
+    category: '@category1'

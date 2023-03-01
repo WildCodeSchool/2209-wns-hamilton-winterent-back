@@ -10,8 +10,8 @@ import Product from "./Product";
 
 @Entity()
 export default class Booking {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column()
   startDate: Date;
@@ -25,3 +25,5 @@ export default class Booking {
   @ManyToOne(() => Product, (product) => product.bookings)
   product: Product;
 }
+
+

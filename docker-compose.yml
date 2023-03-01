@@ -1,14 +1,36 @@
 services:
   api:
     build: ./
+    command: sh -c "concurrently \"npm run ${SCRIPT:-start}\" \"npm run codegen\""
     volumes:
       - ./src:/app/src
     ports:
       - 8000:8000
+    expose:
+      - 8000
     networks:
       postgres:
     depends_on:
       db:
+        condition: service_healthy
+    healthcheck:
+      test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:8000/graphql'' --data ''{"query":"query { __typename }"}'' || exit 1'
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  client:
+    build: ../2209-wns-hamilton-winterent-front
+    volumes:
+      - ../2209-wns-hamilton-winterent-front:/app
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    networks:
+      postgres:
+    depends_on:
+      api:
         condition: service_healthy
 
   db:

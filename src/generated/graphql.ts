@@ -19,7 +19,7 @@ export type Scalars = {
   Cuid: any;
   Currency: any;
   DID: any;
-  Date: string;
+  Date: any;
   DateTime: any;
   Duration: any;
   EmailAddress: any;
@@ -34,7 +34,7 @@ export type Scalars = {
   IPv6: any;
   ISBN: any;
   ISO8601Duration: any;
-  JSON: string;
+  JSON: any;
   JSONObject: any;
   JWT: any;
   Latitude: any;
@@ -68,7 +68,7 @@ export type Scalars = {
   Timestamp: any;
   URL: any;
   USCurrency: any;
-  UUID: string;
+  UUID: any;
   UnsignedFloat: any;
   UnsignedInt: any;
   UtcOffset: any;
@@ -79,30 +79,40 @@ export type Address = {
   __typename?: 'Address';
   city?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
+  id: Scalars['UUID'];
+  postalCode: Scalars['PostalCode'];
   roadNumber?: Maybe<Scalars['Int']>;
   streetName?: Maybe<Scalars['String']>;
-};
-
-export type Category = {
-  __typename?: 'Category';
-  category: Scalars['String'];
-  id: Scalars['ID'];
-};
-
-export type Category_Size = {
-  __typename?: 'Category_size';
-  category_id: Scalars['Int'];
-  id: Scalars['ID'];
-  label: Scalars['String'];
-  size: Scalars['String'];
 };
 
 export type CreateAddress = {
   city: Scalars['String'];
   country: Scalars['String'];
+  postalCode: Scalars['PostalCode'];
   roadNumber: Scalars['Int'];
   streetName: Scalars['String'];
+};
+
+export type CreateUser = {
+  birthdate?: InputMaybe<Scalars['Date']>;
+  email: Scalars['EmailAddress'];
+  firstname: Scalars['String'];
+  gender?: InputMaybe<GenderType>;
+  lastname: Scalars['String'];
+  password: Scalars['String'];
+  phoneNumber?: InputMaybe<Scalars['PhoneNumber']>;
+  role?: InputMaybe<RoleType>;
+};
+
+export enum GenderType {
+  Man = 'MAN',
+  Other = 'OTHER',
+  Woman = 'WOMAN'
+}
+
+export type LoginUser = {
+  email: Scalars['EmailAddress'];
+  password: Scalars['String'];
 };
 
 export type Logout = {
@@ -113,10 +123,13 @@ export type Logout = {
 export type Mutation = {
   __typename?: 'Mutation';
   addProduct?: Maybe<Product>;
+  addShop?: Maybe<Shop>;
   addUser: UserInfos;
   addUserAddress?: Maybe<Address>;
   deleteProduct?: Maybe<Scalars['String']>;
+  deleteShop?: Maybe<Scalars['String']>;
   updateProduct?: Maybe<Product>;
+  updateShop?: Maybe<Shop>;
 };
 
 
@@ -128,95 +141,128 @@ export type MutationAddProductArgs = {
 };
 
 
+export type MutationAddShopArgs = {
+  shop: ShopInput;
+};
+
+
 export type MutationAddUserArgs = {
-  birthdate?: InputMaybe<Scalars['String']>;
-  email: Scalars['String'];
-  firstname: Scalars['String'];
-  gender?: InputMaybe<Scalars['String']>;
-  lastname: Scalars['String'];
-  password: Scalars['String'];
-  phoneNumber?: InputMaybe<Scalars['String']>;
-  role?: InputMaybe<Scalars['String']>;
+  user: CreateUser;
 };
 
 
 export type MutationAddUserAddressArgs = {
   address: CreateAddress;
-  id: Scalars['ID'];
+  id: Scalars['UUID'];
 };
 
 
 export type MutationDeleteProductArgs = {
+  id: Scalars['UUID'];
+};
+
+
+export type MutationDeleteShopArgs = {
   id: Scalars['ID'];
 };
 
 
 export type MutationUpdateProductArgs = {
   description?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
+  id: Scalars['UUID'];
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   range?: InputMaybe<Scalars['String']>;
 };
 
+
+export type MutationUpdateShopArgs = {
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+};
+
 export type Product = {
   __typename?: 'Product';
   description: Scalars['String'];
-  id: Scalars['ID'];
+  id: Scalars['UUID'];
   image?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   range: Scalars['String'];
 };
 
-export type Quantity_Size = {
-  __typename?: 'Quantity_size';
-  id: Scalars['ID'];
-  quantity: Scalars['Int'];
-};
-
 export type Query = {
   __typename?: 'Query';
-  category?: Maybe<Product>;
   login: UserInfos;
   logout?: Maybe<Logout>;
   product?: Maybe<Product>;
   products: Array<Maybe<Product>>;
+  shop?: Maybe<Shop>;
+  shops: Array<Maybe<Shop>>;
   user?: Maybe<User>;
   users: Array<User>;
 };
 
 
-export type QueryCategoryArgs = {
-  category: Scalars['String'];
-};
-
-
 export type QueryLoginArgs = {
-  email?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
+  user: LoginUser;
 };
 
 
 export type QueryProductArgs = {
+  id: Scalars['UUID'];
+};
+
+
+export type QueryShopArgs = {
   id: Scalars['ID'];
 };
 
 
 export type QueryUserArgs = {
+  id: Scalars['UUID'];
+};
+
+export type Role = {
+  __typename?: 'Role';
+  id: Scalars['UUID'];
+  role: RoleType;
+};
+
+export enum RoleType {
+  Admin = 'ADMIN',
+  Superadmin = 'SUPERADMIN',
+  User = 'USER'
+}
+
+export type Shop = {
+  __typename?: 'Shop';
+  address?: Maybe<Address>;
   id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type ShopAdress = {
+  __typename?: 'ShopAdress';
+  address?: Maybe<Address>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type ShopInput = {
+  address: CreateAddress;
+  name: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
-  birthdate?: Maybe<Scalars['DateTime']>;
+  birthdate?: Maybe<Scalars['Date']>;
   email?: Maybe<Scalars['EmailAddress']>;
   firstname: Scalars['String'];
-  gender?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
+  gender?: Maybe<GenderType>;
+  id: Scalars['UUID'];
   lastname: Scalars['String'];
   password: Scalars['String'];
-  phoneNumber?: Maybe<Scalars['String']>;
-  role?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['PhoneNumber']>;
+  role?: Maybe<Role>;
 };
 
 export type UserInfos = {
@@ -227,9 +273,9 @@ export type UserInfos = {
 
 export type UserMinimal = {
   __typename?: 'UserMinimal';
-  email: Scalars['String'];
+  email: Scalars['EmailAddress'];
   firstname: Scalars['String'];
-  id: Scalars['ID'];
+  id: Scalars['UUID'];
 };
 
 
@@ -306,10 +352,9 @@ export type ResolversTypes = {
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
-  Category: ResolverTypeWrapper<Category>;
-  Category_size: ResolverTypeWrapper<Category_Size>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']>;
   CreateAddress: CreateAddress;
+  CreateUser: CreateUser;
   Cuid: ResolverTypeWrapper<Scalars['Cuid']>;
   Currency: ResolverTypeWrapper<Scalars['Currency']>;
   DID: ResolverTypeWrapper<Scalars['DID']>;
@@ -318,6 +363,7 @@ export type ResolversTypes = {
   Duration: ResolverTypeWrapper<Scalars['Duration']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   GUID: ResolverTypeWrapper<Scalars['GUID']>;
+  GenderType: GenderType;
   HSL: ResolverTypeWrapper<Scalars['HSL']>;
   HSLA: ResolverTypeWrapper<Scalars['HSLA']>;
   HexColorCode: ResolverTypeWrapper<Scalars['HexColorCode']>;
@@ -338,6 +384,7 @@ export type ResolversTypes = {
   LocalEndTime: ResolverTypeWrapper<Scalars['LocalEndTime']>;
   LocalTime: ResolverTypeWrapper<Scalars['LocalTime']>;
   Locale: ResolverTypeWrapper<Scalars['Locale']>;
+  LoginUser: LoginUser;
   Logout: ResolverTypeWrapper<Logout>;
   Long: ResolverTypeWrapper<Scalars['Long']>;
   Longitude: ResolverTypeWrapper<Scalars['Longitude']>;
@@ -357,13 +404,17 @@ export type ResolversTypes = {
   PositiveInt: ResolverTypeWrapper<Scalars['PositiveInt']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']>;
   Product: ResolverTypeWrapper<Product>;
-  Quantity_size: ResolverTypeWrapper<Quantity_Size>;
   Query: ResolverTypeWrapper<{}>;
   RGB: ResolverTypeWrapper<Scalars['RGB']>;
   RGBA: ResolverTypeWrapper<Scalars['RGBA']>;
+  Role: ResolverTypeWrapper<Role>;
+  RoleType: RoleType;
   RoutingNumber: ResolverTypeWrapper<Scalars['RoutingNumber']>;
   SafeInt: ResolverTypeWrapper<Scalars['SafeInt']>;
   SemVer: ResolverTypeWrapper<Scalars['SemVer']>;
+  Shop: ResolverTypeWrapper<Shop>;
+  ShopAdress: ResolverTypeWrapper<ShopAdress>;
+  ShopInput: ShopInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Time: ResolverTypeWrapper<Scalars['Time']>;
   TimeZone: ResolverTypeWrapper<Scalars['TimeZone']>;
@@ -387,10 +438,9 @@ export type ResolversParentTypes = {
   BigInt: Scalars['BigInt'];
   Boolean: Scalars['Boolean'];
   Byte: Scalars['Byte'];
-  Category: Category;
-  Category_size: Category_Size;
   CountryCode: Scalars['CountryCode'];
   CreateAddress: CreateAddress;
+  CreateUser: CreateUser;
   Cuid: Scalars['Cuid'];
   Currency: Scalars['Currency'];
   DID: Scalars['DID'];
@@ -419,6 +469,7 @@ export type ResolversParentTypes = {
   LocalEndTime: Scalars['LocalEndTime'];
   LocalTime: Scalars['LocalTime'];
   Locale: Scalars['Locale'];
+  LoginUser: LoginUser;
   Logout: Logout;
   Long: Scalars['Long'];
   Longitude: Scalars['Longitude'];
@@ -438,13 +489,16 @@ export type ResolversParentTypes = {
   PositiveInt: Scalars['PositiveInt'];
   PostalCode: Scalars['PostalCode'];
   Product: Product;
-  Quantity_size: Quantity_Size;
   Query: {};
   RGB: Scalars['RGB'];
   RGBA: Scalars['RGBA'];
+  Role: Role;
   RoutingNumber: Scalars['RoutingNumber'];
   SafeInt: Scalars['SafeInt'];
   SemVer: Scalars['SemVer'];
+  Shop: Shop;
+  ShopAdress: ShopAdress;
+  ShopInput: ShopInput;
   String: Scalars['String'];
   Time: Scalars['Time'];
   TimeZone: Scalars['TimeZone'];
@@ -468,7 +522,8 @@ export interface AccountNumberScalarConfig extends GraphQLScalarTypeConfig<Resol
 export type AddressResolvers<ContextType = any, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
   city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  postalCode?: Resolver<ResolversTypes['PostalCode'], ParentType, ContextType>;
   roadNumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   streetName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -481,20 +536,6 @@ export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Byte'], any> {
   name: 'Byte';
 }
-
-export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = {
-  category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type Category_SizeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category_size'] = ResolversParentTypes['Category_size']> = {
-  category_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  label?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  size?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
 
 export interface CountryCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['CountryCode'], any> {
   name: 'CountryCode';
@@ -623,10 +664,13 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationAddProductArgs, 'description' | 'name' | 'range'>>;
-  addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'email' | 'firstname' | 'lastname' | 'password'>>;
+  addShop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<MutationAddShopArgs, 'shop'>>;
+  addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'user'>>;
   addUserAddress?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType, RequireFields<MutationAddUserAddressArgs, 'address' | 'id'>>;
   deleteProduct?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
+  deleteShop?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationDeleteShopArgs, 'id'>>;
   updateProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id'>>;
+  updateShop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'id'>>;
 };
 
 export interface NegativeFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NegativeFloat'], any> {
@@ -683,25 +727,20 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 
 export type ProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   range?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type Quantity_SizeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Quantity_size'] = ResolversParentTypes['Quantity_size']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  category?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'category'>>;
-  login?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, Partial<QueryLoginArgs>>;
+  login?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<QueryLoginArgs, 'user'>>;
   logout?: Resolver<Maybe<ResolversTypes['Logout']>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
+  shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'id'>>;
+  shops?: Resolver<Array<Maybe<ResolversTypes['Shop']>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
 };
@@ -714,6 +753,12 @@ export interface RgbaScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'RGBA';
 }
 
+export type RoleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Role'] = ResolversParentTypes['Role']> = {
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['RoleType'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface RoutingNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RoutingNumber'], any> {
   name: 'RoutingNumber';
 }
@@ -725,6 +770,19 @@ export interface SafeIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTy
 export interface SemVerScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['SemVer'], any> {
   name: 'SemVer';
 }
+
+export type ShopResolvers<ContextType = any, ParentType extends ResolversParentTypes['Shop'] = ResolversParentTypes['Shop']> = {
+  address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ShopAdressResolvers<ContextType = any, ParentType extends ResolversParentTypes['ShopAdress'] = ResolversParentTypes['ShopAdress']> = {
+  address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export interface TimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Time'], any> {
   name: 'Time';
@@ -759,15 +817,15 @@ export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<Resolve
 }
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  birthdate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  birthdate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['EmailAddress']>, ParentType, ContextType>;
   firstname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes['GenderType']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   lastname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  phoneNumber?: Resolver<Maybe<ResolversTypes['PhoneNumber']>, ParentType, ContextType>;
+  role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -778,9 +836,9 @@ export type UserInfosResolvers<ContextType = any, ParentType extends ResolversPa
 };
 
 export type UserMinimalResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserMinimal'] = ResolversParentTypes['UserMinimal']> = {
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -797,8 +855,6 @@ export type Resolvers<ContextType = any> = {
   Address?: AddressResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;
-  Category?: CategoryResolvers<ContextType>;
-  Category_size?: Category_SizeResolvers<ContextType>;
   CountryCode?: GraphQLScalarType;
   Cuid?: GraphQLScalarType;
   Currency?: GraphQLScalarType;
@@ -845,13 +901,15 @@ export type Resolvers<ContextType = any> = {
   PositiveInt?: GraphQLScalarType;
   PostalCode?: GraphQLScalarType;
   Product?: ProductResolvers<ContextType>;
-  Quantity_size?: Quantity_SizeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RGB?: GraphQLScalarType;
   RGBA?: GraphQLScalarType;
+  Role?: RoleResolvers<ContextType>;
   RoutingNumber?: GraphQLScalarType;
   SafeInt?: GraphQLScalarType;
   SemVer?: GraphQLScalarType;
+  Shop?: ShopResolvers<ContextType>;
+  ShopAdress?: ShopAdressResolvers<ContextType>;
   Time?: GraphQLScalarType;
   TimeZone?: GraphQLScalarType;
   Timestamp?: GraphQLScalarType;

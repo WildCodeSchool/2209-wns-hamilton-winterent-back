@@ -1,35 +1,37 @@
+# TYPES
 
-type Product{
-    id: ID!
+type Product {
+  id: UUID!
+  name: String!
+  description: String!
+  range: String!
+  image: String
+}
+
+# QUERY
+
+type Query {
+  products: [Product]!
+  product(id: UUID!): Product
+}
+
+# MUTATIONS
+
+type Mutation {
+  addProduct(
     name: String!
     description: String!
     range: String!
     image: String
-    # bookings: [Booking]
-}
+  ): Product
 
-type Query {
-    products: [Product]!
-    product(id: ID!): Product
-}
+  updateProduct(
+    id: UUID!
+    name: String
+    description: String
+    range: String
+    image: String
+  ): Product
 
-type Mutation {
-    addProduct(
-        name: String!
-        description: String!
-        range: String!
-        image: String
-    ): Product
-    
-    updateProduct(
-        id: ID!
-        name: String
-        description: String
-        range: String
-        image: String
-    ): Product
-
-    deleteProduct(
-        id: ID! 
-    ): String
+  deleteProduct(id: UUID!): String
 }

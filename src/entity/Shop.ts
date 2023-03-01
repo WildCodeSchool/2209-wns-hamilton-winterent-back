@@ -11,13 +11,13 @@ import ProductToShop from "./Product_shop";
 
 @Entity()
 export default class Shop {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column()
   name: string;
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address,{ eager: true } )
   @JoinColumn()
   address: Address;
 

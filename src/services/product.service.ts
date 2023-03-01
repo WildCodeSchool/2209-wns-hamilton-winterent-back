@@ -1,9 +1,10 @@
-import datasource from '../lib/datasource';
-import Product from '../entity/Product';
+import datasource from "../lib/datasource";
+import Product from "../entity/Product";
 import {
   MutationAddProductArgs,
   MutationUpdateProductArgs,
-} from '../generated/graphql';
+} from "../generated/graphql";
+import { ApolloError } from "apollo-server";
 
 class ProductService {
   repository;
@@ -27,7 +28,7 @@ class ProductService {
     return product;
   }
 
-  async findProductById(id: number) {
+  async findProductById(id: string) {
     return await this.repository.findOneBy({ id });
   }
 
@@ -39,7 +40,7 @@ class ProductService {
     range,
   }: MutationUpdateProductArgs): Promise<void> {
     try {
-      const newProduct = this.findProductById(+id);
+      const newProduct = this.findProductById(id);
       if (!newProduct) {
         throw new Error(" le produit n'existe pas");
       }
@@ -56,7 +57,7 @@ class ProductService {
 
   async deleteProduct(id: string) {
     try {
-      const newProduct = this.findProductById(+id);
+      const newProduct = this.findProductById(id);
       if (!newProduct) {
         throw new Error(" le produit n'existe pas");
       }
@@ -67,7 +68,7 @@ class ProductService {
   }
 
   async findAll(): Promise<Product[]> {
-    console.log('TEST');
+    console.log("TEST");
     let test = await this.repository.find();
 
     return test;

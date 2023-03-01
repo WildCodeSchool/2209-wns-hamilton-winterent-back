@@ -1,0 +1,4 @@
+entity: Role
+items:
+  role0:
+    id: '{{datatype.uuid}}'

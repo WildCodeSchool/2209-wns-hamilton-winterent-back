@@ -1,10 +1,9 @@
 import {
   MutationAddProductArgs,
   QueryProductArgs,
-  MutationUpdateProductArgs
-} from '../generated/graphql';
+  MutationUpdateProductArgs,
+} from "../generated/graphql";
 import ProductService from "../services/product.service";
-
 
 export default {
   Query: {
@@ -14,10 +13,8 @@ export default {
 
     product: async (_: any, args: QueryProductArgs) => {
       const { id } = args;
-      return await new ProductService().findProductById(+id);
+      return await new ProductService().findProductById(id);
     },
-
-
   },
   Mutation: {
     addProduct: async (_: any, args: MutationAddProductArgs) => {
@@ -32,7 +29,7 @@ export default {
         return data;
       } catch (error) {
         console.log(error);
-        throw new Error('erreur');
+        throw new Error("erreur");
       }
     },
     updateProduct: async (_: any, args: MutationUpdateProductArgs) => {
@@ -48,7 +45,7 @@ export default {
         return data;
       } catch (error) {
         console.log(error);
-        throw new Error('erreur');
+        throw new Error("erreur");
       }
     },
     deleteProduct: async (_: any, args: any) => {
@@ -57,7 +54,7 @@ export default {
         await new ProductService().deleteProduct(id);
       } catch (error) {
         console.log(error);
-        throw new Error('erreur');
+        throw new Error("erreur");
       }
     },
   },

@@ -1,0 +1,19 @@
+entity: QuantityToSize
+items:
+  quantitytosize0:
+    id: '{{datatype.uuid}}'
+    quantity: 5
+    productToShop: '@producttoshop0'
+    categorySize: '@category_size0'
+
+  quantitytosize1:
+    id: '{{datatype.uuid}}'
+    quantity: 11
+    productToShop: '@producttoshop0'
+    categorySize: '@category_size1'
+
+  quantitytosize:
+    id: '{{datatype.uuid}}'
+    quantity: 6
+    productToShop: '@producttoshop1'
+    categorySize: '@category_size2'
