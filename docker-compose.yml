@@ -21,8 +21,6 @@ services:
 
   client:
     build: ../2209-wns-hamilton-winterent-front
-    depends_on:
-      - api
     volumes:
       - ../2209-wns-hamilton-winterent-front:/app
     ports:
