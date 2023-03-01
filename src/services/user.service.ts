@@ -1,37 +1,97 @@
-import datasource from '../lib/datasource';
-import User from '../entity/User';
-import bcrypt from 'bcrypt';
+import datasource from "../lib/datasource";
+import User from "../entity/User";
+import Role from "../entity/Role";
+import bcrypt from "bcrypt";
+import { generateToken } from "../lib/utilities";
 import {
-  ICreateUser,
-  ILoginUserInput,
-  IUser,
-} from '../resolver/user.resolver.spec';
-import { generateToken } from '../lib/utilities';
+  MutationAddUserAddressArgs,
+  MutationAddUserArgs,
+  UserInfos,
+} from "../generated/graphql";
+import { Repository } from "typeorm";
+import Address from "../entity/Address";
 
 const SALT_ROUND = 10;
 
 class UserService {
-  repository;
+  userRepository: Repository<User>;
+  addressRepository: Repository<Address>;
+  roleRepository: Repository<Role>;
   constructor() {
-    this.repository = datasource.getRepository(User);
+    this.userRepository = datasource.getRepository(User);
+    this.addressRepository = datasource.getRepository(Address);
+    this.roleRepository = datasource.getRepository(Role);
   }
 
-  async findUser(id: number) {
-    return await this.repository.findOneBy({ id });
+  async findUser(id: string) {
+    return await this.userRepository.findOneBy({ id });
   }
   async findUserByEmail(email: string) {
-    return await this.repository.findOneBy({ email });
+    console.log("test");
+    return await this.userRepository.findOneBy({ email });
   }
 
   async findAll(): Promise<User[]> {
-    return await this.repository.find();
+    return await this.userRepository.find();
   }
 
-  async createUser({ firstname, lastname, email, password }: ICreateUser) {
+  async createUser(args: MutationAddUserArgs): Promise<UserInfos> {
+    let {
+      firstname,
+      lastname,
+      email,
+      password,
+      gender,
+      role,
+      birthdate,
+      phoneNumber,
+    } = args.user;
     let hash = await bcrypt.hash(password, SALT_ROUND);
     let token = generateToken({ email });
-    let user = await this.repository.save({ firstname, lastname, email, password: hash });
-    return {user, token};
+    let roleEntity = await this.roleRepository.findOne({
+      where: { role },
+    });
+    if (!roleEntity) {
+      throw new Error("Le role n'existe pas");
+    }
+
+    let user = await this.userRepository.save({
+      firstname,
+      lastname,
+      email,
+      password: hash,
+      gender,
+      birthdate,
+      phoneNumber,
+      role: roleEntity,
+    });
+
+    let result: UserInfos = {
+      user: {
+        id: user.id,
+        email: user.email,
+        firstname: user.firstname,
+      },
+      token: token,
+    };
+
+    return result;
+  }
+
+  async createUserAddress({ id, address }: MutationAddUserAddressArgs) {
+    let user = await this.findUser(id);
+
+    if (!user) {
+      throw new Error("utilisateur non trouvé");
+    }
+
+    const newAddress = await this.addressRepository.save({
+      roadNumber: address.roadNumber,
+      streetName: address.streetName,
+      city: address.city,
+      country: address.country,
+    });
+    await this.userRepository.update(id, { address: newAddress });
   }
 }
 

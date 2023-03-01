@@ -1,14 +1,21 @@
+# TYPES : valeurs attentues en retour des query et mutations
+
 type User {
-  id: ID!
-  email: String!
+  id: UUID!
+  email: EmailAddress
   firstname: String!
-  lastname: String
+  lastname: String!
   password: String!
+  gender: GenderType
+  birthdate: Date
+  phoneNumber: PhoneNumber
+  role: Role
 }
 
 type UserMinimal {
-  id: ID!
-  email: String!
+  id: UUID!
+  firstname: String!
+  email: EmailAddress!
 }
 
 type UserInfos {
@@ -16,22 +23,59 @@ type UserInfos {
   token: String
 }
 
-type Query {
-  users: [User!]!
-  user(id: ID!): User
-  login(email: String, password: String): UserInfos!
-  logout: Logout #ajout d'une fonction query qui renverra la clé success à true si tout s'est bien passé
-}
-
 type Logout {
   success: Boolean
 }
 
+type Role {
+  id: UUID!
+  role: RoleType!
+}
+
+# ENUM : Déclaré dans graphql directement et utilisé dans l'entité USER
+
+enum GenderType {
+  MAN
+  WOMAN
+  OTHER
+}
+
+enum RoleType {
+  SUPERADMIN
+  ADMIN
+  USER
+}
+
+# INPUTS : Valeurs utilisées en arguments des mutations ou query
+
+input CreateUser {
+  email: EmailAddress!
+  firstname: String!
+  lastname: String!
+  password: String!
+  gender: GenderType
+  role: RoleType
+  phoneNumber: PhoneNumber
+  birthdate: Date
+}
+
+input LoginUser {
+  email: EmailAddress!
+  password: String!
+}
+
+# QUERY
+
+type Query {
+  users: [User!]!
+  user(id: UUID!): User
+  login(user: LoginUser!): UserInfos!
+  logout: Logout #ajout d'une fonction query qui renverra la clé success à true si tout s'est bien passé
+}
+
+# MUTATIONS
+
 type Mutation {
-  addUser(
-    email: String!, 
-    firstname: String!, 
-    lastname: String,
-    password: String!,
-  ): UserInfos!
+  addUser(user: CreateUser!): UserInfos!
+  addUserAddress(id: UUID!, address: CreateAddress!): Address
 }
