@@ -1,0 +1,86 @@
+entity: ProductToShop
+items:
+  producttoshop0:
+    id: '{{datatype.uuid}}'
+    quantity: 16
+    priceHT: 50
+    product: '@product0'
+    shop: '@shop0'
+
+  producttoshop1:
+    id: '{{datatype.uuid}}'
+    quantity: 10
+    priceHT: 85
+    product: '@product1'
+    shop: '@shop0'
+
+  producttoshop2:
+    id: '{{datatype.uuid}}'
+    quantity: 19
+    priceHT: 32
+    product: '@product2'
+    shop: '@shop0'
+
+  producttoshop3:
+    id: '{{datatype.uuid}}'
+    quantity: 16
+    priceHT: 50
+    product: '@product3'
+    shop: '@shop0'
+
+
+  producttoshop4:
+    id: '{{datatype.uuid}}'
+    quantity: 24
+    priceHT: 50
+    product: '@product0'
+    shop: '@shop1'
+
+  producttoshop5:
+    id: '{{datatype.uuid}}'
+    quantity: 16
+    priceHT: 85
+    product: '@product1'
+    shop: '@shop1'
+
+  producttoshop6:
+    id: '{{datatype.uuid}}'
+    quantity: 15
+    priceHT: 32
+    product: '@product2'
+    shop: '@shop1'
+
+  producttoshop7:
+    id: '{{datatype.uuid}}'
+    quantity: 17
+    priceHT: 50
+    product: '@product3'
+    shop: '@shop1'
+
+  producttoshop8:
+    id: '{{datatype.uuid}}'
+    quantity: 16
+    priceHT: 50
+    product: '@product0'
+    shop: '@shop2'
+
+  producttoshop9:
+    id: '{{datatype.uuid}}'
+    quantity: 7
+    priceHT: 85
+    product: '@product1'
+    shop: '@shop2'
+
+  producttoshop10:
+    id: '{{datatype.uuid}}'
+    quantity: 21
+    priceHT: 38
+    product: '@product2'
+    shop: '@shop2'
+
+  producttoshop11:
+    id: '{{datatype.uuid}}'
+    quantity: 14
+    priceHT: 29
+    product: '@product3'
+    shop: '@shop2'

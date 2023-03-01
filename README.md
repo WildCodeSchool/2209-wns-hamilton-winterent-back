@@ -14,6 +14,7 @@ prérequis :
 Cloner le repo
 Lancer la commande `npm i` pour installer les dépendances
 Lancer la commande `docker compose up --build`
+Pour initialiser la base de donnée avec des valeurs `SCRIPT=fixtures docker compose up --build`
 
 ### Commandes Docker
 **docker compose up --build** : à lancer en cas de modification dans le docker file ou docker-compose 
