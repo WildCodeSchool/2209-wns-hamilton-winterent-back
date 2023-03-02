@@ -11,7 +11,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: run tests
-        run: npm i #&& npm run start && npm run codegen && npm test
+        run: npm i
   docker:
     needs: test-back
     if: github.ref == 'refs/heads/main'
