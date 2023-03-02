@@ -1,19 +1,27 @@
 import {
   ApolloClient,
-  HttpLink,
-  InMemoryCache,
   gql,
 } from "@apollo/client/core";
+import { addMocksToSchema } from '@graphql-tools/mock';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { ApolloServer } from "apollo-server";
+import typeDefs from "../src/schema";
+import resolvers from "../src/resolver";
 import fetch from "cross-fetch";
 import { CreateUser, MutationAddUserArgs } from "../src/generated/graphql";
 
-const client = new ApolloClient({
-  link: new HttpLink({
-    uri: "http://localhost:8000/graphql",
-    fetch,
-  }),
-  cache: new InMemoryCache({}),
+
+//const typeDefs = [ADD_USER, LOGIN, LIST_USERS] 
+
+const server = new ApolloServer({
+  schema : addMocksToSchema({
+    schema : makeExecutableSchema({ typeDefs, resolvers})
+  })
 });
+
+const { url } = await startStandaloneServer(server, {listen : { port : 4000}})
+
+
 
 const ADD_USER = gql`
   mutation Mutation($user: CreateUser!) {
@@ -59,7 +67,7 @@ describe("User resolver", () => {
   let token : string;
 
   it("créer user", async () => {
-    const res = await client.mutate({
+    const res = await server.mutate({
       mutation: ADD_USER,
       variables: {
         user :{
@@ -85,7 +93,7 @@ describe("User resolver", () => {
     });
   });
   it("avoir un token si le user est correct", async () => {
-    const res = await client.query({
+    const res = await server.query({
       query: LOGIN,
       variables: {
         user : {
@@ -101,7 +109,7 @@ describe("User resolver", () => {
     token = res.data?.login.token;
   });
   it("récupérer tous les users", async () => {
-    const res = await client.query({
+    const res = await server.query({
       query: LIST_USERS,
       fetchPolicy: "no-cache",
       context: {
