@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { IGenerateToken } from './utilities.spec';
+import { IGenerateToken } from './IUtilities';
 import UserService from '../services/user.service';
 const SECRET_KEY = 'sdngzhfbjhsuygshbjfysgfbs';
 
