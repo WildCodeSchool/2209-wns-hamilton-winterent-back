@@ -3,8 +3,6 @@ name: jest-and-docker-ci
 on: 
   pull_request:
     branches: main
-  
-  workflow_dispatch:
 
 jobs:
   test-back:
