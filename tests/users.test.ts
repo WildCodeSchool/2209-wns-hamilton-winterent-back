@@ -5,6 +5,7 @@ import {
   gql,
 } from "@apollo/client/core";
 import fetch from "cross-fetch";
+import { CreateUser, MutationAddUserArgs } from "../src/generated/graphql";
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -15,37 +16,29 @@ const client = new ApolloClient({
 });
 
 const ADD_USER = gql`
-  mutation Mutation(
-    $email: String!
-    $firstname: String!
-    $password: String!
-    $lastname: String
-  ) {
-    addUser(
-      email: $email
-      firstname: $firstname
-      password: $password
-      lastname: $lastname
-    ) {
-      token
-      user {
-        id
-        email
-      }
+  mutation Mutation($user: CreateUser!) {
+  addUser(user: $user) {
+    user {
+      id
+      firstname
+      email
     }
+    token
   }
+}
 `;
 
 const LOGIN = gql`
-  query Query($email: String, $password: String) {
-    login(email: $email, password: $password) {
-      token
-      user {
-        email
-        id
-      }
+  query Query($user: LoginUser!) {
+  login(user: $user) {
+    token
+    user {
+      id
+      firstname
+      email
     }
   }
+}
 `;
 
 const LIST_USERS = gql`
@@ -55,23 +48,26 @@ const LIST_USERS = gql`
       email
       firstname
       lastname
+      password
     }
   }
 `;
 
 describe("User resolver", () => {
-  let email = `test${new Date().getTime()}@gmail.com`;
+   let email = `test${new Date().getTime()}@gmail.com`;
   let password = "test";
-  let token: string;
+  let token : string;
 
   it("créer user", async () => {
     const res = await client.mutate({
       mutation: ADD_USER,
       variables: {
-        firstname: "firstname",
-        lastname: "lastname",
-        email,
-        password,
+        user :{
+          firstname : "firstname",
+          lastname : "lastname",
+          email : email,
+          password : password,
+        } 
       },
     });
     const {
@@ -80,8 +76,11 @@ describe("User resolver", () => {
     } = res.data?.addUser;
     //TODO : tester l'id / tester le token;
 
+    console.log(userInfos)
+
     expect(userInfos).toEqual({
-      email,
+        firstname : "firstname",
+        email,
       __typename: "UserMinimal",
     });
   });
@@ -89,8 +88,10 @@ describe("User resolver", () => {
     const res = await client.query({
       query: LOGIN,
       variables: {
-        email,
-        password,
+        user : {
+          email,
+          password,
+        }
       },
       fetchPolicy: "no-cache",
     });
