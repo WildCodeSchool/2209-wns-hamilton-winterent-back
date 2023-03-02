@@ -23,7 +23,7 @@ class ShopService {
     return await this.shopRepository.find();
   }
 
-  async findShop(id: number) {
+  async findShop(id: string) {
     return await this.shopRepository.findOneBy({ id });
   }
   async createShop({
