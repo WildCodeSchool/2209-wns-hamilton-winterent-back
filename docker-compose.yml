@@ -20,9 +20,9 @@ services:
       retries: 10
 
   client:
-    build: ../front
+    build: ../2209-wns-hamilton-winterent-front
     volumes:
-      - ../front:/app
+      - ../2209-wns-hamilton-winterent-front:/app
     ports:
       - 3000:3000
     expose:
