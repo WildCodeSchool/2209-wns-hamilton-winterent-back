@@ -1,6 +1,6 @@
 services:
   api:
-    image: ./
+    image: winterent/winterent-server-staging
     command: sh -c "concurrently \"npm run ${SCRIPT:-start}\" \"npm run codegen\""
     volumes:
       - ./src:/app/src
@@ -22,7 +22,7 @@ services:
 
   client:
     #build: ../front
-    image: ./
+    image: winterent/winterent-client-staging
     volumes:
       - ../front:/app
     ports:
