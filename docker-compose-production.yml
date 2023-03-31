@@ -1,16 +1,12 @@
 services:
   api:
-    image: ./
-    command: sh -c "concurrently \"npm run ${SCRIPT:-start}\" \"npm run codegen\""
-    volumes:
-      - ./src:/app/src
+    image: winterent/winterent-server-production
+    command: sh -c "concurrently \"npm run ${SCRIPT:-start}\" "
     environment:
       - NODE_ENV=production
-      - SERVER_PORT=5000
+      - PORT=8000
     expose:
-      - 5000
-    networks:
-      postgres:
+      - 8000
     depends_on:
       db:
         condition: service_healthy
@@ -21,21 +17,19 @@ services:
       retries: 10
 
   client:
-    #build: ../front
-    image: ./
+    image: winterent/winterent-client-production
+    command: sh -c "npm run codegen && npm run build"
     volumes:
-      - ../front:/app
+      - web-client-build:/app/build
     ports:
       - 3000:3000
     expose:
       - 3000
-    networks:
-      postgres:
     depends_on:
       api:
         condition: service_healthy
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
 
   db:
     image: postgres
@@ -54,8 +48,6 @@ services:
       - 5432:5432
     volumes:
       - database:/var/lib/postgresql/data
-    networks:
-      postgres:
     expose:
       - "5432"
 
@@ -67,8 +59,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: password
     ports:
       - "5050:80"
-    networks:
-      postgres:
 
   nginx:
     image: nginx:1.21.3
@@ -77,14 +67,12 @@ services:
       - client
     restart: always
     ports:
-      - ${GATEWAY_PORT:-8001}:80
+      - ${GATEWAY_PORT:-5000}:80
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - web-client-build:/web-client-build
       - ./logs:/var/log/nginx
 
-networks:
-  postgres:
 volumes:
   database:
   web-client-build:
