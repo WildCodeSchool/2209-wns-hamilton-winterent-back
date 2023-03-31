@@ -49,3 +49,4 @@ npx graphql-code-generator init (=> initialisation du projet)
 npm run codegen
 
 Attention à  ne pas avoir PGAdmin déjà lancé sinon risque d'erreur liée au CRLF au lancement du build docker 
+test

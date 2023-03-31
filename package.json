@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node-dev --debug --poll --transpile-only --respawn --project tsconfig.json src/index.ts",
+    "start": "ts-node-dev --transpile-only --respawn --project tsconfig.json ./src/index.ts",
     "test": "jest --watchAll",
+    "testDev": "jest",
     "codegen": "graphql-codegen --watch --config codegen.yml",
     "fixtures": "fixtures load ./fixtures --dataSource=./src/lib/datasource.ts --sync --require=ts-node/register"
   },

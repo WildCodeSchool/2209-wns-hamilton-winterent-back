@@ -2,10 +2,11 @@ name: jest-and-docker-ci
 
 on: 
   pull_request:
-    branches: main
-  
-  workflow_dispatch:
+    branches: ["main"]
+    types: ["closed"]
 
+  workflow_dispatch:
+  
 jobs:
   test-back:
     runs-on: ubuntu-latest
@@ -13,10 +14,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: run tests
-        run: npm i #&& npm run start && npm run codegen && npm test
+        run: npm i && npm run start && npm run codegen && npm testDev
   docker:
     needs: test-back
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU

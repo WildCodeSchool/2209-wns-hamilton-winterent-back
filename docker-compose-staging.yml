@@ -1,0 +1,78 @@
+services:
+  api:
+    image: winterent/winterent-server-staging
+    command: sh -c "concurrently \"npm run ${SCRIPT:-start}\" "
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+    expose:
+      - 8000
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:8000/graphql'' --data ''{"query":"query { __typename }"}'' || exit 1'
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  client:
+    image: winterent/winterent-client-staging
+    command: sh -c "npm run codegen && npm run build"
+    volumes:
+      - web-client-build:/app/build
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=development
+
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 15s
+      timeout: 300s
+      retries: 25
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: winterent
+    ports:
+      - 5432:5432
+    volumes:
+      - database:/var/lib/postgresql/data
+    expose:
+      - "5432"
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "5050:80"
+
+  nginx:
+    image: nginx:1.21.3
+    depends_on:
+      - api
+      - client
+    restart: always
+    ports:
+      - ${GATEWAY_PORT:-8001}:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - web-client-build:/web-client-build
+      - ./logs:/var/log/nginx
+
+volumes:
+  database:
+  web-client-build:
