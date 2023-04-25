@@ -11,7 +11,7 @@ export default {
 
         shop: async (_: any, args: QueryShopArgs) => {
             const { id } = args;
-            return await new ShopService().findShop(+id);
+            return await new ShopService().findShop(id);
         }
     },
     Mutation: {

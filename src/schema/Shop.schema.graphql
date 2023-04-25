@@ -6,6 +6,10 @@ type Shop{
     address: Address
 }
 
+type City{
+    city: String!
+}
+
 
 # INPUTS : Valeurs utilisées en arguments des mutations ou query
 
@@ -24,6 +28,7 @@ type ShopAdress {
 type Query {
     shops: [Shop]!
     shop(id: ID!): Shop
+    listShops(city: City): [Shop]
 }
 
 # MUTATIONS 

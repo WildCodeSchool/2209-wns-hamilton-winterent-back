@@ -99,6 +99,11 @@ export type Category_Size = {
   size: Scalars['String'];
 };
 
+export type City = {
+  __typename?: 'City';
+  city: Scalars['String'];
+};
+
 export type CreateAddress = {
   city: Scalars['String'];
   country: Scalars['String'];
@@ -216,6 +221,7 @@ export type Query = {
   catProducts?: Maybe<Array<Maybe<Product>>>;
   category?: Maybe<Category>;
   listCategory?: Maybe<Array<Maybe<Category>>>;
+  listShops?: Maybe<Array<Maybe<Shop>>>;
   login: UserInfos;
   logout?: Maybe<Logout>;
   product?: Maybe<Product>;
@@ -239,6 +245,11 @@ export type QueryCatProductsArgs = {
 
 export type QueryCategoryArgs = {
   id: Scalars['UUID'];
+};
+
+
+export type QueryListShopsArgs = {
+  city?: InputMaybe<City>;
 };
 
 
@@ -393,6 +404,7 @@ export type ResolversTypes = {
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
   Category: ResolverTypeWrapper<Category>;
   Category_size: ResolverTypeWrapper<Category_Size>;
+  City: ResolverTypeWrapper<City>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']>;
   CreateAddress: CreateAddress;
   CreateUser: CreateUser;
@@ -482,6 +494,7 @@ export type ResolversParentTypes = {
   Byte: Scalars['Byte'];
   Category: Category;
   Category_size: Category_Size;
+  City: City;
   CountryCode: Scalars['CountryCode'];
   CreateAddress: CreateAddress;
   CreateUser: CreateUser;
@@ -593,6 +606,11 @@ export type Category_SizeResolvers<ContextType = any, ParentType extends Resolve
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   label?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   size?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CityResolvers<ContextType = any, ParentType extends ResolversParentTypes['City'] = ResolversParentTypes['City']> = {
+  city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -804,6 +822,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   catProducts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Product']>>>, ParentType, ContextType, RequireFields<QueryCatProductsArgs, 'id'>>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
   listCategory?: Resolver<Maybe<Array<Maybe<ResolversTypes['Category']>>>, ParentType, ContextType>;
+  listShops?: Resolver<Maybe<Array<Maybe<ResolversTypes['Shop']>>>, ParentType, ContextType, Partial<QueryListShopsArgs>>;
   login?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<QueryLoginArgs, 'user'>>;
   logout?: Resolver<Maybe<ResolversTypes['Logout']>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
@@ -926,6 +945,7 @@ export type Resolvers<ContextType = any> = {
   Byte?: GraphQLScalarType;
   Category?: CategoryResolvers<ContextType>;
   Category_size?: Category_SizeResolvers<ContextType>;
+  City?: CityResolvers<ContextType>;
   CountryCode?: GraphQLScalarType;
   Cuid?: GraphQLScalarType;
   Currency?: GraphQLScalarType;
