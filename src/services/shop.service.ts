@@ -1,15 +1,14 @@
-import datasource from "../lib/datasource";
-import Shop from "../entity/Shop";
-import { MutationAddShopArgs, ShopInput } from "../generated/graphql";
-import Address from "../entity/Address";
-
+import datasource from '../lib/datasource';
+import Shop from '../entity/Shop';
+import { MutationAddShopArgs, ShopInput } from '../generated/graphql';
+import Address from '../entity/Address';
 
 interface ICreateShop {
-  name: string,
-  roadNumber: number,
-  streetName: string,
-  city: string,
-  country: string
+  name: string;
+  roadNumber: number;
+  streetName: string;
+  city: string;
+  country: string;
 }
 class ShopService {
   shopRepository;
@@ -23,13 +22,15 @@ class ShopService {
     return await this.shopRepository.find();
   }
 
+  async findListShop(city: string): Promise<Shop[]> {
+    return await this.shopRepository.find({ where: { address: { city } } });
+  }
+
   async findShop(id: string) {
     return await this.shopRepository.findOneBy({ id });
   }
-  async createShop({
-    name,
-    address
-  }: ShopInput): Promise<Shop> {
+
+  async createShop({ name, address }: ShopInput): Promise<Shop> {
     const newAddress = await this.addressRepository.save(address);
     return await this.shopRepository.save({ name, address: newAddress });
   }
