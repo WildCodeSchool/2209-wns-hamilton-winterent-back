@@ -5,18 +5,18 @@ export default class Address {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   roadNumber: number;
 
-  @Column()
+  @Column({ nullable: true })
   streetName: string;
 
-  @Column()
+  @Column({ nullable: true })
   postalCode: string;
 
-  @Column()
+  @Column({ nullable: true })
   city: string;
 
-  @Column()
+  @Column({ nullable: true })
   country: string;
 }

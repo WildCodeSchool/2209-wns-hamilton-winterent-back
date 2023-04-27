@@ -5,7 +5,7 @@ type User {
   email: EmailAddress
   firstname: String!
   lastname: String!
-  password: String!
+  # password: String!
   gender: GenderType
   birthdate: Date
   phoneNumber: PhoneNumber
@@ -15,13 +15,11 @@ type User {
 
 type UpdateUserType {
   id: UUID!
-  email: EmailAddress
   firstname: String!
   lastname: String!
   gender: GenderType
   birthdate: Date
   phoneNumber: PhoneNumber
-  role: Role
   address: Address
 }
 
@@ -74,14 +72,12 @@ input CreateUser {
 
 input UpdateUserInput {
   id: UUID!
-  email: EmailAddress
   firstname: String!
   lastname: String!
-  password: String!
   gender: GenderType
   birthdate: Date
   phoneNumber: PhoneNumber
-  address: AddressInput
+  address: AddressUpdateInput
 }
 
 input LoginUser {
