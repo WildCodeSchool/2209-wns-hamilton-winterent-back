@@ -85,6 +85,14 @@ export type Address = {
   streetName?: Maybe<Scalars['String']>;
 };
 
+export type AddressInput = {
+  city: Scalars['String'];
+  country: Scalars['String'];
+  postalCode: Scalars['PostalCode'];
+  roadNumber: Scalars['Int'];
+  streetName: Scalars['String'];
+};
+
 export type Category = {
   __typename?: 'Category';
   category: Scalars['String'];
@@ -144,6 +152,7 @@ export type Mutation = {
   deleteShop?: Maybe<Scalars['String']>;
   updateProduct?: Maybe<Product>;
   updateShop?: Maybe<Shop>;
+  updateUser: UpdateUserType;
 };
 
 
@@ -193,6 +202,11 @@ export type MutationUpdateProductArgs = {
 export type MutationUpdateShopArgs = {
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUpdateUserArgs = {
+  user: UpdateUserInput;
 };
 
 export type Product = {
@@ -297,8 +311,34 @@ export type ShopInput = {
   name: Scalars['String'];
 };
 
+export type UpdateUserInput = {
+  address?: InputMaybe<AddressInput>;
+  birthdate?: InputMaybe<Scalars['Date']>;
+  email?: InputMaybe<Scalars['EmailAddress']>;
+  firstname: Scalars['String'];
+  gender?: InputMaybe<GenderType>;
+  id: Scalars['UUID'];
+  lastname: Scalars['String'];
+  password: Scalars['String'];
+  phoneNumber?: InputMaybe<Scalars['PhoneNumber']>;
+};
+
+export type UpdateUserType = {
+  __typename?: 'UpdateUserType';
+  address?: Maybe<Address>;
+  birthdate?: Maybe<Scalars['Date']>;
+  email?: Maybe<Scalars['EmailAddress']>;
+  firstname: Scalars['String'];
+  gender?: Maybe<GenderType>;
+  id: Scalars['UUID'];
+  lastname: Scalars['String'];
+  phoneNumber?: Maybe<Scalars['PhoneNumber']>;
+  role?: Maybe<Role>;
+};
+
 export type User = {
   __typename?: 'User';
+  address?: Maybe<Address>;
   birthdate?: Maybe<Scalars['Date']>;
   email?: Maybe<Scalars['EmailAddress']>;
   firstname: Scalars['String'];
@@ -394,6 +434,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']>;
   Address: ResolverTypeWrapper<Address>;
+  AddressInput: AddressInput;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
@@ -472,6 +513,8 @@ export type ResolversTypes = {
   UUID: ResolverTypeWrapper<Scalars['UUID']>;
   UnsignedFloat: ResolverTypeWrapper<Scalars['UnsignedFloat']>;
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']>;
+  UpdateUserInput: UpdateUserInput;
+  UpdateUserType: ResolverTypeWrapper<UpdateUserType>;
   User: ResolverTypeWrapper<User>;
   UserInfos: ResolverTypeWrapper<UserInfos>;
   UserMinimal: ResolverTypeWrapper<UserMinimal>;
@@ -483,6 +526,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   AccountNumber: Scalars['AccountNumber'];
   Address: Address;
+  AddressInput: AddressInput;
   BigInt: Scalars['BigInt'];
   Boolean: Scalars['Boolean'];
   Byte: Scalars['Byte'];
@@ -559,6 +603,8 @@ export type ResolversParentTypes = {
   UUID: Scalars['UUID'];
   UnsignedFloat: Scalars['UnsignedFloat'];
   UnsignedInt: Scalars['UnsignedInt'];
+  UpdateUserInput: UpdateUserInput;
+  UpdateUserType: UpdateUserType;
   User: User;
   UserInfos: UserInfos;
   UserMinimal: UserMinimal;
@@ -736,6 +782,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteShop?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationDeleteShopArgs, 'id'>>;
   updateProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id'>>;
   updateShop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'id'>>;
+  updateUser?: Resolver<ResolversTypes['UpdateUserType'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'user'>>;
 };
 
 export interface NegativeFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NegativeFloat'], any> {
@@ -892,7 +939,21 @@ export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<Resolve
   name: 'UnsignedInt';
 }
 
+export type UpdateUserTypeResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUserType'] = ResolversParentTypes['UpdateUserType']> = {
+  address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
+  birthdate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['EmailAddress']>, ParentType, ContextType>;
+  firstname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes['GenderType']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  lastname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<Maybe<ResolversTypes['PhoneNumber']>, ParentType, ContextType>;
+  role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
   birthdate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['EmailAddress']>, ParentType, ContextType>;
   firstname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -997,6 +1058,7 @@ export type Resolvers<ContextType = any> = {
   UUID?: GraphQLScalarType;
   UnsignedFloat?: GraphQLScalarType;
   UnsignedInt?: GraphQLScalarType;
+  UpdateUserType?: UpdateUserTypeResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserInfos?: UserInfosResolvers<ContextType>;
   UserMinimal?: UserMinimalResolvers<ContextType>;
