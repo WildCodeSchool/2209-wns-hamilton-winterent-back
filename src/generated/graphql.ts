@@ -109,6 +109,7 @@ export type CreateAddress = {
 
 export type CreateUser = {
   birthdate?: InputMaybe<Scalars['Date']>;
+  confirmPaswword: Scalars['String'];
   email: Scalars['EmailAddress'];
   firstname: Scalars['String'];
   gender?: InputMaybe<GenderType>;

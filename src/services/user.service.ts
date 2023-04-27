@@ -41,41 +41,46 @@ class UserService {
       lastname,
       email,
       password,
+      confirmPaswword,
       gender,
       role,
       birthdate,
       phoneNumber,
     } = args.user;
-    let hash = await bcrypt.hash(password, SALT_ROUND);
-    let token = generateToken({ email });
-    let roleEntity = await this.roleRepository.findOne({
-      where: { role },
-    });
-    if (!roleEntity) {
-      throw new Error("Le role n'existe pas");
+    if (password != confirmPaswword) {
+      throw new Error("Les mots de passes ne sont pas identiques");
+    } else {
+      let hash = await bcrypt.hash(password, SALT_ROUND);
+      let token = generateToken({ email });
+      let roleEntity = await this.roleRepository.findOne({
+        where: { role },
+      });
+      if (!roleEntity) {
+        throw new Error("Le role n'existe pas");
+      }
+
+      let user = await this.userRepository.save({
+        firstname,
+        lastname,
+        email,
+        password: hash,
+        gender,
+        birthdate,
+        phoneNumber,
+        role: roleEntity,
+      });
+
+      let result: UserInfos = {
+        user: {
+          id: user.id,
+          email: user.email,
+          firstname: user.firstname,
+        },
+        token: token,
+      };
+
+      return result;
     }
-
-    let user = await this.userRepository.save({
-      firstname,
-      lastname,
-      email,
-      password: hash,
-      gender,
-      birthdate,
-      phoneNumber,
-      role: roleEntity,
-    });
-
-    let result: UserInfos = {
-      user: {
-        id: user.id,
-        email: user.email,
-        firstname: user.firstname,
-      },
-      token: token,
-    };
-
-    return result;
   }
 
   async createUserAddress({ id, address }: MutationAddUserAddressArgs) {
