@@ -8,11 +8,17 @@ type Product {
   image: String
 }
 
+type ProductsFiltre {
+  category: Category
+  shop: Shop
+}
+
 # QUERY
 
 type Query {
   products: [Product]!
   product(id: UUID!): Product
+  productsFilter(idCategory: UUID, idShop: UUID): [Product]!
 }
 
 # MUTATIONS
