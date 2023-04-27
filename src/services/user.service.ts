@@ -41,13 +41,13 @@ class UserService {
       lastname,
       email,
       password,
-      confirmPaswword,
+      confirmPassword,
       gender,
       role,
       birthdate,
       phoneNumber,
     } = args.user;
-    if (password != confirmPaswword) {
+    if (password != confirmPassword) {
       throw new Error("Les mots de passes ne sont pas identiques");
     } else {
       let hash = await bcrypt.hash(password, SALT_ROUND);
