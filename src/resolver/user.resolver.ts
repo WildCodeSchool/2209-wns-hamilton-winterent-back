@@ -6,6 +6,7 @@ import {
   LoginUser,
   MutationAddUserAddressArgs,
   MutationAddUserArgs,
+  MutationUpdateUserArgs,
   QueryLoginArgs,
   UserInfos,
 } from "../generated/graphql";
@@ -74,5 +75,34 @@ export default {
         throw new Error("erreur");
       }
     },
+
+    //TODO
+    updateUser: async (_: any, args: MutationUpdateUserArgs) => {
+      // pass complete user
+      const { user } = args;
+      try {
+        // let data = await new UserService().updateUser(user);
+        // return data;
+      } catch (error) {
+        console.log("ERROR update");
+      }
+    },
+
+    // updateProduct: async (_: any, args: MutationUpdateProductArgs) => {
+    //   const { id, description, image, name, range } = args;
+    //   try {
+    //     let data = await new ProductService().updateProductById({
+    //       id,
+    //       description,
+    //       image,
+    //       name,
+    //       range,
+    //     });
+    //     return data;
+    //   } catch (error) {
+    //     console.log(error);
+    //     throw new Error("erreur");
+    //   }
+    // },
   },
 };

@@ -54,7 +54,7 @@ export default class User {
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, { eager: true })
   @JoinColumn()
   address: Address;
 }

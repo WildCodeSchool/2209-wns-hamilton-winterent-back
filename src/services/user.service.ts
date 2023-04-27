@@ -6,6 +6,7 @@ import { generateToken } from "../lib/utilities";
 import {
   MutationAddUserAddressArgs,
   MutationAddUserArgs,
+  MutationUpdateUserArgs,
   UserInfos,
 } from "../generated/graphql";
 import { Repository } from "typeorm";
@@ -98,6 +99,41 @@ class UserService {
     });
     await this.userRepository.update(id, { address: newAddress });
   }
+
+  async updateUser({ user }: MutationUpdateUserArgs) {
+    try {
+      const currentUser = this.findUser(user.id);
+      if (!user) {
+        throw new Error("Utilisateur introuvable");
+      }
+      //await this.userRepository.update(id, {});
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  // async updateProductById({
+  //   id,
+  //   description,
+  //   image,
+  //   name,
+  //   range,
+  // }: MutationUpdateProductArgs): Promise<void> {
+  //   try {
+  //     const newProduct = this.findProductById(id);
+  //     if (!newProduct) {
+  //       throw new Error(" le produit n'existe pas");
+  //     }
+  //     await this.repository.update(id, {
+  //       description,
+  //       image,
+  //       name,
+  //       range,
+  //     });
+  //   } catch (error: any) {
+  //     throw new Error(error);
+  //   }
+  // }
 }
 
 export default UserService;
