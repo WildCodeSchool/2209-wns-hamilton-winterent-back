@@ -6,6 +6,7 @@ import { generateToken } from "../lib/utilities";
 import {
   MutationAddUserAddressArgs,
   MutationAddUserArgs,
+  MutationUpdateUserArgs,
   UserInfos,
 } from "../generated/graphql";
 import { Repository } from "typeorm";
@@ -41,41 +42,46 @@ class UserService {
       lastname,
       email,
       password,
+      confirmPassword,
       gender,
       role,
       birthdate,
       phoneNumber,
     } = args.user;
-    let hash = await bcrypt.hash(password, SALT_ROUND);
-    let token = generateToken({ email });
-    let roleEntity = await this.roleRepository.findOne({
-      where: { role },
-    });
-    if (!roleEntity) {
-      throw new Error("Le role n'existe pas");
+    if (password != confirmPassword) {
+      throw new Error("Les mots de passes ne sont pas identiques");
+    } else {
+      let hash = await bcrypt.hash(password, SALT_ROUND);
+      let token = generateToken({ email });
+      let roleEntity = await this.roleRepository.findOne({
+        where: { role },
+      });
+      if (!roleEntity) {
+        throw new Error("Le role n'existe pas");
+      }
+
+      let user = await this.userRepository.save({
+        firstname,
+        lastname,
+        email,
+        password: hash,
+        gender,
+        birthdate,
+        phoneNumber,
+        role: roleEntity,
+      });
+
+      let result: UserInfos = {
+        user: {
+          id: user.id,
+          email: user.email,
+          firstname: user.firstname,
+        },
+        token: token,
+      };
+
+      return result;
     }
-
-    let user = await this.userRepository.save({
-      firstname,
-      lastname,
-      email,
-      password: hash,
-      gender,
-      birthdate,
-      phoneNumber,
-      role: roleEntity,
-    });
-
-    let result: UserInfos = {
-      user: {
-        id: user.id,
-        email: user.email,
-        firstname: user.firstname,
-      },
-      token: token,
-    };
-
-    return result;
   }
 
   async createUserAddress({ id, address }: MutationAddUserAddressArgs) {
@@ -92,6 +98,18 @@ class UserService {
       country: address.country,
     });
     await this.userRepository.update(id, { address: newAddress });
+  }
+
+  async updateUser({ user }: MutationUpdateUserArgs) {
+    try {
+      const currentUser = this.findUser(user.id);
+      if (!user) {
+        throw new Error("Utilisateur introuvable");
+      }
+      //await this.userRepository.update(id, {});
+    } catch (error: any) {
+      throw new Error(error);
+    }
   }
 }
 

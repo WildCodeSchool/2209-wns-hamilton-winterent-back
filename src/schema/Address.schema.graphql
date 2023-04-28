@@ -18,3 +18,11 @@ input CreateAddress {
   postalCode: PostalCode!
   country: String!
 }
+
+input AddressInput {
+  roadNumber: Int!
+  streetName: String!
+  city: String!
+  postalCode: PostalCode!
+  country: String!
+}

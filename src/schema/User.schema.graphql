@@ -10,6 +10,19 @@ type User {
   birthdate: Date
   phoneNumber: PhoneNumber
   role: Role
+  address: Address
+}
+
+type UpdateUserType {
+  id: UUID!
+  email: EmailAddress
+  firstname: String!
+  lastname: String!
+  gender: GenderType
+  birthdate: Date
+  phoneNumber: PhoneNumber
+  role: Role
+  address: Address
 }
 
 type UserMinimal {
@@ -53,10 +66,23 @@ input CreateUser {
   firstname: String!
   lastname: String!
   password: String!
+  confirmPassword: String!
   gender: GenderType
   role: RoleType
   phoneNumber: PhoneNumber
   birthdate: Date
+}
+
+input UpdateUserInput {
+  id: UUID!
+  email: EmailAddress
+  firstname: String!
+  lastname: String!
+  password: String!
+  gender: GenderType
+  birthdate: Date
+  phoneNumber: PhoneNumber
+  address: AddressInput
 }
 
 input LoginUser {
@@ -78,4 +104,5 @@ type Query {
 type Mutation {
   addUser(user: CreateUser!): UserInfos!
   addUserAddress(id: UUID!, address: CreateAddress!): Address
+  updateUser(user: UpdateUserInput!): UpdateUserType!
 }
