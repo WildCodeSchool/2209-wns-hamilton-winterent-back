@@ -1,15 +1,20 @@
-import datasource from "../lib/datasource";
-import Product from "../entity/Product";
+import datasource from '../lib/datasource';
+import Product from '../entity/Product';
 import {
   MutationAddProductArgs,
   MutationUpdateProductArgs,
-} from "../generated/graphql";
-import { ApolloError } from "apollo-server";
+} from '../generated/graphql';
 
 class ProductService {
   repository;
   constructor() {
     this.repository = datasource.getRepository(Product);
+  }
+
+  async findFilterProducts(idCategory: string, idShop: string): Promise<Product[]> {
+    return await this.repository.find({
+      where: [{category: {id: idCategory}}, { productToShops: { shop: { id: idShop } } }],
+    });
   }
 
   async createProduct({
@@ -68,7 +73,7 @@ class ProductService {
   }
 
   async findAll(): Promise<Product[]> {
-    console.log("TEST");
+    console.log('TEST');
     let test = await this.repository.find();
 
     return test;
