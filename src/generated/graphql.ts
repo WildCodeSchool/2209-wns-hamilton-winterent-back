@@ -80,17 +80,18 @@ export type Address = {
   city?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
-  postalCode: Scalars['PostalCode'];
+  postalCode?: Maybe<Scalars['PostalCode']>;
   roadNumber?: Maybe<Scalars['Int']>;
   streetName?: Maybe<Scalars['String']>;
 };
 
-export type AddressInput = {
-  city: Scalars['String'];
-  country: Scalars['String'];
-  postalCode: Scalars['PostalCode'];
-  roadNumber: Scalars['Int'];
-  streetName: Scalars['String'];
+export type AddressUpdateInput = {
+  city?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  postalCode?: InputMaybe<Scalars['PostalCode']>;
+  roadNumber?: InputMaybe<Scalars['Int']>;
+  streetName?: InputMaybe<Scalars['String']>;
 };
 
 export type Category = {
@@ -108,11 +109,11 @@ export type Category_Size = {
 };
 
 export type CreateAddress = {
-  city: Scalars['String'];
-  country: Scalars['String'];
-  postalCode: Scalars['PostalCode'];
-  roadNumber: Scalars['Int'];
-  streetName: Scalars['String'];
+  city?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  postalCode?: InputMaybe<Scalars['PostalCode']>;
+  roadNumber?: InputMaybe<Scalars['Int']>;
+  streetName?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateUser = {
@@ -326,14 +327,13 @@ export type ShopInput = {
 };
 
 export type UpdateUserInput = {
-  address?: InputMaybe<AddressInput>;
+  address?: InputMaybe<AddressUpdateInput>;
   birthdate?: InputMaybe<Scalars['Date']>;
-  email?: InputMaybe<Scalars['EmailAddress']>;
+  email?: InputMaybe<Scalars['String']>;
   firstname: Scalars['String'];
   gender?: InputMaybe<GenderType>;
   id: Scalars['UUID'];
   lastname: Scalars['String'];
-  password: Scalars['String'];
   phoneNumber?: InputMaybe<Scalars['PhoneNumber']>;
 };
 
@@ -341,13 +341,11 @@ export type UpdateUserType = {
   __typename?: 'UpdateUserType';
   address?: Maybe<Address>;
   birthdate?: Maybe<Scalars['Date']>;
-  email?: Maybe<Scalars['EmailAddress']>;
   firstname: Scalars['String'];
   gender?: Maybe<GenderType>;
   id: Scalars['UUID'];
   lastname: Scalars['String'];
   phoneNumber?: Maybe<Scalars['PhoneNumber']>;
-  role?: Maybe<Role>;
 };
 
 export type User = {
@@ -359,7 +357,6 @@ export type User = {
   gender?: Maybe<GenderType>;
   id: Scalars['UUID'];
   lastname: Scalars['String'];
-  password: Scalars['String'];
   phoneNumber?: Maybe<Scalars['PhoneNumber']>;
   role?: Maybe<Role>;
 };
@@ -448,7 +445,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']>;
   Address: ResolverTypeWrapper<Address>;
-  AddressInput: AddressInput;
+  AddressUpdateInput: AddressUpdateInput;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
@@ -541,7 +538,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   AccountNumber: Scalars['AccountNumber'];
   Address: Address;
-  AddressInput: AddressInput;
+  AddressUpdateInput: AddressUpdateInput;
   BigInt: Scalars['BigInt'];
   Boolean: Scalars['Boolean'];
   Byte: Scalars['Byte'];
@@ -636,7 +633,7 @@ export type AddressResolvers<ContextType = any, ParentType extends ResolversPare
   city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  postalCode?: Resolver<ResolversTypes['PostalCode'], ParentType, ContextType>;
+  postalCode?: Resolver<Maybe<ResolversTypes['PostalCode']>, ParentType, ContextType>;
   roadNumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   streetName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -965,13 +962,11 @@ export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<Resolve
 export type UpdateUserTypeResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUserType'] = ResolversParentTypes['UpdateUserType']> = {
   address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
   birthdate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  email?: Resolver<Maybe<ResolversTypes['EmailAddress']>, ParentType, ContextType>;
   firstname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes['GenderType']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   lastname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['PhoneNumber']>, ParentType, ContextType>;
-  role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -983,7 +978,6 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   gender?: Resolver<Maybe<ResolversTypes['GenderType']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   lastname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['PhoneNumber']>, ParentType, ContextType>;
   role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

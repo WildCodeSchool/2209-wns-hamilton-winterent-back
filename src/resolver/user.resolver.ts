@@ -76,13 +76,11 @@ export default {
       }
     },
 
-    //TODO
     updateUser: async (_: any, args: MutationUpdateUserArgs) => {
-      // pass complete user
-      const { user } = args;
       try {
-        // let data = await new UserService().updateUser(user);
-        // return data;
+        let data = await new UserService().updateUser(args);
+        console.log("resolver success ", data);
+        return data;
       } catch (error) {
         console.log("ERROR update");
       }

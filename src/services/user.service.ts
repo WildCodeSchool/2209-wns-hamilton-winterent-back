@@ -11,6 +11,7 @@ import {
 } from "../generated/graphql";
 import { Repository } from "typeorm";
 import Address from "../entity/Address";
+import AddressService from "./address.service";
 
 const SALT_ROUND = 10;
 
@@ -18,10 +19,12 @@ class UserService {
   userRepository: Repository<User>;
   addressRepository: Repository<Address>;
   roleRepository: Repository<Role>;
+  addressService: AddressService;
   constructor() {
     this.userRepository = datasource.getRepository(User);
     this.addressRepository = datasource.getRepository(Address);
     this.roleRepository = datasource.getRepository(Role);
+    this.addressService = new AddressService();
   }
 
   async findUser(id: string) {
@@ -100,14 +103,65 @@ class UserService {
     await this.userRepository.update(id, { address: newAddress });
   }
 
-  async updateUser({ user }: MutationUpdateUserArgs) {
+  async updateUser(user: MutationUpdateUserArgs) {
+    const {
+      user: {
+        id,
+        firstname,
+        lastname,
+        birthdate,
+        address,
+        gender,
+        phoneNumber,
+      },
+    } = user;
     try {
-      const currentUser = this.findUser(user.id);
-      if (!user) {
+      const currentUser = await this.findUser(id);
+      if (!currentUser) {
         throw new Error("Utilisateur introuvable");
       }
-      //await this.userRepository.update(id, {});
+      await this.userRepository.update(id, {
+        firstname,
+        lastname,
+        birthdate,
+        gender,
+        phoneNumber,
+      });
+      if (address) {
+        if (currentUser.address) {
+          const currentAddress = await this.addressService.getById(
+            currentUser.address.id
+          );
+
+          //sinon on update l'addresse existante
+          const { city, country, streetName, postalCode, roadNumber } = address;
+          await this.addressRepository.update(currentAddress.id, {
+            city,
+            country,
+            streetName,
+            postalCode,
+            roadNumber,
+          });
+        } else {
+          // Si pas d'adresse existante alors on crée une nouvelle addresse pour le user
+          const newAddress: MutationAddUserAddressArgs = {
+            id: id,
+            address: {
+              streetName: address.streetName,
+              roadNumber: address.roadNumber,
+              postalCode: address.postalCode,
+              country: address.country,
+              city: address.city,
+            },
+          };
+          await this.createUserAddress(newAddress);
+        }
+      }
+      const result = await this.findUser(id);
+      console.log(result);
+      return result;
     } catch (error: any) {
+      console.log(error);
       throw new Error(error);
     }
   }
