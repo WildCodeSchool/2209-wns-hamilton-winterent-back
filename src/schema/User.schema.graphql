@@ -74,6 +74,7 @@ input UpdateUserInput {
   id: UUID!
   firstname: String!
   lastname: String!
+  email: String
   gender: GenderType
   birthdate: Date
   phoneNumber: PhoneNumber

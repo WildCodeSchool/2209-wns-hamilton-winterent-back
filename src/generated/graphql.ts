@@ -315,6 +315,7 @@ export type ShopInput = {
 export type UpdateUserInput = {
   address?: InputMaybe<AddressUpdateInput>;
   birthdate?: InputMaybe<Scalars['Date']>;
+  email?: InputMaybe<Scalars['String']>;
   firstname: Scalars['String'];
   gender?: InputMaybe<GenderType>;
   id: Scalars['UUID'];
