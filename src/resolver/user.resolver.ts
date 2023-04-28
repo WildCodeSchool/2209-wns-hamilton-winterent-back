@@ -87,22 +87,5 @@ export default {
         console.log("ERROR update");
       }
     },
-
-    // updateProduct: async (_: any, args: MutationUpdateProductArgs) => {
-    //   const { id, description, image, name, range } = args;
-    //   try {
-    //     let data = await new ProductService().updateProductById({
-    //       id,
-    //       description,
-    //       image,
-    //       name,
-    //       range,
-    //     });
-    //     return data;
-    //   } catch (error) {
-    //     console.log(error);
-    //     throw new Error("erreur");
-    //   }
-    // },
   },
 };

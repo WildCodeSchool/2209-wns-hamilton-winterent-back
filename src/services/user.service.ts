@@ -111,29 +111,6 @@ class UserService {
       throw new Error(error);
     }
   }
-
-  // async updateProductById({
-  //   id,
-  //   description,
-  //   image,
-  //   name,
-  //   range,
-  // }: MutationUpdateProductArgs): Promise<void> {
-  //   try {
-  //     const newProduct = this.findProductById(id);
-  //     if (!newProduct) {
-  //       throw new Error(" le produit n'existe pas");
-  //     }
-  //     await this.repository.update(id, {
-  //       description,
-  //       image,
-  //       name,
-  //       range,
-  //     });
-  //   } catch (error: any) {
-  //     throw new Error(error);
-  //   }
-  // }
 }
 
 export default UserService;
