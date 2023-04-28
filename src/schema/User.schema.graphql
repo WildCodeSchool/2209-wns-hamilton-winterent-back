@@ -64,6 +64,7 @@ input CreateUser {
   firstname: String!
   lastname: String!
   password: String!
+  confirmPassword: String!
   gender: GenderType
   role: RoleType
   phoneNumber: PhoneNumber
