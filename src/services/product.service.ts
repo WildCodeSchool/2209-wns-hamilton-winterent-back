@@ -11,10 +11,24 @@ class ProductService {
     this.repository = datasource.getRepository(Product);
   }
 
-  async findFilterProducts(idCategory: string, idShop: string): Promise<Product[]> {
-    return await this.repository.find({
-      where: [{category: {id: idCategory}}, { productToShops: { shop: { id: idShop } } }],
-    });
+  // async findFilterProducts(idCategory: string, idShop: string): Promise<Product[]> {
+  //   return await this.repository.find({
+  //     where: [{category: {id: idCategory}}, { productToShops: { shop: { id: idShop } } }],
+  //   });
+  // }
+
+  async findFilterProducts(
+    idCategory: string,
+    idShop: string
+  ): Promise<Product[]> {
+    return await this.repository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoin('product.productToShops', 'productToShops')
+      .leftJoin('productToShops.shop', 'shop')
+      .where('category.id = :idCategory', { idCategory })
+      .andWhere('shop.id = :idShop', { idShop })
+      .getMany();
   }
 
   async createProduct({
