@@ -98,6 +98,7 @@ export type Booking = {
   __typename?: 'Booking';
   endDate?: Maybe<Scalars['Date']>;
   id?: Maybe<Scalars['UUID']>;
+  price?: Maybe<Scalars['Int']>;
   product?: Maybe<ProductBooking>;
   productInfos?: Maybe<ProductBookingInfos>;
   startDate?: Maybe<Scalars['Date']>;
@@ -105,8 +106,8 @@ export type Booking = {
 
 export type BookingInput = {
   endDate?: InputMaybe<Scalars['Date']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  product?: InputMaybe<ProductBookingInput>;
+  productId?: InputMaybe<ProductId>;
+  shopId?: InputMaybe<Scalars['UUID']>;
   startDate?: InputMaybe<Scalars['Date']>;
 };
 
@@ -244,6 +245,7 @@ export type Order = {
 
 export type OrderInput = {
   bookings?: InputMaybe<Array<InputMaybe<BookingInput>>>;
+  userId?: InputMaybe<Scalars['UUID']>;
 };
 
 export type Product = {
@@ -276,6 +278,10 @@ export type ProductBookingInput = {
   range?: InputMaybe<Scalars['String']>;
 };
 
+export type ProductId = {
+  id?: InputMaybe<Scalars['UUID']>;
+};
+
 export type ProductsFiltre = {
   __typename?: 'ProductsFiltre';
   category?: Maybe<Category>;
@@ -293,6 +299,8 @@ export type Query = {
   cat?: Maybe<Category>;
   catProducts?: Maybe<Array<Maybe<Product>>>;
   category?: Maybe<Category>;
+  getOrderById: Order;
+  getOrderByUserId: Array<Order>;
   listCategory?: Maybe<Array<Maybe<Category>>>;
   listShop: Array<Maybe<Shop>>;
   login: UserInfos;
@@ -319,6 +327,16 @@ export type QueryCatProductsArgs = {
 
 export type QueryCategoryArgs = {
   id: Scalars['UUID'];
+};
+
+
+export type QueryGetOrderByIdArgs = {
+  orderId?: InputMaybe<Scalars['UUID']>;
+};
+
+
+export type QueryGetOrderByUserIdArgs = {
+  userId?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -572,6 +590,7 @@ export type ResolversTypes = {
   ProductBooking: ResolverTypeWrapper<ProductBooking>;
   ProductBookingInfos: ResolverTypeWrapper<ProductBookingInfos>;
   ProductBookingInput: ProductBookingInput;
+  ProductId: ProductId;
   ProductsFiltre: ResolverTypeWrapper<ProductsFiltre>;
   Quantity_size: ResolverTypeWrapper<Quantity_Size>;
   Query: ResolverTypeWrapper<{}>;
@@ -672,6 +691,7 @@ export type ResolversParentTypes = {
   ProductBooking: ProductBooking;
   ProductBookingInfos: ProductBookingInfos;
   ProductBookingInput: ProductBookingInput;
+  ProductId: ProductId;
   ProductsFiltre: ProductsFiltre;
   Quantity_size: Quantity_Size;
   Query: {};
@@ -723,6 +743,7 @@ export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 export type BookingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']> = {
   endDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['ProductBooking']>, ParentType, ContextType>;
   productInfos?: Resolver<Maybe<ResolversTypes['ProductBookingInfos']>, ParentType, ContextType>;
   startDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
@@ -985,6 +1006,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   cat?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCatArgs, 'category'>>;
   catProducts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Product']>>>, ParentType, ContextType, RequireFields<QueryCatProductsArgs, 'id'>>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
+  getOrderById?: Resolver<ResolversTypes['Order'], ParentType, ContextType, Partial<QueryGetOrderByIdArgs>>;
+  getOrderByUserId?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryGetOrderByUserIdArgs>>;
   listCategory?: Resolver<Maybe<Array<Maybe<ResolversTypes['Category']>>>, ParentType, ContextType>;
   listShop?: Resolver<Array<Maybe<ResolversTypes['Shop']>>, ParentType, ContextType, RequireFields<QueryListShopArgs, 'city'>>;
   login?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<QueryLoginArgs, 'user'>>;

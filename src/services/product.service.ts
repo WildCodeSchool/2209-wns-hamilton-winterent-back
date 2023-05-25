@@ -1,34 +1,40 @@
-import datasource from "../lib/datasource";
-import Product from "../entity/Product";
+import datasource from '../lib/datasource';
+import Product from '../entity/Product';
 import {
   MutationAddProductArgs,
   MutationUpdateProductArgs,
-} from "../generated/graphql";
+} from '../generated/graphql';
+import ProductToShop from '../entity/Product_shop';
 
 class ProductService {
   repository;
+  productShopRepository;
   constructor() {
     this.repository = datasource.getRepository(Product);
+    this.productShopRepository = datasource.getRepository(ProductToShop);
   }
-
-  // async findFilterProducts(idCategory: string, idShop: string): Promise<Product[]> {
-  //   return await this.repository.find({
-  //     where: [{category: {id: idCategory}}, { productToShops: { shop: { id: idShop } } }],
-  //   });
-  // }
 
   async findFilterProducts(
     idCategory: string,
     idShop: string
   ): Promise<Product[]> {
     return await this.repository
-      .createQueryBuilder("product")
-      .leftJoinAndSelect("product.category", "category")
-      .leftJoin("product.productToShops", "productToShops")
-      .leftJoin("productToShops.shop", "shop")
-      .where("category.id = :idCategory", { idCategory })
-      .andWhere("shop.id = :idShop", { idShop })
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoin('product.productToShops', 'productToShops')
+      .leftJoin('productToShops.shop', 'shop')
+      .where('category.id = :idCategory', { idCategory })
+      .andWhere('shop.id = :idShop', { idShop })
       .getMany();
+  }
+
+  async findProductPriceById(productId: string, shopId: string) {
+    //let produit = await this.findProductById(id)
+    return await this.productShopRepository
+      .createQueryBuilder('productToShops')
+      .where('productToShops.productId = :productId', { productId })
+      .andWhere('productToShops.shopId = :shopId', { shopId })
+      .getOne();
   }
 
   async createProduct({

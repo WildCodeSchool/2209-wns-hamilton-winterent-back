@@ -10,6 +10,7 @@ type Booking {
   id: UUID
   startDate: Date
   endDate: Date
+  price: Int
   product: ProductBooking
   productInfos: ProductBookingInfos
 }
@@ -17,18 +18,27 @@ type Booking {
 # INPUTS : Valeurs utilisées en arguments des mutations ou query
 
 input BookingInput {
-  id: UUID
+  shopId: UUID
   startDate: Date
   endDate: Date
-  product: ProductBookingInput
-  #   productInfos: ProductBookingInfos
+  productId: ProductId
+}
+
+input ProductId {
+  id: UUID
 }
 
 input OrderInput {
+  userId: UUID
   bookings: [BookingInput]
 }
 
 # MUTATIONS
+
+type Query {
+  getOrderById(orderId: UUID): Order!
+  getOrderByUserId(userId: UUID): [Order!]!
+}
 
 type Mutation {
   addOrder(orderInfos: OrderInput!): Order

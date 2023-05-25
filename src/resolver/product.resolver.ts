@@ -8,7 +8,7 @@ import ProductService from '../services/product.service';
 
 export default {
   Query: {
-    products: async (_: any, args: any) => {
+    products: async () => {
       return await new ProductService().findAll();
     },
 

@@ -1,7 +1,8 @@
-import Booking from "../entity/Booking";
-import Order from "../entity/Order";
-import { OrderInput } from "../generated/graphql";
-import datasource from "../lib/datasource";
+import Booking from '../entity/Booking';
+import Order from '../entity/Order';
+import { OrderInput } from '../generated/graphql';
+import datasource from '../lib/datasource';
+import ProductService from './product.service';
 
 class OrderService {
   orderRepository;
@@ -16,30 +17,39 @@ class OrderService {
     return await this.orderRepository.findOneBy({ id });
   }
 
-  async createOrder({ bookings }: OrderInput): Promise<Order | undefined> {
+  async findOrderByUserId(id: string) {
+    return await this.orderRepository.find({ where: { user: { id: id } } });
+  }
+
+  async createOrder({
+    bookings,
+    userId,
+  }: OrderInput): Promise<Order | undefined> {
     if (bookings) {
       let newOrder = await this.orderRepository.save({
+        user: { id: userId },
         date: new Date(),
       });
 
       let finalOrder = await this.findOrderById(newOrder.id);
-      console.log("final order", finalOrder);
 
-      console.log("bookings", bookings);
       for (let i = 0; i < bookings.length; i++) {
         if (finalOrder) {
-          const newBooking = await this.bookingRepository.save({
+          const productShop = await new ProductService().findProductPriceById(
+            bookings[i]?.productId?.id,
+            bookings[i]?.shopId
+          );
+          await this.bookingRepository.save({
             startDate: bookings[i]?.startDate,
             endDate: bookings[i]?.endDate,
-            product: bookings[i]?.product,
+            product: bookings[i]?.productId,
+            price: productShop?.priceHT,
             order: finalOrder,
           });
-          console.log("saveBooking", newBooking);
         }
       }
 
       let result = await this.findOrderById(newOrder.id);
-      console.log("final order", result);
 
       if (result) return result;
     }
