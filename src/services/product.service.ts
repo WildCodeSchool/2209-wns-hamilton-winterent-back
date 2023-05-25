@@ -1,9 +1,9 @@
-import datasource from '../lib/datasource';
-import Product from '../entity/Product';
+import datasource from "../lib/datasource";
+import Product from "../entity/Product";
 import {
   MutationAddProductArgs,
   MutationUpdateProductArgs,
-} from '../generated/graphql';
+} from "../generated/graphql";
 
 class ProductService {
   repository;
@@ -22,12 +22,12 @@ class ProductService {
     idShop: string
   ): Promise<Product[]> {
     return await this.repository
-      .createQueryBuilder('product')
-      .leftJoinAndSelect('product.category', 'category')
-      .leftJoin('product.productToShops', 'productToShops')
-      .leftJoin('productToShops.shop', 'shop')
-      .where('category.id = :idCategory', { idCategory })
-      .andWhere('shop.id = :idShop', { idShop })
+      .createQueryBuilder("product")
+      .leftJoinAndSelect("product.category", "category")
+      .leftJoin("product.productToShops", "productToShops")
+      .leftJoin("productToShops.shop", "shop")
+      .where("category.id = :idCategory", { idCategory })
+      .andWhere("shop.id = :idShop", { idShop })
       .getMany();
   }
 
@@ -87,7 +87,6 @@ class ProductService {
   }
 
   async findAll(): Promise<Product[]> {
-    console.log('TEST');
     let test = await this.repository.find();
 
     return test;

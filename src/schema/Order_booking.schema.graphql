@@ -1,0 +1,43 @@
+type Order {
+  id: UUID!
+  date: Date!
+  status: StatusType!
+  user: User
+  bookings: [Booking!]!
+}
+
+type Booking {
+  id: UUID
+  startDate: Date
+  endDate: Date
+  product: ProductBooking
+  productInfos: ProductBookingInfos
+}
+
+# INPUTS : Valeurs utilisées en arguments des mutations ou query
+
+input BookingInput {
+  id: UUID
+  startDate: Date
+  endDate: Date
+  product: ProductBookingInput
+  #   productInfos: ProductBookingInfos
+}
+
+input OrderInput {
+  bookings: [BookingInput]
+}
+
+# MUTATIONS
+
+type Mutation {
+  addOrder(orderInfos: OrderInput!): Order
+}
+
+# ENUM : Déclaré dans graphql directement et utilisé dans l'entité USER
+
+enum StatusType {
+  INPROGRESS
+  CANCEL
+  DONE
+}

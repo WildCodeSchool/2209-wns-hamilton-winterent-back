@@ -94,6 +94,22 @@ export type AddressUpdateInput = {
   streetName?: InputMaybe<Scalars['String']>;
 };
 
+export type Booking = {
+  __typename?: 'Booking';
+  endDate?: Maybe<Scalars['Date']>;
+  id?: Maybe<Scalars['UUID']>;
+  product?: Maybe<ProductBooking>;
+  productInfos?: Maybe<ProductBookingInfos>;
+  startDate?: Maybe<Scalars['Date']>;
+};
+
+export type BookingInput = {
+  endDate?: InputMaybe<Scalars['Date']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  product?: InputMaybe<ProductBookingInput>;
+  startDate?: InputMaybe<Scalars['Date']>;
+};
+
 export type Category = {
   __typename?: 'Category';
   category: Scalars['String'];
@@ -146,6 +162,7 @@ export type Logout = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addOrder?: Maybe<Order>;
   addProduct?: Maybe<Product>;
   addShop?: Maybe<Shop>;
   addUser: UserInfos;
@@ -155,6 +172,11 @@ export type Mutation = {
   updateProduct?: Maybe<Product>;
   updateShop?: Maybe<Shop>;
   updateUser: UpdateUserType;
+};
+
+
+export type MutationAddOrderArgs = {
+  orderInfos: OrderInput;
 };
 
 
@@ -211,6 +233,19 @@ export type MutationUpdateUserArgs = {
   user: UpdateUserInput;
 };
 
+export type Order = {
+  __typename?: 'Order';
+  bookings: Array<Booking>;
+  date: Scalars['Date'];
+  id: Scalars['UUID'];
+  status: StatusType;
+  user?: Maybe<User>;
+};
+
+export type OrderInput = {
+  bookings?: InputMaybe<Array<InputMaybe<BookingInput>>>;
+};
+
 export type Product = {
   __typename?: 'Product';
   description: Scalars['String'];
@@ -218,6 +253,27 @@ export type Product = {
   image?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   range: Scalars['String'];
+};
+
+export type ProductBooking = {
+  __typename?: 'ProductBooking';
+  id: Scalars['UUID'];
+  image?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  productShopId?: Maybe<Scalars['UUID']>;
+  range?: Maybe<Scalars['String']>;
+};
+
+export type ProductBookingInfos = {
+  __typename?: 'ProductBookingInfos';
+  priceHT?: Maybe<Scalars['Int']>;
+};
+
+export type ProductBookingInput = {
+  id: Scalars['UUID'];
+  image?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  range?: InputMaybe<Scalars['String']>;
 };
 
 export type ProductsFiltre = {
@@ -325,6 +381,12 @@ export type ShopInput = {
   address: CreateAddress;
   name: Scalars['String'];
 };
+
+export enum StatusType {
+  Cancel = 'CANCEL',
+  Done = 'DONE',
+  Inprogress = 'INPROGRESS'
+}
 
 export type UpdateUserInput = {
   address?: InputMaybe<AddressUpdateInput>;
@@ -447,6 +509,8 @@ export type ResolversTypes = {
   Address: ResolverTypeWrapper<Address>;
   AddressUpdateInput: AddressUpdateInput;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
+  Booking: ResolverTypeWrapper<Booking>;
+  BookingInput: BookingInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
   Category: ResolverTypeWrapper<Category>;
@@ -497,12 +561,17 @@ export type ResolversTypes = {
   NonPositiveFloat: ResolverTypeWrapper<Scalars['NonPositiveFloat']>;
   NonPositiveInt: ResolverTypeWrapper<Scalars['NonPositiveInt']>;
   ObjectID: ResolverTypeWrapper<Scalars['ObjectID']>;
+  Order: ResolverTypeWrapper<Order>;
+  OrderInput: OrderInput;
   PhoneNumber: ResolverTypeWrapper<Scalars['PhoneNumber']>;
   Port: ResolverTypeWrapper<Scalars['Port']>;
   PositiveFloat: ResolverTypeWrapper<Scalars['PositiveFloat']>;
   PositiveInt: ResolverTypeWrapper<Scalars['PositiveInt']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']>;
   Product: ResolverTypeWrapper<Product>;
+  ProductBooking: ResolverTypeWrapper<ProductBooking>;
+  ProductBookingInfos: ResolverTypeWrapper<ProductBookingInfos>;
+  ProductBookingInput: ProductBookingInput;
   ProductsFiltre: ResolverTypeWrapper<ProductsFiltre>;
   Quantity_size: ResolverTypeWrapper<Quantity_Size>;
   Query: ResolverTypeWrapper<{}>;
@@ -516,6 +585,7 @@ export type ResolversTypes = {
   Shop: ResolverTypeWrapper<Shop>;
   ShopAdress: ResolverTypeWrapper<ShopAdress>;
   ShopInput: ShopInput;
+  StatusType: StatusType;
   String: ResolverTypeWrapper<Scalars['String']>;
   Time: ResolverTypeWrapper<Scalars['Time']>;
   TimeZone: ResolverTypeWrapper<Scalars['TimeZone']>;
@@ -540,6 +610,8 @@ export type ResolversParentTypes = {
   Address: Address;
   AddressUpdateInput: AddressUpdateInput;
   BigInt: Scalars['BigInt'];
+  Booking: Booking;
+  BookingInput: BookingInput;
   Boolean: Scalars['Boolean'];
   Byte: Scalars['Byte'];
   Category: Category;
@@ -589,12 +661,17 @@ export type ResolversParentTypes = {
   NonPositiveFloat: Scalars['NonPositiveFloat'];
   NonPositiveInt: Scalars['NonPositiveInt'];
   ObjectID: Scalars['ObjectID'];
+  Order: Order;
+  OrderInput: OrderInput;
   PhoneNumber: Scalars['PhoneNumber'];
   Port: Scalars['Port'];
   PositiveFloat: Scalars['PositiveFloat'];
   PositiveInt: Scalars['PositiveInt'];
   PostalCode: Scalars['PostalCode'];
   Product: Product;
+  ProductBooking: ProductBooking;
+  ProductBookingInfos: ProductBookingInfos;
+  ProductBookingInput: ProductBookingInput;
   ProductsFiltre: ProductsFiltre;
   Quantity_size: Quantity_Size;
   Query: {};
@@ -642,6 +719,15 @@ export type AddressResolvers<ContextType = any, ParentType extends ResolversPare
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
   name: 'BigInt';
 }
+
+export type BookingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']> = {
+  endDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  product?: Resolver<Maybe<ResolversTypes['ProductBooking']>, ParentType, ContextType>;
+  productInfos?: Resolver<Maybe<ResolversTypes['ProductBookingInfos']>, ParentType, ContextType>;
+  startDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Byte'], any> {
   name: 'Byte';
@@ -787,6 +873,7 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addOrder?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<MutationAddOrderArgs, 'orderInfos'>>;
   addProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationAddProductArgs, 'description' | 'name' | 'range'>>;
   addShop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<MutationAddShopArgs, 'shop'>>;
   addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'user'>>;
@@ -830,6 +917,15 @@ export interface ObjectIdScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'ObjectID';
 }
 
+export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
+  bookings?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
+  date?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['StatusType'], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PhoneNumber'], any> {
   name: 'PhoneNumber';
 }
@@ -856,6 +952,20 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   range?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProductBookingResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductBooking'] = ResolversParentTypes['ProductBooking']> = {
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  productShopId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  range?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProductBookingInfosResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductBookingInfos'] = ResolversParentTypes['ProductBookingInfos']> = {
+  priceHT?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1008,6 +1118,7 @@ export type Resolvers<ContextType = any> = {
   AccountNumber?: GraphQLScalarType;
   Address?: AddressResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
+  Booking?: BookingResolvers<ContextType>;
   Byte?: GraphQLScalarType;
   Category?: CategoryResolvers<ContextType>;
   Category_size?: Category_SizeResolvers<ContextType>;
@@ -1051,12 +1162,15 @@ export type Resolvers<ContextType = any> = {
   NonPositiveFloat?: GraphQLScalarType;
   NonPositiveInt?: GraphQLScalarType;
   ObjectID?: GraphQLScalarType;
+  Order?: OrderResolvers<ContextType>;
   PhoneNumber?: GraphQLScalarType;
   Port?: GraphQLScalarType;
   PositiveFloat?: GraphQLScalarType;
   PositiveInt?: GraphQLScalarType;
   PostalCode?: GraphQLScalarType;
   Product?: ProductResolvers<ContextType>;
+  ProductBooking?: ProductBookingResolvers<ContextType>;
+  ProductBookingInfos?: ProductBookingInfosResolvers<ContextType>;
   ProductsFiltre?: ProductsFiltreResolvers<ContextType>;
   Quantity_size?: Quantity_SizeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

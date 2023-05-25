@@ -13,6 +13,26 @@ type ProductsFiltre {
   shop: Shop
 }
 
+type ProductBooking {
+  id: UUID!
+  name: String!
+  image: String
+  range: String
+  productShopId: UUID
+}
+
+type ProductBookingInfos {
+  priceHT: Int
+}
+
+input ProductBookingInput {
+  id: UUID!
+  name: String!
+  image: String
+  range: String
+  # productShopId: UUID
+}
+
 # QUERY
 
 type Query {
