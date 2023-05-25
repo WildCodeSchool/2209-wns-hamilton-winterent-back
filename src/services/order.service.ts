@@ -17,11 +17,9 @@ class OrderService {
   }
 
   async createOrder({ bookings }: OrderInput): Promise<Order | undefined> {
-    const newBookings: Booking[] = [];
     if (bookings) {
       let newOrder = await this.orderRepository.save({
         date: new Date(),
-        //bookings: newBookings,
       });
 
       let finalOrder = await this.findOrderById(newOrder.id);
@@ -39,8 +37,6 @@ class OrderService {
           console.log("saveBooking", newBooking);
         }
       }
-
-      //console.log("save bookings", newBookings);
 
       let result = await this.findOrderById(newOrder.id);
       console.log("final order", result);

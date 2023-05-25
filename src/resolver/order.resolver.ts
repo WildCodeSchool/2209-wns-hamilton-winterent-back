@@ -7,10 +7,8 @@ export default {
       const { orderInfos } = args;
 
       try {
-        console.log("premier", args);
         let data = await new OrderService().createOrder(orderInfos);
 
-        console.log("data", data);
         return data;
       } catch (error) {
         console.log(error);
