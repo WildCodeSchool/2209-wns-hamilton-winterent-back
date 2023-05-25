@@ -38,15 +38,11 @@ export default class User {
     nullable: true,
     type: "enum",
     enum: GenderType,
-    //default: GenderType.Other,
   })
   gender: GenderType;
 
   @Column({ nullable: true })
   phoneNumber: string;
-
-  // @Column()
-  // roleId: string;
 
   @ManyToOne(() => Role, (role) => role.users, { eager: true })
   role!: Role;
