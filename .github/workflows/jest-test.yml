@@ -1,0 +1,15 @@
+name: test-ci
+
+on:
+  push:
+    branches:
+      - 'Feature/test'
+
+jobs:
+  test-back:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: run tests
+        run: npm i && npm test
