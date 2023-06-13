@@ -80,7 +80,7 @@ describe('user resolver', () => {
           },
         },
       });
-      console.log('test creation log', res.data?.addUser);
+
       expect(res.data?.addUser).toEqual({
         user: {
           firstname: 'toto25',
@@ -99,7 +99,7 @@ describe('user resolver', () => {
       query: LOGIN,
       variables: {
         user: {
-          email,
+          email: "test@gmail.com",
           password,
         },
       },
