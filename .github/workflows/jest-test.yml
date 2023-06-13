@@ -11,10 +11,13 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      # - name: build app
-      #   run: docker compose up --build && run test
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: build app
+        run: docker compose up --build 
+        id: build
+      - name: Wait for build to finish
+        run: echo "Build finished!"
+        # Attendre la fin du build en utilisant le résultat de l'étape précédente
+        if: ${{ steps.build.outcome == 'success' }}
       - name: test
         uses: run test
 
