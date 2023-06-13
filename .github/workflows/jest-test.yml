@@ -11,5 +11,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+      - name: build app
+        run: docker compose up --build
       - name: run tests
-        run: npm i && npm test
+        run: npm test
