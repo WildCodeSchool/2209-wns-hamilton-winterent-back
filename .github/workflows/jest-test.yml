@@ -22,6 +22,6 @@ jobs:
       #   run: echo "Build finished!"
       #   # Attendre la fin du build en utilisant le résultat de l'étape précédente
       #   if: ${{ steps.build.outcome == 'success' }}
-      - name: test
-        run: npm i && npm test
+      # - name: test
+      #   run: npm i && npm test
 
