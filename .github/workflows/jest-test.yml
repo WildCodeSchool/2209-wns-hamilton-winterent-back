@@ -12,7 +12,8 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: build app
-        run: docker compose up --build --detach
+        # run: docker compose up --build --detach
+        run: SCRIPT=fixtures docker compose up --build --detach
         # id: build
       - name: Wait for build to finish
         run: echo "Build terminé !"
