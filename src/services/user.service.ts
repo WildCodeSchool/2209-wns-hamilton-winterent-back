@@ -59,6 +59,7 @@ class UserService {
       let roleEntity = await this.roleRepository.findOne({
         where: { role },
       });
+      console.log("roleentity value", roleEntity)
       if (!roleEntity) {
         throw new Error("Le role n'existe pas");
       }
