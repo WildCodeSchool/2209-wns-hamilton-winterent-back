@@ -41,6 +41,7 @@ describe('user resolver', () => {
   let password = 'Password';
   //let firstname = 'toto32';
   let lastname = 'tata31';
+  let role = "USER"
 
   it.only('créer utilisateur', async () => {
     //console.log("console du client", client)
@@ -54,11 +55,12 @@ describe('user resolver', () => {
           firstname: 'toto25',
           lastname,
           password,
+          role,
           confirmPassword: password,
         },
       },
     });
-    console.log('test creation log', res);
+    console.log('test creation log', res.data?.addUser);
     expect(res.data?.addUser).toEqual({
       user: {
         firstname: 'toto25',

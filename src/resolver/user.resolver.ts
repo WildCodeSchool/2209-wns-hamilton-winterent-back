@@ -62,7 +62,7 @@ export default {
         data = await new UserService().createUser(args);
         return data;
       } catch (error: any) {
-        console.log(error);
+        //console.log(error);
         throw new Error(error.message);
       }
     },

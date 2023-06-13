@@ -39,7 +39,8 @@ class UserService {
     return await this.userRepository.find();
   }
 
-  async createUser(args: MutationAddUserArgs): Promise<UserInfos> {
+  // async createUser(args: MutationAddUserArgs): Promise<UserInfos> {
+    async createUser(args: MutationAddUserArgs): Promise<UserInfos> {
     let {
       firstname,
       lastname,
@@ -51,6 +52,7 @@ class UserService {
       birthdate,
       phoneNumber,
     } = args.user;
+    console.log("test console arg", args.user)
     if (password != confirmPassword) {
       throw new Error("Les mots de passes ne sont pas identiques");
     } else {
