@@ -12,7 +12,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: build app
-        run: docker compose up --build 
+        run: docker compose up --build
+        id: build
+      - name: Wait for build to finish
+        run: echo "Build terminé !"
+        if: ${{ steps.build.outcome == 'success' }}
       #   id: build
       # - name: Wait for build to finish
       #   run: echo "Build finished!"
