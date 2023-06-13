@@ -63,7 +63,7 @@ export default {
         return data;
       } catch (error) {
         console.log(error);
-        throw new Error("erreur");
+        throw new Error("erreur", error);
       }
     },
 
