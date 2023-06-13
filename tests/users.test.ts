@@ -55,7 +55,7 @@ describe('user resolver', () => {
         },
       },
     });
-    //console.log(res.data.addUser);
+    console.log(res.errors);
     expect(res.data?.addUser).toEqual({
       user: {
         firstname: 'toto25',

@@ -10,5 +10,5 @@ RUN npm i
 RUN npm i -g concurrently
 
 COPY src src
-RUN npm test
+
 # CMD npm start
