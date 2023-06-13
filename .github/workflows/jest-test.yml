@@ -11,5 +11,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: build app
-        run: docker compose up --build && run test
+      # - name: build app
+      #   run: docker compose up --build && run test
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
