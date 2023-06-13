@@ -18,6 +18,6 @@ jobs:
       #   run: echo "Build finished!"
       #   # Attendre la fin du build en utilisant le résultat de l'étape précédente
       #   if: ${{ steps.build.outcome == 'success' }}
-      - name: test
-        uses: run test
+      # - name: test
+      #   uses: run test
 
