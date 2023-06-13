@@ -42,7 +42,7 @@ describe('user resolver', () => {
   //let firstname = 'toto32';
   let lastname = 'tata31';
 
-  it('créer utilisateur', async () => {
+  it.only('créer utilisateur', async () => {
     const res = await client.mutate({
       mutation: CREATE_USER,
       variables: {
@@ -55,7 +55,7 @@ describe('user resolver', () => {
         },
       },
     });
-    console.log(res.errors);
+    console.log('test creation log', res);
     expect(res.data?.addUser).toEqual({
       user: {
         firstname: 'toto25',
