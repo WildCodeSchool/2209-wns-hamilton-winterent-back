@@ -43,6 +43,10 @@ type Role {
   role: RoleType!
 }
 
+type RoleInfos {
+  role: String!
+}
+
 # ENUM : Déclaré dans graphql directement et utilisé dans l'entité USER
 
 enum GenderType {
@@ -87,6 +91,10 @@ input LoginUser {
   password: String!
 }
 
+input AddRole {
+  role: String!
+}
+
 # QUERY
 
 type Query {
@@ -102,4 +110,5 @@ type Mutation {
   addUser(user: CreateUser!): UserInfos!
   addUserAddress(id: UUID!, address: CreateAddress!): Address
   updateUser(user: UpdateUserInput!): UpdateUserType!
+  addRole(role: AddRole): RoleInfos
 }

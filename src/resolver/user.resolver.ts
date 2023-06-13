@@ -1,7 +1,7 @@
-import UserService from "../services/user.service";
-import bcrypt from "bcrypt";
-import { generateToken } from "../lib/utilities";
-import { ApolloError, ExpressContext } from "apollo-server-express";
+import UserService from '../services/user.service';
+import bcrypt from 'bcrypt';
+import { generateToken } from '../lib/utilities';
+import { ApolloError, ExpressContext } from 'apollo-server-express';
 import {
   LoginUser,
   MutationAddUserAddressArgs,
@@ -9,7 +9,7 @@ import {
   MutationUpdateUserArgs,
   QueryLoginArgs,
   UserInfos,
-} from "../generated/graphql";
+} from '../generated/graphql';
 
 export default {
   Query: {
@@ -42,7 +42,7 @@ export default {
       }
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        throw new ApolloError("Vérifiez vos informations");
+        throw new ApolloError('Vérifiez vos informations');
       }
       console.log(match);
 
@@ -67,22 +67,31 @@ export default {
       }
     },
 
+    addRole: async (_: any, args: any) => {
+      try {
+        return await new UserService().createRole(args);
+      } catch (error: any) {
+        //console.log(error);
+        throw new Error(error.message);
+      }
+    },
+
     addUserAddress: async (_: any, args: MutationAddUserAddressArgs) => {
       try {
         return await new UserService().createUserAddress(args);
       } catch (error) {
         console.log(error);
-        throw new Error("erreur");
+        throw new Error('erreur');
       }
     },
 
     updateUser: async (_: any, args: MutationUpdateUserArgs) => {
       try {
         let data = await new UserService().updateUser(args);
-        console.log("resolver success ", data);
+        console.log('resolver success ', data);
         return data;
       } catch (error) {
-        console.log("ERROR update");
+        console.log('ERROR update');
       }
     },
   },

@@ -17,6 +17,14 @@ const client = new ApolloClient({
 
 /* ------------------------------ */
 
+const CREATE_ROLE = gql`
+  mutation Mutation($role: AddRole) {
+    addRole(role: $role) {
+      role
+    }
+  }
+`;
+
 const CREATE_USER = gql`
   mutation addUser($user: CreateUser!) {
     addUser(user: $user) {
@@ -41,37 +49,49 @@ describe('user resolver', () => {
   let password = 'Password';
   //let firstname = 'toto32';
   let lastname = 'tata31';
-  let role = "USER"
+  let role = 'USER';
 
-  it.only('créer utilisateur', async () => {
+  it("creation d'un role", async () => {
+    try {
+      const res = await client.mutate({
+        mutation: CREATE_ROLE,
+        variables: {
+          role: {
+            role,
+          },
+        },
+      });
+    } catch (error) {}
+  });
+
+  it('créer utilisateur', async () => {
     //console.log("console du client", client)
-    try{
-
+    try {
       const res = await client.mutate({
         mutation: CREATE_USER,
         variables: {
           user: {
             email,
-          firstname: 'toto25',
-          lastname,
-          password,
-          role,
-          confirmPassword: password,
+            firstname: 'toto25',
+            lastname,
+            password,
+            role,
+            confirmPassword: password,
+          },
         },
-      },
-    });
-    console.log('test creation log', res.data?.addUser);
-    expect(res.data?.addUser).toEqual({
-      user: {
-        firstname: 'toto25',
-        email,
-        __typename: 'UserMinimal',
-      },
-      __typename: 'UserInfos',
-    });
-  } catch(err) {
-    console.log('erreur catch', err)
-  }
+      });
+      console.log('test creation log', res.data?.addUser);
+      expect(res.data?.addUser).toEqual({
+        user: {
+          firstname: 'toto25',
+          email,
+          __typename: 'UserMinimal',
+        },
+        __typename: 'UserInfos',
+      });
+    } catch (err) {
+      console.log('erreur catch', err);
+    }
   });
 
   it('login et récuperation de token', async () => {
@@ -83,7 +103,7 @@ describe('user resolver', () => {
           password,
         },
       },
-      fetchPolicy: 'no-cache'
+      fetchPolicy: 'no-cache',
     });
     //console.log(res.data?.login)
 
@@ -91,14 +111,12 @@ describe('user resolver', () => {
 
     expect(res.data?.login.token).toMatch(/^(?:[\w-]*\.){2}[\w-]*$/);
 
-    let token = res.data?.login.token
-    console.log(token)
-
+    let token = res.data?.login.token;
+    console.log(token);
   });
 });
 
 /* -------------------------------------- */
-
 
 // const ADD_USER = gql`
 //   mutation Mutation($user: CreateUser!) {

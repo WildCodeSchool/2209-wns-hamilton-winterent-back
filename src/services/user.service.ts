@@ -39,6 +39,14 @@ class UserService {
     return await this.userRepository.find();
   }
 
+  async createRole(args: any): Promise<void>{
+    const {role} = args
+    console.log(role.role)
+    await this.roleRepository.save({
+      role: role.role
+    })
+  }
+
   // async createUser(args: MutationAddUserArgs): Promise<UserInfos> {
     async createUser(args: MutationAddUserArgs): Promise<UserInfos> {
     let {
