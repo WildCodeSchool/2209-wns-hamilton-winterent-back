@@ -43,6 +43,7 @@ describe('user resolver', () => {
   let lastname = 'tata31';
 
   it.only('créer utilisateur', async () => {
+    console.log("console du client", client)
     const res = await client.mutate({
       mutation: CREATE_USER,
       variables: {
