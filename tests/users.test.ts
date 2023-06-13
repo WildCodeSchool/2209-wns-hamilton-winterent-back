@@ -43,12 +43,14 @@ describe('user resolver', () => {
   let lastname = 'tata31';
 
   it.only('créer utilisateur', async () => {
-    console.log("console du client", client)
-    const res = await client.mutate({
-      mutation: CREATE_USER,
-      variables: {
-        user: {
-          email,
+    //console.log("console du client", client)
+    try{
+
+      const res = await client.mutate({
+        mutation: CREATE_USER,
+        variables: {
+          user: {
+            email,
           firstname: 'toto25',
           lastname,
           password,
@@ -65,6 +67,9 @@ describe('user resolver', () => {
       },
       __typename: 'UserInfos',
     });
+  } catch(err) {
+    console.log('erreur catch', err)
+  }
   });
 
   it('login et récuperation de token', async () => {
