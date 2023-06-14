@@ -5,7 +5,6 @@ import {
   gql,
 } from '@apollo/client/core';
 import fetch from 'cross-fetch';
-import { CreateUser, MutationAddUserArgs } from '../src/generated/graphql';
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -47,13 +46,12 @@ const LOGIN = gql`
 describe('user resolver', () => {
   let email = `test${new Date().getTime()}@gmail.com`;
   let password = 'Password';
-  //let firstname = 'toto32';
   let lastname = 'tata31';
   let role = 'USER';
 
   it("creation d'un role", async () => {
     try {
-      const res = await client.mutate({
+      await client.mutate({
         mutation: CREATE_ROLE,
         variables: {
           role: {
@@ -61,11 +59,12 @@ describe('user resolver', () => {
           },
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log('erreur catch', error);
+    }
   });
 
   it('créer utilisateur', async () => {
-    //console.log("console du client", client)
     try {
       const res = await client.mutate({
         mutation: CREATE_USER,
@@ -105,7 +104,6 @@ describe('user resolver', () => {
       },
       fetchPolicy: 'no-cache',
     });
-    //console.log(res.data?.login)
 
     expect(res.data?.login).toBeTruthy();
 
