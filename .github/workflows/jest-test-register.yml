@@ -12,7 +12,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: build app
-        run: docker compose up --build --detach
+        run: docker compose -f docker-composebuild-back.yml up --build --detach
       - name: Wait for build to finish
         run: echo "Build terminé !"
         if: ${{ steps.build.outcome == 'success' }}
