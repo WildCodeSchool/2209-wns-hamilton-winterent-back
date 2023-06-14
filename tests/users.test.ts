@@ -99,7 +99,7 @@ describe('user resolver', () => {
       query: LOGIN,
       variables: {
         user: {
-          email: "test@gmail.com",
+          email,
           password,
         },
       },
