@@ -1,0 +1,20 @@
+name: test-ci
+
+on:
+  push:
+    branches:
+      - 'Feature/test'
+
+jobs:
+  test-back:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: build app
+        run: docker compose up --build --detach
+      - name: Wait for build to finish
+        run: echo "Build terminé !"
+        if: ${{ steps.build.outcome == 'success' }}
+      - name: test
+        run: npm i && npm run testDev
