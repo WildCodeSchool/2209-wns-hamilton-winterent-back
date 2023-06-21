@@ -8,7 +8,7 @@ import fetch from 'cross-fetch';
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'http://api:8000/graphql',
+    uri: 'http://localhost:8000/graphql',
     fetch,
   }),
   cache: new InMemoryCache({}),
