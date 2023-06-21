@@ -22,7 +22,6 @@ jobs:
       - name: test
         run: npm i && npm run testDev
 
-
   deploy:
     needs: test-back
     if: github.event.pull_request.merged == true
