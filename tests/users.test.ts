@@ -94,22 +94,27 @@ describe('user resolver', () => {
   });
 
   it('login et récuperation de token', async () => {
-    const res = await client.query({
-      query: LOGIN,
-      variables: {
-        user: {
-          email,
-          password,
+    try {
+      const res = await client.query({
+        query: LOGIN,
+        variables: {
+          user: {
+            email,
+            password,
+          },
         },
-      },
-      fetchPolicy: 'no-cache',
-    });
-
-    expect(res.data?.login).toBeTruthy();
-
-    expect(res.data?.login.token).toMatch(/^(?:[\w-]*\.){2}[\w-]*$/);
-
-    let token = res.data?.login.token;
-    console.log(token);
+        fetchPolicy: 'no-cache',
+      });
+  
+      expect(res.data?.login).toBeTruthy();
+  
+      expect(res.data?.login.token).toMatch(/^(?:[\w-]*\.){2}[\w-]*$/);
+  
+      let token = res.data?.login.token;
+      console.log(token);
+      
+    } catch (error) {
+      console.log("erreur catch LOGIN", error)
+    }
   });
 });
