@@ -19,22 +19,6 @@ services:
       timeout: 5s
       retries: 10
 
-  client:
-    build: ../2209-wns-hamilton-winterent-front
-    volumes:
-      - ../2209-wns-hamilton-winterent-front:/app
-    ports:
-      - 3000:3000
-    expose:
-      - 3000
-    networks:
-      postgres:
-    depends_on:
-      api:
-        condition: service_healthy
-    environment:
-      - NODE_ENV=development
-
   db:
     image: postgres
     restart: always

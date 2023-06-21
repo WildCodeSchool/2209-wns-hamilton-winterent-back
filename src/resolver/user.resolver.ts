@@ -6,6 +6,7 @@ import {
   LoginUser,
   MutationAddUserAddressArgs,
   MutationAddUserArgs,
+  MutationUpdateUserArgs,
   QueryLoginArgs,
   UserInfos,
 } from "../generated/graphql";
@@ -41,7 +42,7 @@ export default {
       }
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        throw new ApolloError("Vérifiez vos informations");
+        throw new ApolloError('Vérifiez vos informations');
       }
       console.log(match);
 
@@ -62,7 +63,16 @@ export default {
         return data;
       } catch (error) {
         console.log(error);
-        throw new Error("erreur");
+        throw new Error('erreur');
+      }
+    },
+
+    addRole: async (_: any, args: any) => {
+      try {
+        return await new UserService().createRole(args);
+      } catch (error: any) {
+        //console.log(error);
+        throw new Error(error.message);
       }
     },
 
@@ -71,7 +81,17 @@ export default {
         return await new UserService().createUserAddress(args);
       } catch (error) {
         console.log(error);
-        throw new Error("erreur");
+        throw new Error('erreur');
+      }
+    },
+
+    updateUser: async (_: any, args: MutationUpdateUserArgs) => {
+      try {
+        let data = await new UserService().updateUser(args);
+        console.log('resolver success ', data);
+        return data;
+      } catch (error) {
+        console.log('ERROR update');
       }
     },
   },

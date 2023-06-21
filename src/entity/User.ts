@@ -38,15 +38,11 @@ export default class User {
     nullable: true,
     type: "enum",
     enum: GenderType,
-    //default: GenderType.Other,
   })
   gender: GenderType;
 
   @Column({ nullable: true })
   phoneNumber: string;
-
-  // @Column()
-  // roleId: string;
 
   @ManyToOne(() => Role, (role) => role.users, { eager: true })
   role!: Role;
@@ -54,7 +50,7 @@ export default class User {
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, { eager: true })
   @JoinColumn()
   address: Address;
 }

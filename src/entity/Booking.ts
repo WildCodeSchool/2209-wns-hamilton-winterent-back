@@ -4,13 +4,13 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   ManyToOne,
-} from "typeorm";
-import Order from "./Order";
-import Product from "./Product";
+} from 'typeorm';
+import Order from './Order';
+import Product from './Product';
 
 @Entity()
 export default class Booking {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -19,11 +19,12 @@ export default class Booking {
   @Column()
   endDate: Date;
 
+  @Column({ nullable: true })
+  price: Number;
+
   @ManyToOne(() => Order, (order) => order.bookings)
   order: Order;
 
   @ManyToOne(() => Product, (product) => product.bookings)
   product: Product;
 }
-
-
