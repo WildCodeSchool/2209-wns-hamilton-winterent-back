@@ -50,47 +50,39 @@ describe('user resolver', () => {
   let role = 'USER';
 
   it("creation d'un role", async () => {
-    try {
-      await client.mutate({
-        mutation: CREATE_ROLE,
-        variables: {
-          role: {
-            role,
-          },
+    await client.mutate({
+      mutation: CREATE_ROLE,
+      variables: {
+        role: {
+          role,
         },
-      });
-    } catch (error) {
-      console.log('erreur catch', error);
-    }
+      },
+    });
   });
 
   it('créer utilisateur', async () => {
-    try {
-      const res = await client.mutate({
-        mutation: CREATE_USER,
-        variables: {
-          user: {
-            email,
-            firstname: 'toto25',
-            lastname,
-            password,
-            role,
-            confirmPassword: password,
-          },
-        },
-      });
-
-      expect(res.data?.addUser).toEqual({
+    const res = await client.mutate({
+      mutation: CREATE_USER,
+      variables: {
         user: {
-          firstname: 'toto25',
           email,
-          __typename: 'UserMinimal',
+          firstname: 'toto25',
+          lastname,
+          password,
+          role,
+          confirmPassword: password,
         },
-        __typename: 'UserInfos',
-      });
-    } catch (err) {
-      console.log('erreur catch', err);
-    }
+      },
+    });
+
+    expect(res.data?.addUser).toEqual({
+      user: {
+        firstname: 'toto25',
+        email,
+        __typename: 'UserMinimal',
+      },
+      __typename: 'UserInfos',
+    });
   });
 
   it('login et récuperation de token', async () => {

@@ -29,6 +29,11 @@ export default {
       const { id } = args;
       return await new UserService().findUser(id);
     },
+
+
+
+
+
     login: async (_: any, args: QueryLoginArgs, res: ExpressContext) => {
       //check email et password et retourner le token
 
@@ -36,20 +41,30 @@ export default {
         user: { email, password },
       } = args;
 
-      let user = await new UserService().findUserByEmail(email);
-      if (!user) {
-        throw new ApolloError("Cet utilisateur n'existe pas");
+      try {
+        
+        let user = await new UserService().findUserByEmail(email);
+        if (!user) {
+          throw new ApolloError("Cet utilisateur n'existe pas");
+        }
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+          throw new ApolloError('Vérifiez vos informations');
+        }
+        console.log(match);
+  
+        let token = generateToken({ email });
+  
+        return { user, token /*, success: math */ };
+      } catch (error) {
+        console.log("LOGIN TEST", error)
       }
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        throw new ApolloError('Vérifiez vos informations');
-      }
-      console.log(match);
-
-      let token = generateToken({ email });
-
-      return { user, token /*, success: math */ };
     },
+
+
+
+
+
     /*logout: async (_: any, {}, { res }: ExpressContext) => {
       res.clearCookie("token");
       return { success: true };
