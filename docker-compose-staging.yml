@@ -3,10 +3,10 @@ services:
     image: winterent/winterent-server-staging
     command: sh -c "concurrently \"npm run ${SCRIPT:-start}\" "
     environment:
-      - NODE_ENV=staging
-      - PORT=8001
+      - NODE_ENV=production
+      - PORT=8000
     expose:
-      - 8001
+      - 8000
     depends_on:
       db:
         condition: service_healthy
@@ -29,7 +29,7 @@ services:
       api:
         condition: service_healthy
     environment:
-      - NODE_ENV=staging
+      - NODE_ENV=development
 
   db:
     image: postgres
