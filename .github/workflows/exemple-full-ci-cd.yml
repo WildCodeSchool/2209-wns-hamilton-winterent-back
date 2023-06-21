@@ -1,9 +1,11 @@
 name: test-ci
 
 on:
-  push:
-    branches:
-      - 'Feature/CI'
+  pull_request:
+    branches: ["staging"]
+    types: ["closed"]
+
+  workflow_dispatch:
 
 jobs:
 
@@ -13,7 +15,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: build app
-        run: docker compose -f docker-compose-build-back.yml up --build --detach
+        run: docker compose -f docker-compose-staging.yml up --build --detach
       - name: Wait for build to finish
         run: echo "Build terminé !"
         if: ${{ steps.build.outcome == 'success' }}
@@ -22,7 +24,8 @@ jobs:
 
 
   deploy:
-
+    needs: test-back
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
