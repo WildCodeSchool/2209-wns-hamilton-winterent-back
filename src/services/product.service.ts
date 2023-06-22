@@ -1,10 +1,11 @@
-import datasource from '../lib/datasource';
-import Product from '../entity/Product';
+import datasource from "../lib/datasource";
+import Product from "../entity/Product";
 import {
   MutationAddProductArgs,
   MutationUpdateProductArgs,
-} from '../generated/graphql';
-import ProductToShop from '../entity/Product_shop';
+  ProductInfos,
+} from "../generated/graphql";
+import ProductToShop from "../entity/Product_shop";
 
 class ProductService {
   repository;
@@ -19,22 +20,36 @@ class ProductService {
     idShop: string
   ): Promise<Product[]> {
     return await this.repository
-      .createQueryBuilder('product')
-      .leftJoinAndSelect('product.category', 'category')
-      .leftJoin('product.productToShops', 'productToShops')
-      .leftJoin('productToShops.shop', 'shop')
-      .where('category.id = :idCategory', { idCategory })
-      .andWhere('shop.id = :idShop', { idShop })
+      .createQueryBuilder("product")
+      .leftJoinAndSelect("product.category", "category")
+      .leftJoin("product.productToShops", "productToShops")
+      .leftJoin("productToShops.shop", "shop")
+      .where("category.id = :idCategory", { idCategory })
+      .andWhere("shop.id = :idShop", { idShop })
       .getMany();
   }
 
   async findProductPriceById(productId: string, shopId: string) {
     //let produit = await this.findProductById(id)
-    return await this.productShopRepository
-      .createQueryBuilder('productToShops')
-      .where('productToShops.productId = :productId', { productId })
-      .andWhere('productToShops.shopId = :shopId', { shopId })
+    let productInfos: ProductInfos = {};
+    const data = await this.productShopRepository
+      .createQueryBuilder("productToShops")
+      .where("productToShops.productId = :productId", { productId })
+      .andWhere("productToShops.shopId = :shopId", { shopId })
+      .leftJoinAndSelect("productToShops.product", "product")
       .getOne();
+
+    console.log(data);
+
+    if (data != null) {
+      productInfos = {
+        productId: data.product.id,
+        price: data.priceHT,
+        quantity: data.quantity,
+      };
+    }
+
+    return productInfos;
   }
 
   async createProduct({

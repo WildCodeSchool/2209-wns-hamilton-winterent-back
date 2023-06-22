@@ -20,7 +20,9 @@ export default class ProductToShop {
   )
   quantityToSizes: QuantityToSize[];
 
-  @ManyToOne(() => Product, (product) => product.productToShops)
+  @ManyToOne(() => Product, (product) => product.productToShops, {
+    eager: true,
+  })
   product: Product;
 
   @ManyToOne(() => Shop, (shop) => shop.productToShops)
