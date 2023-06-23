@@ -39,8 +39,6 @@ class ProductService {
       .leftJoinAndSelect("productToShops.product", "product")
       .getOne();
 
-    console.log(data);
-
     if (data != null) {
       productInfos = {
         productId: data.product.id,
