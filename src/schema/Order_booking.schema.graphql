@@ -21,12 +21,13 @@ input BookingInput {
   shopId: UUID
   startDate: Date
   endDate: Date
-  productId: ProductId
+  productId: UUID
+  price: Int
 }
 
-input ProductId {
-  id: UUID
-}
+# input ProductId {
+#   id: UUID
+# }
 
 input OrderInput {
   userId: UUID

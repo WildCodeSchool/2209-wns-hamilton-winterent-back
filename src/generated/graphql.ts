@@ -110,7 +110,8 @@ export type Booking = {
 
 export type BookingInput = {
   endDate?: InputMaybe<Scalars['Date']>;
-  productId?: InputMaybe<ProductId>;
+  price?: InputMaybe<Scalars['Int']>;
+  productId?: InputMaybe<Scalars['UUID']>;
   shopId?: InputMaybe<Scalars['UUID']>;
   startDate?: InputMaybe<Scalars['Date']>;
 };
@@ -286,10 +287,6 @@ export type ProductBookingInput = {
   image?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   range?: InputMaybe<Scalars['String']>;
-};
-
-export type ProductId = {
-  id?: InputMaybe<Scalars['UUID']>;
 };
 
 export type ProductInfos = {
@@ -620,7 +617,6 @@ export type ResolversTypes = {
   ProductBooking: ResolverTypeWrapper<ProductBooking>;
   ProductBookingInfos: ResolverTypeWrapper<ProductBookingInfos>;
   ProductBookingInput: ProductBookingInput;
-  ProductId: ProductId;
   ProductInfos: ResolverTypeWrapper<ProductInfos>;
   ProductsFiltre: ResolverTypeWrapper<ProductsFiltre>;
   Quantity_size: ResolverTypeWrapper<Quantity_Size>;
@@ -724,7 +720,6 @@ export type ResolversParentTypes = {
   ProductBooking: ProductBooking;
   ProductBookingInfos: ProductBookingInfos;
   ProductBookingInput: ProductBookingInput;
-  ProductId: ProductId;
   ProductInfos: ProductInfos;
   ProductsFiltre: ProductsFiltre;
   Quantity_size: Quantity_Size;

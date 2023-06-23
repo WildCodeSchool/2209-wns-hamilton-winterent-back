@@ -1,8 +1,8 @@
-import Booking from '../entity/Booking';
-import Order from '../entity/Order';
-import { OrderInput } from '../generated/graphql';
-import datasource from '../lib/datasource';
-import ProductService from './product.service';
+import Booking from "../entity/Booking";
+import Order from "../entity/Order";
+import { OrderInput } from "../generated/graphql";
+import datasource from "../lib/datasource";
+import ProductService from "./product.service";
 
 class OrderService {
   orderRepository;
@@ -36,14 +36,15 @@ class OrderService {
       for (let i = 0; i < bookings.length; i++) {
         if (finalOrder) {
           const productShop = await new ProductService().findProductPriceById(
-            bookings[i]?.productId?.id,
+            bookings[i]?.productId,
             bookings[i]?.shopId
           );
+
           await this.bookingRepository.save({
             startDate: bookings[i]?.startDate,
             endDate: bookings[i]?.endDate,
             product: bookings[i]?.productId,
-            price: productShop?.priceHT,
+            price: productShop.price != undefined && productShop.price,
             order: finalOrder,
           });
         }
