@@ -4,6 +4,8 @@ services:
     command: sh -c "concurrently \"npm run ${SCRIPT:-start}\" \"npm run codegen\""
     volumes:
       - ./src:/app/src
+    #environment:
+      #- NODE_ENV=test
     ports:
       - 8000:8000
     expose:
