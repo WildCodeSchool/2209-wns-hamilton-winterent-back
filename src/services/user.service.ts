@@ -31,7 +31,7 @@ class UserService {
     return await this.userRepository.findOneBy({ id });
   }
   async findUserByEmail(email: string) {
-    console.log('test');
+    console.log("test");
     return await this.userRepository.findOneBy({ email });
   }
 
@@ -60,16 +60,15 @@ class UserService {
       phoneNumber,
     } = args.user;
     if (password != confirmPassword) {
-      throw new Error('Les mots de passes ne sont pas identiques');
+      throw new Error("Les mots de passes ne sont pas identiques");
     } else {
-      let hash = await bcrypt.hash(password, SALT_ROUND);
-      let token = generateToken({ email });
-      let roleEntity = await this.roleRepository.findOne({
-        where: { role },
-      });
+      let roleEntity = await this.roleRepository.findOneBy({ role });
       if (!roleEntity) {
         throw new Error("Le role n'existe pas");
       }
+
+      let hash = await bcrypt.hash(password, SALT_ROUND);
+      let token = generateToken({ email, role: roleEntity.role });
 
       let user = await this.userRepository.save({
         firstname,
@@ -99,7 +98,7 @@ class UserService {
     let user = await this.findUser(id);
 
     if (!user) {
-      throw new Error('utilisateur non trouvé');
+      throw new Error("utilisateur non trouvé");
     }
 
     const newAddress = await this.addressRepository.save({
@@ -126,7 +125,7 @@ class UserService {
     try {
       const currentUser = await this.findUser(id);
       if (!currentUser) {
-        throw new Error('Utilisateur introuvable');
+        throw new Error("Utilisateur introuvable");
       }
       await this.userRepository.update(id, {
         firstname,

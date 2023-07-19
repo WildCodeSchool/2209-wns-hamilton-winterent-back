@@ -30,10 +30,6 @@ export default {
       return await new UserService().findUser(id);
     },
 
-
-
-
-
     login: async (_: any, args: QueryLoginArgs, res: ExpressContext) => {
       //check email et password et retourner le token
 
@@ -42,28 +38,23 @@ export default {
       } = args;
 
       try {
-        
         let user = await new UserService().findUserByEmail(email);
         if (!user) {
           throw new ApolloError("Cet utilisateur n'existe pas");
         }
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-          throw new ApolloError('Vérifiez vos informations');
+          throw new ApolloError("Vérifiez vos informations");
         }
         console.log(match);
-  
-        let token = generateToken({ email });
-  
+
+        let token = generateToken({ email, role: user.role.role });
+
         return { user, token /*, success: math */ };
       } catch (error) {
-        console.log("LOGIN TEST", error)
+        console.log("LOGIN TEST", error);
       }
     },
-
-
-
-
 
     /*logout: async (_: any, {}, { res }: ExpressContext) => {
       res.clearCookie("token");
@@ -78,7 +69,7 @@ export default {
         return data;
       } catch (error) {
         console.log(error);
-        throw new Error('erreur');
+        throw new Error("erreur");
       }
     },
 
@@ -96,17 +87,17 @@ export default {
         return await new UserService().createUserAddress(args);
       } catch (error) {
         console.log(error);
-        throw new Error('erreur');
+        throw new Error("erreur");
       }
     },
 
     updateUser: async (_: any, args: MutationUpdateUserArgs) => {
       try {
         let data = await new UserService().updateUser(args);
-        console.log('resolver success ', data);
+        console.log("resolver success ", data);
         return data;
       } catch (error) {
-        console.log('ERROR update');
+        console.log("ERROR update");
       }
     },
   },
