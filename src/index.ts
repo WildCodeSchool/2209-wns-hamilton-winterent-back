@@ -20,10 +20,7 @@ import cors from "cors";
 // permet à la partie front de pouvoir communiquer avec le front sur le port 3000
 
 const corsConfig = {
-  origin:
-    process.env.NODE_ENV == 'test'
-      ? '*'
-      : ['http://localhost:3000'],
+  origin: process.env.NODE_ENV == "test" ? "*" : ["http://localhost:3000"],
   //origin: ["http://localhost:3000", "*"],
   credentials: true,
 };
@@ -50,7 +47,7 @@ const start = async () => {
     ],
     context: async ({ req, res }) => {
       const { authorization } = req.headers;
-      //console.log(req.headers.authorization);
+      //console.log("BEARER", req.headers.authorization);
       let userLogged = await getUserFromToken(authorization);
       //console.log("TEST", userLogged);
       return {

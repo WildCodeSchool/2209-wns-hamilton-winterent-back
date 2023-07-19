@@ -1,6 +1,6 @@
 import UserService from "../services/user.service";
 import bcrypt from "bcrypt";
-import { generateToken } from "../lib/utilities";
+import { checkRights, generateToken } from "../lib/utilities";
 import { ApolloError, ExpressContext } from "apollo-server-express";
 import {
   LoginUser,
@@ -8,6 +8,7 @@ import {
   MutationAddUserArgs,
   MutationUpdateUserArgs,
   QueryLoginArgs,
+  RoleType,
   UserInfos,
 } from "../generated/graphql";
 
@@ -15,16 +16,10 @@ export default {
   Query: {
     /**La query users permet de récupérer tous les users**/
     users: async (_: any, args: any, { userLogged }: any) => {
-      //checkRights(userLogged);
-      // checkAuthorization(context.userLogged, ["ADMIN"]);
-      // if (!userLogged){
-      //   throw new Error("Vous devez être connecté");
-      // }
-      // if (userLogged.id != 21){
-      //   throw new Error("Il n'a pas le droit de faire  ça");
-      // }
-      return await new UserService().findAll();
+      const auth = checkRights(userLogged, [RoleType.Admin]);
+      if (auth) return await new UserService().findAll();
     },
+
     user: async (_: any, args: any) => {
       const { id } = args;
       return await new UserService().findUser(id);

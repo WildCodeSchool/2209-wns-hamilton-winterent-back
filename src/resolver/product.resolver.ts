@@ -5,7 +5,9 @@ import {
   QueryProductsFilterArgs,
   QueryProductInfosArgs,
   ProductInfosResolvers,
+  RoleType,
 } from "../generated/graphql";
+import { checkRights } from "../lib/utilities";
 import ProductService from "../services/product.service";
 
 export default {
@@ -29,19 +31,27 @@ export default {
     },
   },
   Mutation: {
-    addProduct: async (_: any, args: MutationAddProductArgs) => {
-      const { description, image, name, range } = args;
-      try {
-        let data = await new ProductService().createProduct({
-          description,
-          image,
-          name,
-          range,
-        });
-        return data;
-      } catch (error) {
-        console.log(error);
-        throw new Error("erreur");
+    addProduct: async (
+      _: any,
+      args: MutationAddProductArgs,
+      { userLogged }: any
+    ) => {
+      const auth = checkRights(userLogged, [RoleType.Admin]);
+
+      if (auth) {
+        const { description, image, name, range } = args;
+        try {
+          let data = await new ProductService().createProduct({
+            description,
+            image,
+            name,
+            range,
+          });
+          return data;
+        } catch (error) {
+          console.log(error);
+          throw new Error("erreur");
+        }
       }
     },
     updateProduct: async (_: any, args: MutationUpdateProductArgs) => {
