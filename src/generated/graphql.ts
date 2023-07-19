@@ -289,6 +289,16 @@ export type ProductBookingInput = {
   range?: InputMaybe<Scalars['String']>;
 };
 
+export type ProductCate = {
+  __typename?: 'ProductCate';
+  category?: Maybe<Category>;
+  description: Scalars['String'];
+  id: Scalars['UUID'];
+  image?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  range: Scalars['String'];
+};
+
 export type ProductInfos = {
   __typename?: 'ProductInfos';
   price?: Maybe<Scalars['Int']>;
@@ -322,7 +332,7 @@ export type Query = {
   product?: Maybe<Product>;
   productInfos?: Maybe<ProductInfos>;
   products: Array<Maybe<Product>>;
-  productsFilter: Array<Maybe<Product>>;
+  productsFilter: Array<Maybe<ProductCate>>;
   shop?: Maybe<Shop>;
   shops: Array<Maybe<Shop>>;
   user?: Maybe<User>;
@@ -617,6 +627,7 @@ export type ResolversTypes = {
   ProductBooking: ResolverTypeWrapper<ProductBooking>;
   ProductBookingInfos: ResolverTypeWrapper<ProductBookingInfos>;
   ProductBookingInput: ProductBookingInput;
+  ProductCate: ResolverTypeWrapper<ProductCate>;
   ProductInfos: ResolverTypeWrapper<ProductInfos>;
   ProductsFiltre: ResolverTypeWrapper<ProductsFiltre>;
   Quantity_size: ResolverTypeWrapper<Quantity_Size>;
@@ -720,6 +731,7 @@ export type ResolversParentTypes = {
   ProductBooking: ProductBooking;
   ProductBookingInfos: ProductBookingInfos;
   ProductBookingInput: ProductBookingInput;
+  ProductCate: ProductCate;
   ProductInfos: ProductInfos;
   ProductsFiltre: ProductsFiltre;
   Quantity_size: Quantity_Size;
@@ -1021,6 +1033,16 @@ export type ProductBookingInfosResolvers<ContextType = any, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ProductCateResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductCate'] = ResolversParentTypes['ProductCate']> = {
+  category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  range?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ProductInfosResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductInfos'] = ResolversParentTypes['ProductInfos']> = {
   price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   productId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
@@ -1053,7 +1075,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   productInfos?: Resolver<Maybe<ResolversTypes['ProductInfos']>, ParentType, ContextType, Partial<QueryProductInfosArgs>>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
-  productsFilter?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType, Partial<QueryProductsFilterArgs>>;
+  productsFilter?: Resolver<Array<Maybe<ResolversTypes['ProductCate']>>, ParentType, ContextType, Partial<QueryProductsFilterArgs>>;
   shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'id'>>;
   shops?: Resolver<Array<Maybe<ResolversTypes['Shop']>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
@@ -1238,6 +1260,7 @@ export type Resolvers<ContextType = any> = {
   Product?: ProductResolvers<ContextType>;
   ProductBooking?: ProductBookingResolvers<ContextType>;
   ProductBookingInfos?: ProductBookingInfosResolvers<ContextType>;
+  ProductCate?: ProductCateResolvers<ContextType>;
   ProductInfos?: ProductInfosResolvers<ContextType>;
   ProductsFiltre?: ProductsFiltreResolvers<ContextType>;
   Quantity_size?: Quantity_SizeResolvers<ContextType>;
