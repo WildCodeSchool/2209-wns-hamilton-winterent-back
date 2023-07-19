@@ -8,6 +8,15 @@ type Product {
   image: String
 }
 
+type ProductCate {
+  id: UUID!
+  name: String!
+  description: String!
+  range: String!
+  image: String
+  category: Category
+}
+
 type ProductsFiltre {
   category: Category
   shop: Shop
@@ -44,7 +53,7 @@ input ProductBookingInput {
 type Query {
   products: [Product]!
   product(id: UUID!): Product
-  productsFilter(idCategory: UUID, idShop: UUID): [Product]!
+  productsFilter(idCategory: UUID, idShop: UUID): [ProductCate]!
   productInfos(idShop: UUID, idProduct: UUID): ProductInfos
 }
 
