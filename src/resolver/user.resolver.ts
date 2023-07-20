@@ -1,15 +1,16 @@
-import UserService from "../services/user.service";
-import bcrypt from "bcrypt";
-import { generateToken } from "../lib/utilities";
-import { ApolloError, ExpressContext } from "apollo-server-express";
+import UserService from '../services/user.service';
+import bcrypt from 'bcrypt';
+import { generateToken } from '../lib/utilities';
+import { ApolloError, ExpressContext } from 'apollo-server-express';
 import {
   LoginUser,
   MutationAddUserAddressArgs,
   MutationAddUserArgs,
   MutationUpdateUserArgs,
   QueryLoginArgs,
+  RoleType,
   UserInfos,
-} from "../generated/graphql";
+} from '../generated/graphql';
 
 export default {
   Query: {
@@ -29,10 +30,12 @@ export default {
       const { id } = args;
       return await new UserService().findUser(id);
     },
-
-
-
-
+    checkUserIsAdmin: (_: any, {}, { userLogged }: any) => {
+      return userLogged?.role == RoleType.Admin;
+    },
+    checkUser: (_: any, {}, { userLogged }: any) => {
+      return userLogged !== null;
+    },
 
     login: async (_: any, args: QueryLoginArgs, res: ExpressContext) => {
       //check email et password et retourner le token
@@ -42,7 +45,6 @@ export default {
       } = args;
 
       try {
-        
         let user = await new UserService().findUserByEmail(email);
         if (!user) {
           throw new ApolloError("Cet utilisateur n'existe pas");
@@ -52,18 +54,14 @@ export default {
           throw new ApolloError('Vérifiez vos informations');
         }
         console.log(match);
-  
+
         let token = generateToken({ email });
-  
+
         return { user, token /*, success: math */ };
       } catch (error) {
-        console.log("LOGIN TEST", error)
+        console.log('LOGIN TEST', error);
       }
     },
-
-
-
-
 
     /*logout: async (_: any, {}, { res }: ExpressContext) => {
       res.clearCookie("token");
