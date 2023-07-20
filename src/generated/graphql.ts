@@ -75,6 +75,10 @@ export type Scalars = {
   Void: any;
 };
 
+export type AddRole = {
+  role: Scalars['String'];
+};
+
 export type Address = {
   __typename?: 'Address';
   city?: Maybe<Scalars['String']>;
@@ -106,7 +110,8 @@ export type Booking = {
 
 export type BookingInput = {
   endDate?: InputMaybe<Scalars['Date']>;
-  productId?: InputMaybe<ProductId>;
+  price?: InputMaybe<Scalars['Int']>;
+  productId?: InputMaybe<Scalars['UUID']>;
   shopId?: InputMaybe<Scalars['UUID']>;
   startDate?: InputMaybe<Scalars['Date']>;
 };
@@ -165,6 +170,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addOrder?: Maybe<Order>;
   addProduct?: Maybe<Product>;
+  addRole?: Maybe<RoleInfos>;
   addShop?: Maybe<Shop>;
   addUser: UserInfos;
   addUserAddress?: Maybe<Address>;
@@ -186,6 +192,11 @@ export type MutationAddProductArgs = {
   image?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   range: Scalars['String'];
+};
+
+
+export type MutationAddRoleArgs = {
+  role?: InputMaybe<AddRole>;
 };
 
 
@@ -278,8 +289,21 @@ export type ProductBookingInput = {
   range?: InputMaybe<Scalars['String']>;
 };
 
-export type ProductId = {
-  id?: InputMaybe<Scalars['UUID']>;
+export type ProductCate = {
+  __typename?: 'ProductCate';
+  category?: Maybe<Category>;
+  description: Scalars['String'];
+  id: Scalars['UUID'];
+  image?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  range: Scalars['String'];
+};
+
+export type ProductInfos = {
+  __typename?: 'ProductInfos';
+  price?: Maybe<Scalars['Int']>;
+  productId?: Maybe<Scalars['UUID']>;
+  quantity?: Maybe<Scalars['Int']>;
 };
 
 export type ProductsFiltre = {
@@ -299,6 +323,8 @@ export type Query = {
   cat?: Maybe<Category>;
   catProducts?: Maybe<Array<Maybe<Product>>>;
   category?: Maybe<Category>;
+  checkUser?: Maybe<Scalars['Boolean']>;
+  checkUserIsAdmin?: Maybe<Scalars['Boolean']>;
   getOrderById: Order;
   getOrderByUserId: Array<Order>;
   listCategory?: Maybe<Array<Maybe<Category>>>;
@@ -306,8 +332,9 @@ export type Query = {
   login: UserInfos;
   logout?: Maybe<Logout>;
   product?: Maybe<Product>;
+  productInfos?: Maybe<ProductInfos>;
   products: Array<Maybe<Product>>;
-  productsFilter: Array<Maybe<Product>>;
+  productsFilter: Array<Maybe<ProductCate>>;
   shop?: Maybe<Shop>;
   shops: Array<Maybe<Shop>>;
   user?: Maybe<User>;
@@ -355,6 +382,12 @@ export type QueryProductArgs = {
 };
 
 
+export type QueryProductInfosArgs = {
+  idProduct?: InputMaybe<Scalars['UUID']>;
+  idShop?: InputMaybe<Scalars['UUID']>;
+};
+
+
 export type QueryProductsFilterArgs = {
   idCategory?: InputMaybe<Scalars['UUID']>;
   idShop?: InputMaybe<Scalars['UUID']>;
@@ -374,6 +407,11 @@ export type Role = {
   __typename?: 'Role';
   id: Scalars['UUID'];
   role: RoleType;
+};
+
+export type RoleInfos = {
+  __typename?: 'RoleInfos';
+  role: Scalars['String'];
 };
 
 export enum RoleType {
@@ -524,6 +562,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']>;
+  AddRole: AddRole;
   Address: ResolverTypeWrapper<Address>;
   AddressUpdateInput: AddressUpdateInput;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
@@ -590,13 +629,15 @@ export type ResolversTypes = {
   ProductBooking: ResolverTypeWrapper<ProductBooking>;
   ProductBookingInfos: ResolverTypeWrapper<ProductBookingInfos>;
   ProductBookingInput: ProductBookingInput;
-  ProductId: ProductId;
+  ProductCate: ResolverTypeWrapper<ProductCate>;
+  ProductInfos: ResolverTypeWrapper<ProductInfos>;
   ProductsFiltre: ResolverTypeWrapper<ProductsFiltre>;
   Quantity_size: ResolverTypeWrapper<Quantity_Size>;
   Query: ResolverTypeWrapper<{}>;
   RGB: ResolverTypeWrapper<Scalars['RGB']>;
   RGBA: ResolverTypeWrapper<Scalars['RGBA']>;
   Role: ResolverTypeWrapper<Role>;
+  RoleInfos: ResolverTypeWrapper<RoleInfos>;
   RoleType: RoleType;
   RoutingNumber: ResolverTypeWrapper<Scalars['RoutingNumber']>;
   SafeInt: ResolverTypeWrapper<Scalars['SafeInt']>;
@@ -626,6 +667,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AccountNumber: Scalars['AccountNumber'];
+  AddRole: AddRole;
   Address: Address;
   AddressUpdateInput: AddressUpdateInput;
   BigInt: Scalars['BigInt'];
@@ -691,13 +733,15 @@ export type ResolversParentTypes = {
   ProductBooking: ProductBooking;
   ProductBookingInfos: ProductBookingInfos;
   ProductBookingInput: ProductBookingInput;
-  ProductId: ProductId;
+  ProductCate: ProductCate;
+  ProductInfos: ProductInfos;
   ProductsFiltre: ProductsFiltre;
   Quantity_size: Quantity_Size;
   Query: {};
   RGB: Scalars['RGB'];
   RGBA: Scalars['RGBA'];
   Role: Role;
+  RoleInfos: RoleInfos;
   RoutingNumber: Scalars['RoutingNumber'];
   SafeInt: Scalars['SafeInt'];
   SemVer: Scalars['SemVer'];
@@ -896,6 +940,7 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addOrder?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<MutationAddOrderArgs, 'orderInfos'>>;
   addProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationAddProductArgs, 'description' | 'name' | 'range'>>;
+  addRole?: Resolver<Maybe<ResolversTypes['RoleInfos']>, ParentType, ContextType, Partial<MutationAddRoleArgs>>;
   addShop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<MutationAddShopArgs, 'shop'>>;
   addUser?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'user'>>;
   addUserAddress?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType, RequireFields<MutationAddUserAddressArgs, 'address' | 'id'>>;
@@ -990,6 +1035,23 @@ export type ProductBookingInfosResolvers<ContextType = any, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ProductCateResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductCate'] = ResolversParentTypes['ProductCate']> = {
+  category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  range?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProductInfosResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductInfos'] = ResolversParentTypes['ProductInfos']> = {
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  productId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  quantity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ProductsFiltreResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductsFiltre'] = ResolversParentTypes['ProductsFiltre']> = {
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType>;
   shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType>;
@@ -1006,6 +1068,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   cat?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCatArgs, 'category'>>;
   catProducts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Product']>>>, ParentType, ContextType, RequireFields<QueryCatProductsArgs, 'id'>>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
+  checkUser?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  checkUserIsAdmin?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   getOrderById?: Resolver<ResolversTypes['Order'], ParentType, ContextType, Partial<QueryGetOrderByIdArgs>>;
   getOrderByUserId?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryGetOrderByUserIdArgs>>;
   listCategory?: Resolver<Maybe<Array<Maybe<ResolversTypes['Category']>>>, ParentType, ContextType>;
@@ -1013,8 +1077,9 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   login?: Resolver<ResolversTypes['UserInfos'], ParentType, ContextType, RequireFields<QueryLoginArgs, 'user'>>;
   logout?: Resolver<Maybe<ResolversTypes['Logout']>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
+  productInfos?: Resolver<Maybe<ResolversTypes['ProductInfos']>, ParentType, ContextType, Partial<QueryProductInfosArgs>>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
-  productsFilter?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType, Partial<QueryProductsFilterArgs>>;
+  productsFilter?: Resolver<Array<Maybe<ResolversTypes['ProductCate']>>, ParentType, ContextType, Partial<QueryProductsFilterArgs>>;
   shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'id'>>;
   shops?: Resolver<Array<Maybe<ResolversTypes['Shop']>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
@@ -1032,6 +1097,11 @@ export interface RgbaScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 export type RoleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Role'] = ResolversParentTypes['Role']> = {
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   role?: Resolver<ResolversTypes['RoleType'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type RoleInfosResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoleInfos'] = ResolversParentTypes['RoleInfos']> = {
+  role?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1194,12 +1264,15 @@ export type Resolvers<ContextType = any> = {
   Product?: ProductResolvers<ContextType>;
   ProductBooking?: ProductBookingResolvers<ContextType>;
   ProductBookingInfos?: ProductBookingInfosResolvers<ContextType>;
+  ProductCate?: ProductCateResolvers<ContextType>;
+  ProductInfos?: ProductInfosResolvers<ContextType>;
   ProductsFiltre?: ProductsFiltreResolvers<ContextType>;
   Quantity_size?: Quantity_SizeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RGB?: GraphQLScalarType;
   RGBA?: GraphQLScalarType;
   Role?: RoleResolvers<ContextType>;
+  RoleInfos?: RoleInfosResolvers<ContextType>;
   RoutingNumber?: GraphQLScalarType;
   SafeInt?: GraphQLScalarType;
   SemVer?: GraphQLScalarType;

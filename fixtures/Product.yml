@@ -6,6 +6,7 @@ items:
     description: 'ski toute montagne'
     range: salomon
     category: '@category0'
+    image: 'https://www.speck-sports.com/80332-home_default/skis-volkl-revolt-86.jpg'
 
   product1:
     id: '{{datatype.uuid}}'
@@ -13,6 +14,7 @@ items:
     description: 'ski de fond'
     range: decathlon
     category: '@category0'
+    image: 'https://www.speck-sports.com/80494-home_default/ski-scott-scrapper-105.jpg'
 
   product2:
     id: '{{datatype.uuid}}'
@@ -20,6 +22,7 @@ items:
     description: 'ski toute montagne'
     range: salomon
     category: '@category0'
+    image: 'https://www.speck-sports.com/89490-home_default/sender-free-110-open.jpg'
 
   product3:
     id: '{{datatype.uuid}}'
@@ -27,3 +30,12 @@ items:
     description: 'chaussure toute montagne'
     range: decathlon
     category: '@category1'
+    image: 'https://www.speck-sports.com/90099-home_default/chaussures-de-ski-fischer-ranger-105-dyn-gw.jpg'
+
+  product4:
+    id: '{{datatype.uuid}}'
+    name: 'Ranger 120'
+    description: 'chaussure toute montagne fisher'
+    range: decathlon
+    category: '@category1'
+    image: 'https://www.speck-sports.com/90102-home_default/chaussures-de-ski-fischer-ranger-120-dyn-gw.jpg'

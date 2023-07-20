@@ -59,3 +59,8 @@ npm run codegen
 
 Attention à ne pas avoir PGAdmin déjà lancé sinon risque d'erreur liée au CRLF au lancement du build docker
 test
+
+
+### Pour réaliser les tests
+
+Décommenter les ligne environment et NODE_ENV pour pouvoir effectuer les tests front
