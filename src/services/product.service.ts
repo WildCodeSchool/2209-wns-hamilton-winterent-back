@@ -1,11 +1,12 @@
-import datasource from "../lib/datasource";
-import Product from "../entity/Product";
+import datasource from '../lib/datasource';
+import Product from '../entity/Product';
 import {
   MutationAddProductArgs,
   MutationUpdateProductArgs,
+  ProductAdmin,
   ProductInfos,
-} from "../generated/graphql";
-import ProductToShop from "../entity/Product_shop";
+} from '../generated/graphql';
+import ProductToShop from '../entity/Product_shop';
 
 class ProductService {
   repository;
@@ -20,23 +21,64 @@ class ProductService {
     idShop: string
   ): Promise<Product[]> {
     return await this.repository
-      .createQueryBuilder("product")
-      .leftJoinAndSelect("product.category", "category")
-      .leftJoin("product.productToShops", "productToShops")
-      .leftJoin("productToShops.shop", "shop")
-      .where("category.id = :idCategory", { idCategory })
-      .andWhere("shop.id = :idShop", { idShop })
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoin('product.productToShops', 'productToShops')
+      .leftJoin('productToShops.shop', 'shop')
+      .where('category.id = :idCategory', { idCategory })
+      .andWhere('shop.id = :idShop', { idShop })
       .getMany();
+  }
+
+  async findFilterProductsAdmin(
+    idCategory: string,
+    idShop: string
+  ): Promise<ProductAdmin[]> {
+    const res = [];
+    let data = await this.repository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoin('product.productToShops', 'productToShops')
+      .leftJoin('productToShops.shop', 'shop')
+      .where('category.id = :idCategory', { idCategory })
+      .andWhere('shop.id = :idShop', { idShop })
+      .getMany();
+
+    if (data) {
+      for (let i = 0; i < data.length; i++) {
+        const response = await this.productShopRepository
+          .createQueryBuilder('productToShops')
+          .where('productToShops.productId = :productId', {
+            productId: data[i].id,
+          })
+          .andWhere('productToShops.shopId = :shopId', { shopId: idShop })
+          .leftJoinAndSelect('productToShops.product', 'product')
+          .getOne();
+
+        const productData = {
+          priceHT: response?.priceHT,
+          quantity: response?.quantity,
+          name: data[i].name,
+          description: data[i].description,
+          range: data[i].range,
+          image: data[i].image,
+          id: data[i].id,
+          category: data[i].category,
+        };
+        res.push(productData);
+      }
+    }
+    return res;
   }
 
   async findProductPriceById(productId: string, shopId: string) {
     //let produit = await this.findProductById(id)
     let productInfos: ProductInfos = {};
     const data = await this.productShopRepository
-      .createQueryBuilder("productToShops")
-      .where("productToShops.productId = :productId", { productId })
-      .andWhere("productToShops.shopId = :shopId", { shopId })
-      .leftJoinAndSelect("productToShops.product", "product")
+      .createQueryBuilder('productToShops')
+      .where('productToShops.productId = :productId', { productId })
+      .andWhere('productToShops.shopId = :shopId', { shopId })
+      .leftJoinAndSelect('productToShops.product', 'product')
       .getOne();
 
     if (data != null) {
