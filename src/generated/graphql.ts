@@ -268,6 +268,18 @@ export type Product = {
   range: Scalars['String'];
 };
 
+export type ProductAdmin = {
+  __typename?: 'ProductAdmin';
+  category?: Maybe<Category>;
+  description: Scalars['String'];
+  id: Scalars['UUID'];
+  image?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  priceHT?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['Int']>;
+  range: Scalars['String'];
+};
+
 export type ProductBooking = {
   __typename?: 'ProductBooking';
   id: Scalars['UUID'];
@@ -334,6 +346,7 @@ export type Query = {
   product?: Maybe<Product>;
   productInfos?: Maybe<ProductInfos>;
   products: Array<Maybe<Product>>;
+  productsAdmin: Array<Maybe<ProductAdmin>>;
   productsFilter: Array<Maybe<ProductCate>>;
   shop?: Maybe<Shop>;
   shops: Array<Maybe<Shop>>;
@@ -384,6 +397,12 @@ export type QueryProductArgs = {
 
 export type QueryProductInfosArgs = {
   idProduct?: InputMaybe<Scalars['UUID']>;
+  idShop?: InputMaybe<Scalars['UUID']>;
+};
+
+
+export type QueryProductsAdminArgs = {
+  idCategory?: InputMaybe<Scalars['UUID']>;
   idShop?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -626,6 +645,7 @@ export type ResolversTypes = {
   PositiveInt: ResolverTypeWrapper<Scalars['PositiveInt']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']>;
   Product: ResolverTypeWrapper<Product>;
+  ProductAdmin: ResolverTypeWrapper<ProductAdmin>;
   ProductBooking: ResolverTypeWrapper<ProductBooking>;
   ProductBookingInfos: ResolverTypeWrapper<ProductBookingInfos>;
   ProductBookingInput: ProductBookingInput;
@@ -730,6 +750,7 @@ export type ResolversParentTypes = {
   PositiveInt: Scalars['PositiveInt'];
   PostalCode: Scalars['PostalCode'];
   Product: Product;
+  ProductAdmin: ProductAdmin;
   ProductBooking: ProductBooking;
   ProductBookingInfos: ProductBookingInfos;
   ProductBookingInput: ProductBookingInput;
@@ -1021,6 +1042,18 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ProductAdminResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductAdmin'] = ResolversParentTypes['ProductAdmin']> = {
+  category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  priceHT?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  quantity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  range?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ProductBookingResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductBooking'] = ResolversParentTypes['ProductBooking']> = {
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -1079,6 +1112,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   productInfos?: Resolver<Maybe<ResolversTypes['ProductInfos']>, ParentType, ContextType, Partial<QueryProductInfosArgs>>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
+  productsAdmin?: Resolver<Array<Maybe<ResolversTypes['ProductAdmin']>>, ParentType, ContextType, Partial<QueryProductsAdminArgs>>;
   productsFilter?: Resolver<Array<Maybe<ResolversTypes['ProductCate']>>, ParentType, ContextType, Partial<QueryProductsFilterArgs>>;
   shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'id'>>;
   shops?: Resolver<Array<Maybe<ResolversTypes['Shop']>>, ParentType, ContextType>;
@@ -1262,6 +1296,7 @@ export type Resolvers<ContextType = any> = {
   PositiveInt?: GraphQLScalarType;
   PostalCode?: GraphQLScalarType;
   Product?: ProductResolvers<ContextType>;
+  ProductAdmin?: ProductAdminResolvers<ContextType>;
   ProductBooking?: ProductBookingResolvers<ContextType>;
   ProductBookingInfos?: ProductBookingInfosResolvers<ContextType>;
   ProductCate?: ProductCateResolvers<ContextType>;
