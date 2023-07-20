@@ -31,8 +31,11 @@ export default {
       return await new UserService().findUser(id);
     },
     checkUserIsAdmin: (_: any, {}, { userLogged }: any) => {
-      return userLogged?.role == RoleType.Admin;
+      console.log(userLogged, "userlog")
+      return userLogged?.role.role == RoleType.Admin;
+
     },
+
     checkUser: (_: any, {}, { userLogged }: any) => {
       return userLogged !== null;
     },
