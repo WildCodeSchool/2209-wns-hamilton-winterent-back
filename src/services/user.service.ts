@@ -1,17 +1,17 @@
-import datasource from "../lib/datasource";
-import User from "../entity/User";
-import Role from "../entity/Role";
-import bcrypt from "bcrypt";
-import { generateToken } from "../lib/utilities";
+import datasource from '../lib/datasource';
+import User from '../entity/User';
+import Role from '../entity/Role';
+import bcrypt from 'bcrypt';
+import { generateToken } from '../lib/utilities';
 import {
   MutationAddUserAddressArgs,
   MutationAddUserArgs,
   MutationUpdateUserArgs,
   UserInfos,
-} from "../generated/graphql";
-import { Repository } from "typeorm";
-import Address from "../entity/Address";
-import AddressService from "./address.service";
+} from '../generated/graphql';
+import { Repository } from 'typeorm';
+import Address from '../entity/Address';
+import AddressService from './address.service';
 
 const SALT_ROUND = 10;
 
@@ -31,8 +31,11 @@ class UserService {
     return await this.userRepository.findOneBy({ id });
   }
   async findUserByEmail(email: string) {
-    console.log('test');
-    return await this.userRepository.findOneBy({ email });
+    if (email) {
+      return await this.userRepository.findOneBy({ email });
+    } else {
+      return null;
+    }
   }
 
   async findAll(): Promise<User[]> {

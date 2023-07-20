@@ -323,6 +323,8 @@ export type Query = {
   cat?: Maybe<Category>;
   catProducts?: Maybe<Array<Maybe<Product>>>;
   category?: Maybe<Category>;
+  checkUser?: Maybe<Scalars['Boolean']>;
+  checkUserIsAdmin?: Maybe<Scalars['Boolean']>;
   getOrderById: Order;
   getOrderByUserId: Array<Order>;
   listCategory?: Maybe<Array<Maybe<Category>>>;
@@ -1066,6 +1068,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   cat?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCatArgs, 'category'>>;
   catProducts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Product']>>>, ParentType, ContextType, RequireFields<QueryCatProductsArgs, 'id'>>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
+  checkUser?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  checkUserIsAdmin?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   getOrderById?: Resolver<ResolversTypes['Order'], ParentType, ContextType, Partial<QueryGetOrderByIdArgs>>;
   getOrderByUserId?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryGetOrderByUserIdArgs>>;
   listCategory?: Resolver<Maybe<Array<Maybe<ResolversTypes['Category']>>>, ParentType, ContextType>;
