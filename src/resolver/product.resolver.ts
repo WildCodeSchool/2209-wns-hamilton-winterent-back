@@ -2,18 +2,37 @@ import {
   MutationAddProductArgs,
   QueryProductArgs,
   MutationUpdateProductArgs,
-} from "../generated/graphql";
-import ProductService from "../services/product.service";
+  QueryProductsFilterArgs,
+  QueryProductInfosArgs,
+  ProductInfosResolvers,
+  QueryProductsAdminArgs,
+} from '../generated/graphql';
+import ProductService from '../services/product.service';
 
 export default {
   Query: {
-    products: async (_: any, args: any) => {
+    products: async () => {
       return await new ProductService().findAll();
     },
 
     product: async (_: any, args: QueryProductArgs) => {
       const { id } = args;
       return await new ProductService().findProductById(id);
+    },
+
+    productsFilter: async (_: any, args: QueryProductsFilterArgs) => {
+      const { idCategory, idShop } = args;
+      return await new ProductService().findFilterProducts(idCategory, idShop);
+    },
+
+    productsAdmin: async (_: any, args: QueryProductsAdminArgs) => {
+      const { idCategory, idShop } = args;
+      return await new ProductService().findFilterProductsAdmin(idCategory, idShop);
+    },
+
+    productInfos: async (_: any, args: QueryProductInfosArgs) => {
+      const { idProduct, idShop } = args;
+      return await new ProductService().findProductPriceById(idProduct, idShop);
     },
   },
   Mutation: {
@@ -29,7 +48,7 @@ export default {
         return data;
       } catch (error) {
         console.log(error);
-        throw new Error("erreur");
+        throw new Error('erreur');
       }
     },
     updateProduct: async (_: any, args: MutationUpdateProductArgs) => {
@@ -45,7 +64,7 @@ export default {
         return data;
       } catch (error) {
         console.log(error);
-        throw new Error("erreur");
+        throw new Error('erreur');
       }
     },
     deleteProduct: async (_: any, args: any) => {
@@ -54,7 +73,7 @@ export default {
         await new ProductService().deleteProduct(id);
       } catch (error) {
         console.log(error);
-        throw new Error("erreur");
+        throw new Error('erreur');
       }
     },
   },

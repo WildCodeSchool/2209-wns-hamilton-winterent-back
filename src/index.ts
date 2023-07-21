@@ -18,9 +18,13 @@ import cors from "cors";
 // import cookieParser from "cookie-parser";
 
 // permet à la partie front de pouvoir communiquer avec le front sur le port 3000
+
 const corsConfig = {
-  //origin: "*",
-  origin: ["http://localhost:3000"],
+  origin:
+    process.env.NODE_ENV == 'test'
+      ? '*'
+      : ['http://localhost:3000'],
+  //origin: ["http://localhost:3000", "*"],
   credentials: true,
 };
 

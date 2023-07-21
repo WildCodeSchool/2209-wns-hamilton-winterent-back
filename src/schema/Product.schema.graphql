@@ -8,11 +8,65 @@ type Product {
   image: String
 }
 
+type ProductCate {
+  id: UUID!
+  name: String!
+  description: String!
+  range: String!
+  image: String
+  category: Category
+}
+
+type ProductAdmin {
+  id: UUID!
+  quantity: Int
+  priceHT: Int
+  name: String!
+  description: String!
+  range: String!
+  image: String
+  category: Category
+}
+
+type ProductsFiltre {
+  category: Category
+  shop: Shop
+}
+
+type ProductBooking {
+  id: UUID!
+  name: String!
+  image: String
+  range: String
+  productShopId: UUID
+}
+
+type ProductBookingInfos {
+  priceHT: Int
+}
+
+type ProductInfos {
+  productId: UUID
+  price: Int
+  quantity: Int
+}
+
+input ProductBookingInput {
+  id: UUID!
+  name: String!
+  image: String
+  range: String
+  # productShopId: UUID
+}
+
 # QUERY
 
 type Query {
   products: [Product]!
   product(id: UUID!): Product
+  productsFilter(idCategory: UUID, idShop: UUID): [ProductCate]!
+  productsAdmin(idCategory: UUID, idShop: UUID): [ProductAdmin]!
+  productInfos(idShop: UUID, idProduct: UUID): ProductInfos
 }
 
 # MUTATIONS

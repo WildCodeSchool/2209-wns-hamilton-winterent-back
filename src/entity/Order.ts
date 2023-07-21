@@ -7,26 +7,25 @@ import {
 } from "typeorm";
 import Booking from "./Booking";
 import User from "./User";
+import { StatusType } from "../generated/graphql";
 
 @Entity()
 export default class Order {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   date: Date;
 
-  @Column()
-  status: EnumStatus;
+  @Column({
+    type: 'enum',
+    enum: StatusType,
+    default: StatusType.Inprogress,
+  })
+  status: StatusType;
 
-  @ManyToOne(() => User, (user) => user.orders)
+  @ManyToOne(() => User, (user) => user.orders, { eager: true })
   user: User;
-  @OneToMany(() => Booking, (booking) => booking.order)
+  @OneToMany(() => Booking, (booking) => booking.order, { eager: true })
   bookings: Booking[];
-}
-
-export enum EnumStatus {
-  INPROGRESS = "En cours",
-  CANCEL = "Annuler",
-  DONE = "Terminer",
 }

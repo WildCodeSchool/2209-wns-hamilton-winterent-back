@@ -1,14 +1,16 @@
-import UserService from "../services/user.service";
-import bcrypt from "bcrypt";
-import { generateToken } from "../lib/utilities";
-import { ApolloError, ExpressContext } from "apollo-server-express";
+import UserService from '../services/user.service';
+import bcrypt from 'bcrypt';
+import { generateToken } from '../lib/utilities';
+import { ApolloError, ExpressContext } from 'apollo-server-express';
 import {
   LoginUser,
   MutationAddUserAddressArgs,
   MutationAddUserArgs,
+  MutationUpdateUserArgs,
   QueryLoginArgs,
+  RoleType,
   UserInfos,
-} from "../generated/graphql";
+} from '../generated/graphql';
 
 export default {
   Query: {
@@ -28,6 +30,16 @@ export default {
       const { id } = args;
       return await new UserService().findUser(id);
     },
+    checkUserIsAdmin: (_: any, {}, { userLogged }: any) => {
+      console.log(userLogged, "userlog")
+      return userLogged?.role.role == RoleType.Admin;
+
+    },
+
+    checkUser: (_: any, {}, { userLogged }: any) => {
+      return userLogged !== null;
+    },
+
     login: async (_: any, args: QueryLoginArgs, res: ExpressContext) => {
       //check email et password et retourner le token
 
@@ -35,20 +47,25 @@ export default {
         user: { email, password },
       } = args;
 
-      let user = await new UserService().findUserByEmail(email);
-      if (!user) {
-        throw new ApolloError("Cet utilisateur n'existe pas");
-      }
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        throw new ApolloError("Vérifiez vos informations");
-      }
-      console.log(match);
+      try {
+        let user = await new UserService().findUserByEmail(email);
+        if (!user) {
+          throw new ApolloError("Cet utilisateur n'existe pas");
+        }
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+          throw new ApolloError('Vérifiez vos informations');
+        }
+        console.log(match);
 
-      let token = generateToken({ email });
+        let token = generateToken({ email });
 
-      return { user, token /*, success: math */ };
+        return { user, token /*, success: math */ };
+      } catch (error) {
+        console.log('LOGIN TEST', error);
+      }
     },
+
     /*logout: async (_: any, {}, { res }: ExpressContext) => {
       res.clearCookie("token");
       return { success: true };
@@ -62,7 +79,16 @@ export default {
         return data;
       } catch (error) {
         console.log(error);
-        throw new Error("erreur");
+        throw new Error('erreur');
+      }
+    },
+
+    addRole: async (_: any, args: any) => {
+      try {
+        return await new UserService().createRole(args);
+      } catch (error: any) {
+        //console.log(error);
+        throw new Error(error.message);
       }
     },
 
@@ -71,7 +97,17 @@ export default {
         return await new UserService().createUserAddress(args);
       } catch (error) {
         console.log(error);
-        throw new Error("erreur");
+        throw new Error('erreur');
+      }
+    },
+
+    updateUser: async (_: any, args: MutationUpdateUserArgs) => {
+      try {
+        let data = await new UserService().updateUser(args);
+        console.log('resolver success ', data);
+        return data;
+      } catch (error) {
+        console.log('ERROR update');
       }
     },
   },

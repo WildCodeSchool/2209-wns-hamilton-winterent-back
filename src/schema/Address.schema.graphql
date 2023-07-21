@@ -5,16 +5,25 @@ type Address {
   roadNumber: Int
   streetName: String
   city: String
-  postalCode: PostalCode!
+  postalCode: PostalCode
   country: String
 }
 
 # INPUTS : Valeurs utilisées en arguments des mutations ou query
 
 input CreateAddress {
-  roadNumber: Int!
-  streetName: String!
-  city: String!
-  postalCode: PostalCode!
-  country: String!
+  roadNumber: Int
+  streetName: String
+  city: String
+  postalCode: PostalCode
+  country: String
+}
+
+input AddressUpdateInput {
+  id: UUID
+  roadNumber: Int
+  streetName: String
+  city: String
+  postalCode: PostalCode
+  country: String
 }

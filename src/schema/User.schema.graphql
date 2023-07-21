@@ -5,11 +5,22 @@ type User {
   email: EmailAddress
   firstname: String!
   lastname: String!
-  password: String!
+  # password: String!
   gender: GenderType
   birthdate: Date
   phoneNumber: PhoneNumber
   role: Role
+  address: Address
+}
+
+type UpdateUserType {
+  id: UUID!
+  firstname: String!
+  lastname: String!
+  gender: GenderType
+  birthdate: Date
+  phoneNumber: PhoneNumber
+  address: Address
 }
 
 type UserMinimal {
@@ -30,6 +41,10 @@ type Logout {
 type Role {
   id: UUID!
   role: RoleType!
+}
+
+type RoleInfos {
+  role: String!
 }
 
 # ENUM : Déclaré dans graphql directement et utilisé dans l'entité USER
@@ -53,15 +68,31 @@ input CreateUser {
   firstname: String!
   lastname: String!
   password: String!
+  confirmPassword: String!
   gender: GenderType
   role: RoleType
   phoneNumber: PhoneNumber
   birthdate: Date
 }
 
+input UpdateUserInput {
+  id: UUID!
+  firstname: String!
+  lastname: String!
+  email: String
+  gender: GenderType
+  birthdate: Date
+  phoneNumber: PhoneNumber
+  address: AddressUpdateInput
+}
+
 input LoginUser {
   email: EmailAddress!
   password: String!
+}
+
+input AddRole {
+  role: String!
 }
 
 # QUERY
@@ -71,6 +102,8 @@ type Query {
   user(id: UUID!): User
   login(user: LoginUser!): UserInfos!
   logout: Logout #ajout d'une fonction query qui renverra la clé success à true si tout s'est bien passé
+  checkUserIsAdmin: Boolean 
+  checkUser: Boolean 
 }
 
 # MUTATIONS
@@ -78,4 +111,6 @@ type Query {
 type Mutation {
   addUser(user: CreateUser!): UserInfos!
   addUserAddress(id: UUID!, address: CreateAddress!): Address
+  updateUser(user: UpdateUserInput!): UpdateUserType!
+  addRole(role: AddRole): RoleInfos
 }
