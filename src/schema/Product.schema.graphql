@@ -17,6 +17,17 @@ type ProductCate {
   category: Category
 }
 
+type ProductAdmin {
+  id: UUID!
+  quantity: Int
+  priceHT: Int
+  name: String!
+  description: String!
+  range: String!
+  image: String
+  category: Category
+}
+
 type ProductsFiltre {
   category: Category
   shop: Shop
@@ -54,6 +65,7 @@ type Query {
   products: [Product]!
   product(id: UUID!): Product
   productsFilter(idCategory: UUID, idShop: UUID): [ProductCate]!
+  productsAdmin(idCategory: UUID, idShop: UUID): [ProductAdmin]!
   productInfos(idShop: UUID, idProduct: UUID): ProductInfos
 }
 
