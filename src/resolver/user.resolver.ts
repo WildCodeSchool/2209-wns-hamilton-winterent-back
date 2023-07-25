@@ -74,6 +74,13 @@ export default {
   Mutation: {
     addUser: async (_: any, args: MutationAddUserArgs) => {
       let data: UserInfos;
+      
+      let email = args.user.email
+      let user = await new UserService().findUserByEmail(email);
+      console.log(user)
+      if(user){
+        throw new ApolloError('cet email est deja utilisé')
+      }
       try {
         data = await new UserService().createUser(args);
         return data;
